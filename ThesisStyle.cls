@@ -1,3 +1,4 @@
+
 %% By Oliver Commowick
 %% 
 %% This is file `book.cls',
