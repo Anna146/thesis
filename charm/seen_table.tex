@@ -1,0 +1,31 @@
+\begin{table}[t]
+\small
+\centering
+\begin{adjustbox}{width=0.65\textwidth}
+\begin{tabular}{llllll}
+\toprule
+\multirow{2}{*}{Model}  &  Document  &  \multicolumn{2}{c}{\attribute{profession}}  &  \multicolumn{2}{c}{\attribute{hobby}}  \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6}
+  &  collection  &  \textsc{mrr}  &  n\textsc{dcg}  &  \textsc{mrr}  &  n\textsc{dcg}  \\  
+\midrule
+N-GrAM          &  -                &  .13*  &  .43*  &  .11*  &  .40*  \\
+W2V-C           &  -                &  .09*  &  .39*  &  .08*  &  .32*  \\
+CNN             &  -                &  .20*  &  .52*  &  .14*  &  .43*  \\
+\method{2attn}  &  -                &  .32*  &  .59*  &  .33   &  \best{.55}   \\
+BERT            &  -                &  \best{.50}  &  \best{.68}  &  \best{.35}   &  \best{.55}   \\
+\midrule
+\charm{BM25}    &  \wiki{page}      &  .42*  &  .57*  &  .31*   &  .51*   \\
+                &  \wiki{category}  &  .38*  &  .56*  &  .32   &  .50*  \\
+                &  Web search       &  .49   &  .65   &  .31*  &  .51   \\
+\midrule                
+\charm{KNRM}    &  \wiki{page}      &  .37*  &  .54*  &  .28*  &  .46*  \\
+                &  \wiki{category}  &  .43*  &  .62*  &  .31   &  .51*  \\
+                &  Web search       &  .49   &  .66   &  .31   &  .51   \\
+\bottomrule            
+\end{tabular}
+\end{adjustbox}
+\caption{Results for \emph{seen} values.
+Results marked with * significantly differ from the best method (in bold face) measured by a paired t-test ($p<0.05$).
+}
+\label{tab4}
+\end{table}

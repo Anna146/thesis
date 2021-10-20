@@ -1,0 +1,29 @@
+\section{Conclusion}
+
+We presented PRIDE, a model for inferring fine-grained relationships from conversations. To our best knowledge, PRIDE is the first model to predict \textit{directed, multilabel} speakers' relationships. PRIDE leverages the hierarchical dialogue structure to efficiently handle lengthy conversational history. The novelty of our architecture is the additional signals of speakers' demographics and speech style, which significantly improve relationship prediction.
+
+PRIDE outperforms state-of-the-art baselines and demonstrates effective transfer learning on different types of dialogue data. %In ablation experiments we demonstrate that the proposed architecture improves the model's predictions. 
+PRIDE is designed to perform inference on long conversational sequences; however, we experimentally show PRIDE's ability to make accurate predictions for shorter interactions too. 
+
+To support future work on this topic, we created and released the largest labeled collection of relationships in conversations, which improves over existing datasets by including directed multilabel relationships.
+
+\subsection{Discussion}
+
+In this subsection we discuss several limitations of the current work and propose directions for further improvements of PRIDE:
+
+\begin{itemize}
+    \item \textbf{Leveraging other types of conversational data.} Inferring relationships in real-life user conversations is the use case motivating our research. Thus, we find it important to evaluate PRIDE's transfer learning capabilities to other conversational datasets to ensure that it can generalize. Our choice of the dataset was constrained by the complexity of labeling dialogues with relationship labels; we leave it for future work to obtain more diverse relationship datasets (for example, social media interactions or telephone transcripts).
+    
+    \item \textbf{Improving performance on directed relationships.} Predicting asymmetric relationships has been overlooked in the prior works; yet accurately distinguishing them is important for practical applications. For instance, an intelligent assistant can recommend completely different items, depending of whether the user is asking for a birthday present suggestions for her \textit{parent} or her \textit{child}. Thus, we find it necessary to further improve PRIDE's performance on asymmetric relationships.
+    
+    \item \textbf{Incorporating more personal attributes.} In our experiments we showed that prediction of interpersonal relationships can benefit from adding speakers' attributes. We find it interesting to experiment on adding other personal information, such as \textit{occupation} or \textit{ethnicity}.
+
+    \item \textbf{Joint prediction of personal attributes and interpersonal relationships.} The current version of PRIDE supports incorporating precomputed ground truth information about the speakers' ages. In the scenario when personal attribute labels are not available, one option is to use a predictive model (such as HAM) to provide such information on the fly. Joint training of the relationship and speakers' attribute prediction models could improve their predictions, as relationships and personal attributes are interdependent.
+
+    \item \textbf{Considering multispeaker conversations.} The current dataset used in experiments with PRIDE was limited to uninterrupted dialogue spans by two characters. This limitation was due to the difficulty of distinguishing the addressee of an utterance when more than 2 speakers are present. In real life people often interact in a group, thus considering only speaker pairs will miss useful cues for predictions. Therefore, extension of the current model to handle multi-speaker conversations should be further investigated.
+    %Therefore, we find it important to investigate the ways the current model can be extended to handle multi-speaker dialogues.
+
+    
+\end{itemize}
+
+%The last research direction can also be generalized to the other models discussed in the current thesis. For instance, the people who communicate are often in the same age group and = have the same \textit{hobbies} (if they are friends) or \textit{professions} (if they are colleagues). We highlight simultaneous predictions of personal attributes and relationships using speaker network as a compelling future research direction.

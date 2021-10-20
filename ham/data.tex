@@ -1,0 +1,44 @@
+\section{Data acquisition and processing}
+
+In experiments with HAMs we used three different datasets, reflecting various aspects of conversational data: (i) movie scripts (\textit{MovieChAtt} dataset, described in Chapter 3.1); (ii) social media submissions (a subset of the \textit{RedDust} dataset, described in Chapter 3.2); and (iii) artificially created dialogues (PersonaChat dataset \cite{zhang2018personalizing}). In this section we provide details on these datasets.
+
+\paragraphHd{MovieChAtt dataset\textnormal{.}} We use the dataset of the movie characters' utterances, described in Section 3.1, annotated with \textit{profession}, \textit{age} and \textit{gender} attributes. In summary, we obtained 1,963 characters labeled with gender (male or female), 4,548 characters labeled with age (classified into one of the bins from \textit{child}, \textit{teenager}, \textit{adult}, \textit{middle-aged} and \textit{senior}) and 1,405 characters labeled with profession (out of 43 profession values, given in Table 3.3).
+
+For each character in the annotated set we extracted the sequence of their utterances in the movie.
+Each utterance is represented as a sequence of words, excluding stop words, the 1,000 most common first names\footnote{Removed to prevent overfitting. \href{https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-level-data}{http://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-level-data}}, and words that occur in fewer than four different movies.
+The latter two types of words are excluded in order to prevent the model from relying on movie-specific or character-specific signals that will not generalize.
+
+\paragraphHd{RedDust dataset\textnormal{.}}
+For experiments with HAMs we used a part of the RedDust dataset, covering all four considered predicates. Specifically, we tapped into two subforums on Reddit: ``iama'', where anyone can ask questions to a particular person, 
+and ``askreddit'', with more general conversations. In selecting these subforums we followed two criteria: 1) they are not concerned with fictional topics (e.g. computer games) and 2) they are not too topic-specific, 
+as this could heavily bias the classification of user attributes.
+
+As we discussed in Chapter 3.2, the users in the RedDust dataset were labeled using three techniques: natural language patterns, flairs (short description attached to a username) and bracketed assertions (for example, [34f] indicating 34 year old female). For expleriments with HAMs we used only a subset of users which were labeled with natural language patterns. Flairs in the selected two subreddits do not indicate the users' genders; the bracketed assertions, which are mostly featured in dating subreddits, are rare in ``iama'' and ``askreddit''.
+
+We removed users who claim multiple values for the
+same attribute, as we allow only for single-label classification. 
+To further increase data quality, we rated users by language style, to give preference to those whose posts sound more like the utterances in a dialogue. This rating was computed as
+the fraction of the user's posts that contain personal pronouns because pronouns are known to be abundant in the dialogue data.
+
+The test set, disjoint from training data was created in the same manner and further checked by manual annotators, considering that the above mentioned patterns may also produce false positives.
+For example, the patterns can indicate a wrong profession from utterances such as ``they think I am a doctor'' or ``I dreamed  I am an astronout''; or a wrong age and family status
+from ``I am 10 years old boy's mother'' or
+``I am a single child''.
+The final RedDust test set consists of approximately 400 users per predicate.
+
+\paragraphHd{PersonaChat dataset\textnormal{.}} We also explore the robustness of our models using the PersonaChat corpus\footnote{\href{http://convai.io/\#personachat-convai2-dataset}{http://convai.io/\#personachat-convai2-dataset}} \cite{zhang2018personalizing},
+which consists of conversations collected via Mechanical Turk.
+The workers were given 5-sentence-long persona descriptions (e.g., ``I am an artist'', ``I like to build model spaceships'') and asked to incorporate these facts into a short conversation (up to 8 turns) with another worker.
+We split these conversations by persona, yielding a sequence of 3 or 4 utterances for each persona in a conversation.
+
+We automatically labeled personas with \textit{profession} and \textit{gender} attributes by looking for patterns ``I am/I'm a(n) $\langle$\textit{term}$\rangle$'' in persona descriptions, where 
+$\langle$\textit{term}$\rangle$ is either a profession label
+or a gender-indicating noun (woman, uncle, mother, etc).
+We manually labeled persons with \textit{family status} by identifying persona
+descriptions containing related words (single, married, lover, etc) and labeling the corresponding persona as single or not single.
+Overall, we collected 1,147 personas labeled with profession, 1,316 with gender, and 2,302 labeled with family status.
+
+%\vspace{3pt}
+\paragraphHd{Limitations\textnormal{.}} The number of predicates we consider for each dataset are limited by the nature of these datasets. We do not consider the \textit{family status} predicate for MovieChAtt, because the necessary information is often not easily available from the Wikipedia articles. Similarly, we do not consider the \textit{age} predicate on the PersonaChat dataset, because this attribute is not easily found in the persona descriptions. More generally, all users in our datasets are labeled with exactly one attribute value for each predicate. In a real setting it may be impossible to infer any attribute value for some users, whereas other users may have multiple correct values. We leave such scenarios for future work.
+
+

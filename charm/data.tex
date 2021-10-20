@@ -1,0 +1,81 @@
+
+\vspace{-5pt}
+\begin{figure}[th!]
+\centering
+\includegraphics[width=0.8\textwidth]{imgs/brew.png}
+\caption{
+Example of an input utterance with cues hinting that \emph{brewing} is the user's hobby.
+}
+\label{fig:input}
+\end{figure}
+
+\vspace{-5pt}
+The datasets used in our experiments cover two types of input: \emph{(i)} users' utterances along with their corresponding attribute-value pairs (e.g., \emph{hobby:brewing} from the example in Figure~\ref{fig:input}),
+and 
+\emph{(ii)} a collection of documents associated with each attribute value
+(e.g., documents describing \emph{brewing} as a hobby).
+We consider two exemplary attributes: \emph{profession} and \emph{hobby}.
+We define lists of their attribute values based on Wikipedia lists\footnote{Wikipedia pages: \href{https://en.wikipedia.org/wiki/List_of_hobbies}{{List\_of\_hobbies}} \& \href{https://en.wikipedia.org/wiki/Lists_of_occupations}{{Lists\_of\_occupations}}}.
+
+\vspace{-5pt}
+\subsection{Users' utterances}
+
+As users' utterances we used the dataset of Reddit submissions labeled with weak supervision, described in Section 2.3.5.
+For our experiments,
+we removed all posts containing explicit personal assertions that we used for labeling each user, because we want to test the ability of CHARM to predict attribute values based on inference, as opposed to explicit pattern extraction. 
+
+For practical reasons, for each attribute
+we sorted the labeled users by the Snorkel probabilistic labeling model's scores and cropped the set to maximum 500 users per attribute value and 6000 users in total. 
+The final dataset has 23 users per attribute value on average; there are 605 and 245 users who have multiple attribute values for \textit{profession} and \textit{hobby} respectively. Cropping the number of users effectively resulted in reducing the number of attribute values in the original Wikipedia lists, which were fixed as 149 for {\em hobby} and 71 for {\em profession}. 
+
+\vspace{-5pt}
+\subsection{Document collection}
+
+The scope of possible attribute values may be open-ended in nature, and thus, 
+calls for an automatic method for collecting Web documents.
+In this work, we consider three different Web document collections; summary statistics on the number of documents per attribute value are provided in Table \ref{tab:doc_counts}.
+Each document may be associated with multiple attribute values, which matches the same aspect of the users' labeling. 
+To provide more diversity and comprehensiveness we augmented our predefined lists of known attribute values with their synonyms and hyponyms.
+
+Note that the approaches used to construct the document collections are straightforward and easily applicable for further attributes, such as favorite travel destination or favorite book genre.
+
+\begin{table}[h!]
+\centering
+\small
+\begin{adjustbox}{width=0.65\textwidth}
+\begin{tabular}{llrrrr}
+\toprule
+                    &                                  & \textbf{min} & \textbf{max} & \textbf{avg} & \textbf{total} \\ 
+\midrule
+\attribute{profession} & \wiki{page}     & 1            & 10           & 2            & 156            \\
+\textbf{}           & \wiki{category} & 1            & 191          & 57           & 4,156           \\
+\textbf{}           & Web search                       & 71           & 100          & 92           & 6,688           \\ 
+\midrule
+\attribute{hobby}      & \wiki{page}     & 1            & 1            & 1            & 149            \\
+                    & \wiki{category} & 2            & 479          & 74           & 10,782          \\
+                    & Web search                       & 54           & 100          & 82           & 12,312          \\ 
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Document collection statistics.}
+\label{tab:doc_counts}
+\end{table}
+
+\paragraphHd{Wikipedia pages (\wiki{page}).} 
+To create this collection we took the lists of known attribute values and 
+automatically retrieved
+a Wikipedia page corresponding to each value, which usually coincides with the article title (e.g., \textit{Wiki:Barista}).
+
+\paragraphHd{Wikipedia pages--extended (\wiki{category}).} 
+This collection is an extension of \wiki{page} that additionally includes pages found using Wikipedia categories.
+This allows us to include pages about concepts related to the attribute values, such as tools used for a profession and the profession's specializations.
+To construct \wiki{category}, we identified at least one relevant category for each attribute value and included all leaf pages under the category (i.e., including no subcategories).
+
+\paragraphHd{Web search}. To create this collection we queried a Web search engine using attribute-specific patterns: \textit{``my profession as $\langle$profession value$\rangle$''} and \textit{``my favorite hobby is $\langle$hobby value$\rangle$''}.
+The collection consists of the top 100 documents returned for each value.
+Such patterns can be created with low effort by evaluating a few sample queries.
+Alternatively, patterns could be mined from a corpus or simplified to the generic form \textit{``$\langle$attribute$\rangle$ $\langle$value$\rangle$''}.
+
+
+
+

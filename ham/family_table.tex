@@ -1,0 +1,32 @@
+\begin{table}[]
+\centering
+\small
+\begin{adjustbox}{width=0.6\textwidth}
+\begin{tabular}{@{}lcc|cc@{}}
+\toprule
+& \multicolumn{4}{c}{\textbf{family status}} \\
+\cmidrule(lr){2-5}
+\multirow{2}{*}{\textbf{Models}} & \multicolumn{2}{c|}{\textbf{PersonaChat}} & \multicolumn{2}{c}{\textbf{RedDust}} \\ 
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} 
+ & Acc & AUROC & Acc & AUROC \\
+\midrule
+Embedding sim.    & \sig{0.41} & \sig{0.49} & \sig{0.42} & \sig{0.47} \\
+Logistic reg.     & \sig{0.75} & \sig{0.84} & \nsig{0.71} & \nsig{0.74} \\ 
+MLP               & \nsig{0.70} & \nsig{0.80} & \sig{0.62} & \sig{0.60} \\
+\midrule
+N-GrAM \cite{basile:2017} & \nsig{0.85} & \nsig{0.86} & \sig{0.45} & \sig{0.47} \\
+W2V-C \cite{pietro:ACL15} & \sig{0.74} & \sig{0.82} & \nsig{0.70} & \nsig{0.78} \\
+CNN \cite{bayot:MOD17} & \nsig{0.74} & \nsig{0.74} & \nsig{0.69} & \nsig{0.69} \\
+\midrule
+\method{avg}      & \nsig{0.80} & \nsig{0.91} & \nsig{0.67} & \nsig{0.72} \\
+\method{CNN}      & \bnsig{0.93} & \bnsig{0.99} & \sig{0.52} & \sig{0.62} \\ 
+\hdashline
+\method{CNN-attn} & \nsig{0.92} & \nsig{0.98} & \bnsig{0.70} & \bnsig{0.78} \\
+\method{2attn}    & \nsig{0.88} & \nsig{0.94} & \nsig{0.64} & \nsig{0.67} \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Comparison of 
+models on all datasets for \emph{family status} attribute.}
+\label{tab:model-comparison-family}
+\end{table}

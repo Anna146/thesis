@@ -1,0 +1,34 @@
+
+
+\begin{table}[th!]
+\centering
+\small
+\begin{adjustbox}{width=0.8\textwidth,center}
+\begin{tabular}{@{}lcc|cc|cc@{}}
+\toprule
+ & \multicolumn{6}{c}{\textbf{gender}} \\
+\cmidrule(lr){2-7}
+\multirow{3}{*}{\textbf{Models}} & \multicolumn{2}{c|}{\textbf{MovieChAtt}} & \multicolumn{2}{c|}{\textbf{PersonaChat}} & \multicolumn{2}{c}{\textbf{RedDust}}  \\ 
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} 
+ & Acc & AUROC & Acc & AUROC & Acc & AUROC \\
+\midrule
+Embedding sim.    & \sig{0.52} & \sig{0.54} & \nsig{0.49} & \nsig{0.50} & \sig{0.61} & \sig{0.60} \\
+Logistic reg.     & \nsig{0.59} & \nsig{0.62} & \nsig{0.86} & \nsig{0.93} & \sig{0.69} & \sig{0.75} \\ 
+MLP                & \sig{0.57} & \sig{0.60} & \nsig{0.80} & \nsig{0.87} & \nsig{0.71} & \nsig{0.77} \\
+\midrule
+N-GrAM \cite{basile:2017}  & \nsig{0.57} & \nsig{0.58} & \nsig{0.86} & \nsig{0.87} & \sig{0.66} & \sig{0.71} \\
+W2V-C \cite{pietro:ACL15} & \nsig{0.62} & \nsig{0.66} & \sig{0.73} & \sig{0.80} & \sig{0.64} & \sig{0.73} \\
+CNN \cite{bayot:MOD17} & \nsig{0.60} & \nsig{0.60} & \sig{0.72} & \sig{0.73} & \sig{0.61} & \sig{0.61} \\
+\midrule
+\method{avg}      & \nsig{0.72} & \nsig{0.82} & \nsig{0.79} & \nsig{0.87} & \bnsig{0.86} & \nsig{0.92} \\
+\method{CNN}     & \nsig{0.75} & \bnsig{0.85} & \nsig{0.95} & \bnsig{0.99} & \bnsig{0.86} & \sig{0.93} \\ 
+\hdashline
+\method{CNN-attn} & \bnsig{0.77} & \nsig{0.84} & \bnsig{0.96}  & \nsig{0.97}  & \nsig{0.85} & \bnsig{0.94} \\
+\method{2attn}   & \nsig{0.69} & \nsig{0.77} & \nsig{0.94} & \nsig{0.98} & \nsig{0.80} & \nsig{0.91} \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Comparison of 
+models on all datasets for \emph{gender} attribute.}
+\label{tab:model-comparison-gender}
+\end{table}

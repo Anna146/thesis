@@ -1,0 +1,38 @@
+\section{Background}
+
+Training CHARM involves applying a non-differentiable \texttt{argmax} operation, which prevents using end-to-end backpropagation. In this section we provide the technical background on the \textit{policy gradient method}, which we use to mitigate this problem.
+
+\textit{Reinforcement learning} is a machine learning technique based on training an intelligent agent to maximize the reward by selecting appropriate actions. The agent interacts with the \textit{environment} by observing its current state and taking actions; as a result the agent gets the feedback from the environment, which serves as a signal about the correctness of the chosen action. Reinforcement learning environment can be formulated as a \textit{Markov Decision Process}, a tuple $(S, A, P, r, \gamma)$, where 
+\squishlist
+    \item $S$ is a finite set of states,
+    \item $A$ is a finite set of actions,
+    \item $T(s,a) = s' : S \times A \rightarrow S$ is the \textit{transition function}, specifying the mapping from the current state $s$ and the taken action $a$ to a new state $s'$,
+    \item $r(s,a) : S \times A \rightarrow \mathbb{R}$ is the \textit{reward function}, specifying the real-valued reward for taking the action $a$ while being in state $s$,
+    \item $\gamma \in (0,1]$ is the discounting factor, representing the decrease of the reward for the actions further in the future.
+\squishend
+
+A stochastic \textit{policy} $\pi(a_t| s_t)$ is a function, specifying the probability of taking action $a_t$ while being in the state $s_t$ at the timestep $t$. A \textit{trajectory} $\tau = [s_t, a_t]_{t=0}^T$ is a sequence of (state, action) steps, induced by the policy $\pi$, where $T$ denotes the terminal step. The \textit{expected  reward} $J$ is defined as:
+
+\begin{equation}
+    J(\theta) = \mathbb{E}_{\tau \sim p_{\pi}(\tau)} \sum_{t=0}^{T} \gamma^t r(s_t, a_t| \pi)
+\end{equation}
+
+where the expectation is computed with respect to possible random trajectories $\tau \sim p_{\pi}(\tau)$, determined by the policy function. The expected reward defines the mathematical expectation of the total gain until timestep $T$ by following the policy $\pi$.
+
+\textit{Policy gradient methods} solve reinforcement learning problems, which have parameterized differentiable policy function $\pi_{\theta}$, by maximizing the expected reward  $J(\theta)$ with respect to $\theta$. This is done by differentiating $J(\theta)$ using the following formula:
+
+\begin{equation}
+    \triangledown_{\theta} J(\theta) = \sum_{t=1}^K R_t \triangledown_{\theta} log \pi_{\theta} (a_t|s_t)
+\end{equation}
+
+where $R_t$ is the discounted future cumulative reward:
+
+\begin{equation}
+    R_t = \sum^T_{t' = t + 1}\gamma^{t'-t-1}r_{t'}
+\end{equation}
+
+The policy $\pi$ could be implemented by a neural network, which parameters $\theta$ are to be updated using policy gradient methods. For example, this can be done with the REINFORCE algorithm \cite{williams1992simple}. In REINFORCE the reinforcement learning agent generates a random trajectory under the current policy $\pi_{\theta}$ and then, for every timestep in the trajectory $t = 1$ to $T$, the policy parameters are updated as follows:
+
+\begin{equation}
+    \theta_{new} = \theta_{old} + \alpha \triangledown_{\theta} R_t log \pi_{\theta} (a_t|s_t)   
+\end{equation}

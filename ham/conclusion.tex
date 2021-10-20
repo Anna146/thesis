@@ -1,0 +1,31 @@
+\section{Conclusion}
+In this chapter we proposed Hidden Attribute Models (HAMs) for inferring personal attributes from conversations, such as a person's profession. 
+We demonstrated the viability of our approach in extensive experiments considering several attributes on three datasets with diverse characteristics: Reddit discussions, movie script dialogues and crowdsourced conversations. 
+Furthermore, we used an oracle approach to demonstrate that pattern matching is insufficient for extracting personal attributes from conversations, because such attributes are rarely explicitly mentioned.
+We compared HAMs against a variety of state-of-the-art baselines, showing that HAMs achieve
+substantial improvements over all of them.%, most notably by the \method{CNN-attn}
+%and \method{2attn} variants. 
+We also demonstrated that the attention weights assigned by our methods provide
+informative explanations of the computed output labels.
+
+As a stress test for our methods, we investigated transfer learning by
+training HAMs on one dataset and applying the learned models to other datasets.
+Although we observed degradation in output quality, compared to
+training on in-domain data, it is noteworthy that the transferred HAMs
+matched the performance of the baselines when trained on in-domain data.
+%We plan to further investigate this theme of transfer learning in our future work
+%on construction personal knowledge bases and leveraging them for personalized Web agents.
+
+\subsection{Limitations and future work}
+
+In this section we enumerate possible directions for future work, some of which are motivated by the limitations of the approach proposed in this chapter.
+
+\begin{itemize}
+    \item \textbf{Limited attribute value lists.} Many personal attributes, such as \textit{hobby} or \textit{profession}, have long lists of possible values. In our experiments on predicting professions with HAMs we carefully selected the most popular occupations, which have sufficient amount of labeled examples. This approach misses out on many rare attribute values, for which the training examples are scarce or even not available. Moreover, a significant amount of human supervision is required to manually refine the attribute value lists. In the next chapter we propose our solution to this issue.
+    
+    \item \textbf{Improved transfer learning.} Our experiments with HAMs were based on the assumption that the input data resembles actual conversations. However, this is far from being true: the dialogues in MovieChAtt are based on fictional events and sound metaphorical, PersonaChat conversations are artificial and very short, discussion threads in RedDust are distinct from face-to-face offline dialogues. Therefore, there is a genuine need to devise new models having strong transfer learning abilities, so that the method trained on the richly annotated artificial datasets would be able to make proper inference on real-life conversations. %Although our experiments have shown that HAMs can to some extend perform transfer learning, it could still be further enhanced. 
+    
+    \item \textbf{Combined prediction of several attribute values.} Most personal attributes are interdependent (e.g. a 6 year old person can't be a manager or be married). Thus the method for predicting personal attributes should ultimately leverage the relationships between multiple attributes by extracting them with a single model. This facilitates the extension of the architecture to any new personal attribute of interest and saves computational resources for training separate models for each attribute.
+    
+\end{itemize}
+

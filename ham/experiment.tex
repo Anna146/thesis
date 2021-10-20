@@ -1,0 +1,85 @@
+\section{Experimental setup}
+
+\subsection{Data}
+We randomly split the MovieChAtt and PersonaChat 
+datasets into training (90\%) and testing (10\%) sets.
+We tuned models' hyperparameters by performing a grid search with 10-fold cross validation on the training set.
+
+For the binary attributes \textit{family status} and \textit{gender}, we balanced the number of speakers in each class.
+For the multi-valued \textit{profession} and \textit{age} attributes, which have very skewed value distributions, we did not balance
+the number of speakers in the test set. During training we performed downsampling to reduce the imbalance;
+each batch consisted of an equal amount (set to $3$) of training samples per class, and these samples were drawn randomly for each batch. This both removes the class imbalance in training data and ensures that ultimately the model sees all instances during training, regardless of the class size.
+
+%Note that all three datasets are somewhat biased
+%regarding the attribute values and not representative
+%for real-life applications. For example,
+%the professions in MovieChAtt are dominated by
+%the themes of entertaining fiction, 
+%and gender distributions are not realistic either.
+%The data simply provides a diverse range of
+%inputs for fair comparison across different
+%extraction methods.
+
+\setlength\dashlinedash{0.2pt}
+\setlength\dashlinegap{1.5pt}
+\setlength\arrayrulewidth{0.3pt}
+
+\newcolumntype{L}{>{$}l<{$}}
+\newcolumntype{C}{>{$}c<{$}}
+\newcolumntype{R}{>{$}r<{$}}
+
+\subsection{Baselines}
+\label{sec:baselines}
+We consider the following baselines to compare our approach against.
+
+\paragraphHd{Pattern matching oracle}.
+Assuming that we have a perfect sequence tagging model (e.g., \cite{dial7}) that extracts a correct attribute value every time one appears in an utterance, we can determine the upper-bound performance of such sequence tagging approaches. Note that, this type of model assumes that attribute values explicitly appear in the text.
+In order to avoid vocabulary mismatches between our attribute value lists and the attribute values explicitly mentioned in the data, we augment our attribute values with synonyms identified in the data
+(e.g., we add terms like `soldier' and `sergeant' as synonyms of the 
+the \textit{profession} attribute's value `military personnel').
+For MRR and accuracy metrics calculation, a speaker receives a score of 1 if the correct attribute value appears in any one of a speaker's utterances. If the correct attribute value never appears, we assume the model returns a random ordering of attribute values and use the expectation over this list (i.e., given $|V|$ attribute values, the speaker receives a score of $\frac{1}{0.5|V|}$ for MRR and $\frac{1}{|V|}$ for accuracy). This oracle method does not provide class confidence scores, so we do not report AUROC with this method.
+
+\paragraphHd{Embedding similarity}.
+Given an utterance representation created by averaging the embeddings of the words within the utterance,
+we compute the cosine similarity between this representation and the embeddings of each attribute value. In this and the following baselines we used 300-dimensional word2vec embeddings pre-trained on the Google News corpus \cite{embed1} to represent the terms in the utterances. 
+
+\paragraphHd{Logistic regression}. 
+Given an averaged utterance representation (as used with embedding similarity),
+we apply a multinomial logistic regression model \cite{mccullagh2019generalized} to classify the representation into one of the possible attribute values. This model obtains a ranking of the attribute values by ordering the per-value probabilities of its output.
+
+\paragraphHd{Multilayer Perceptron (MLP)}. Given an averaged utterance representation (as used with embedding similarity), we apply an MLP with one hidden layer of size 100 to classify the utterance representation as one of the possible attribute values. Similarly to the previous model, MLP can be used to obtain attribute values ranking by considering the per-value probabilities.
+
+\vspace{5pt}The embedding similarity, logistic regression, and MLP baselines are distantly supervised, because the speaker's labels are applied to each of the speaker's utterances. While this is necessary because the baselines do not incorporate the notion of a speaker with multiple utterances, it results in noisy labels because it is unlikely that every utterance will contain information about the speaker's attributes.
+We address this issue by using a window of $k = 4$ (determined by a grid search) concatenated utterances as input to each of these methods. With these distantly supervised models, the label prediction scores are summed across all utterances for a single speaker and then ranked.
+
+\paragraphHd{CNN} \cite{bayot:MOD17}. We consider the Convolutional Neural Network (CNN) architecture proposed by \citeauthor{bayot:MOD17} for the task of predicting the age and gender of Twitter users. This approach is a simpler variant of \method{CNN} in which $f_{utter}$ is implemented with a \emph{tanh} activation function and max pooling (i.e., $k=1$) and $f_{obj}$ is a fully connected layer with dropout ($p=0.5$) and a softmax activation function.
+The CNN is applied to individual utterances and the user obtains a label by taking the majority vote accross the utterances, which differs from the in-model aggregation performed by \method{CNN}.
+
+\paragraphHd{New Groningen Author-profiling Model (N-GrAM)} \cite{basile:2017}. Following the best performing system at CLEF 2017's PAN shared task on \textit{author profiling} \cite{stein:2017o}, we implemented a classification model using a linear Support Vector Machine (SVM) \cite{cortes1995support} that utilizes the following features: character n-grams with $n=3,4,5$, and term unigrams and bigrams with sublinear tf-idf weighting.
+
+\paragraphHd{Neural Clusters (W2V-C)} \cite{pietro:ACL15}. We consider the best classification model reported by \citeauthor{pietro:ACL15} for predicting the occupational class of Twitter users, which is a Gaussian Process (GP) classifier \cite{chu2005gaussian} with \textit{neural clusters} (W2V-C) as features. Neural clusters were obtained by applying spectral clustering on a word similarity matrix (via cosine similarity of pre-trained word embeddings) to obtain $n=200$ word clusters. Each post's feature vector is then represented as the ratio of words from each cluster.
+
+\vspace{5pt}For both N-GrAM and W2V-C baselines, flattened representations of the speaker's utterances are used. That is, the model's input is a concatenation of all of a given user's utterances.
+
+\subsection{Hyperparameters}
+Hyperparameters were chosen by grid search using ten-fold cross validation on the training set.
+Due to the limited amount of data, we found that a minibatch size of 4 users performed best on MovieChAtt and PersonaChat.
+All models were trained with a minibatch size of 32 on the RedDust dataset.
+Similar to the baselines, We instantiated words' representations with word2vec embeddings pre-trained on the Google News corpus.
+We set the number of utterances per character $N=40$ and the number of terms per utterance $M=40$, and truncate or zero pad the sequences as needed.
+
+\squishlist
+\item \textbf{\method{avg}} uses a hidden layer of size 100 with the sigmoid activation function. The model was trained for 30 epochs.
+\item \textbf{\method{CNN}} uses 178 kernels of size 2 and k-max pooling with $k=5$. The model was trained for 40 epochs.
+\item \textbf{\method{2attn}} uses a sigmoid activation with both attention layers and with the prediction layer.
+The model was trained for 150 epochs.
+\item \textbf{\method{CNN-attn}} uses 128 kernels of size 2. The model was trained for 50 epochs.
+\squishend
+
+ \subsection{Evaluation metrics}
+\label{metric}
+
+Due to the difficulty of performing classification over many attribute values, a ranking metric is more informative for the multi-valued attributes \textit{profession} and \textit{age category}, thus we report MRR for these attributes. We obtain the ranking of the attribute values for a movie character or a persona by considering the models' output attribute value probabilities.
+We report both \textit{macro MRR}, in which we calculate a reciprocal rank for each attribute value before averaging, and \textit{micro MRR}, which averages across each speaker's reciprocal rank.
+
+For binary attributes \textit{gender} and \textit{family status}, we report models' performance in terms of accuracy. Additionally we report micro AUROC for all attributes. For multi-valued attributes, we binarize the labels in a one-vs-all fashion.

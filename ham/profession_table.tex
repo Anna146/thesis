@@ -1,0 +1,35 @@
+\begin{table}[th!]
+\centering
+\small
+\begin{adjustbox}{width=0.9\textwidth,center}
+\begin{tabular}{@{}lcc|cc|cc@{}}
+\toprule
+ & \multicolumn{6}{c}{\textbf{profession}} \\
+\cmidrule(lr){2-7} 
+\multirow{3}{*}{\textbf{Models}} & \multicolumn{2}{c|}{\textbf{MovieChAtt}} & \multicolumn{2}{c|}{\textbf{PersonaChat}} & \multicolumn{2}{c}{\textbf{RedDust}} \\ 
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} 
+ & \multicolumn{1}{c}{MRR} & \multirow{2}{*}{AUROC} & \multicolumn{1}{c}{MRR} & \multirow{2}{*}{AUROC} & \multicolumn{1}{c}{MRR} & \multirow{2}{*}{AUROC} \\
+ & micro / macro &  & micro / macro &  & micro / macro & & 
+\midrule
+%Pattern oracle    & 0.21* / 0.20* & - & - & - & ? & ? & 0.67 & - & - & - & ? & - \\ 
+%\hdashline
+Embedding sim.    & \sig{0.22} / \sig{0.14} & \sig{0.60} & \sig{0.30} / \sig{0.25} & \sig{0.63} & \sig{0.15} / \sig{0.13} & \sig{0.59}  \\
+Logistic reg.     & \sig{0.46} / \sig{0.20} & \sig{0.76} & \sig{0.81} / \sig{0.77} & \sig{0.58} & \sig{0.13} / \sig{0.19} & \nsig{0.57}  \\ 
+MLP               & \bnsig{0.47} / \nsig{0.20} & \nsig{0.75} & \sig{0.86} / \sig{0.77} & \nsig{0.97} & \nsig{0.46} / \nsig{0.23} & \nsig{0.78}  \\
+\midrule
+N-GrAM \cite{basile:2017} & \sig{0.21} / \sig{0.16} & \sig{0.62} & \sig{0.83} / \nsig{0.83} & \nsig{0.88} & \nsig{0.17} / \nsig{0.26} & \sig{0.64}  \\
+W2V-C \cite{pietro:ACL15} & \sig{0.25} / \sig{0.13} & \sig{0.74} & \nsig{0.59} / \nsig{0.46} & \nsig{0.89} & \sig{0.27} / \sig{0.17} & \sig{0.74}  \\
+CNN \cite{bayot:MOD17} & \sig{0.19} / \sig{0.20} & \sig{0.66} & \sig{0.77} / \sig{0.77} & \sig{0.81} & \sig{0.26} / \sig{0.24} & \sig{0.76}  \\
+\midrule
+\method{avg}      & \sig{0.39} / \sig{0.37} & \sig{0.81} & \sig{0.86} / \sig{0.91} & \sig{0.98} & \sig{0.34} / \sig{0.22} & \sig{0.82} \\
+\method{CNN}      & \nsig{0.42} / \nsig{0.37} & \nsig{0.83} & \bnsig{0.96} / \bnsig{0.94} & \bnsig{0.99} & \sig{0.36} / \sig{0.37} & \sig{0.86} \\ 
+\hdashline
+\method{CNN-attn} & \nsig{0.43} / \bnsig{0.50} & \bnsig{0.85} & \nsig{0.90} / \nsig{0.93} & \bnsig{0.99} & \bnsig{0.51} / \nsig{0.40} & \bnsig{0.9}  \\
+\method{2attn}    & \nsig{0.39} / \nsig{0.34} & \nsig{0.84} & \nsig{0.94} / \nsig{0.93} & \bnsig{0.99} & \nsig{0.43} / \bnsig{0.42} & \nsig{0.89}  \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Comparison of 
+models on all datasets for \emph{profession} and \emph{gender} attributes.}
+\label{tab:model-comparison-profession}
+\end{table}

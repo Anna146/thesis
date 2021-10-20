@@ -1,0 +1,89 @@
+\documentclass[11pt, oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\usepackage{times}
+\usepackage{textcomp}
+\usepackage{latexsym}
+\renewcommand{\UrlFont}{\ttfamily\small}
+\usepackage{graphicx}
+\usepackage{adjustbox}
+
+\usepackage{balance}
+%% Useful packages
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{subcaption}
+%\usepackage[table,xcdraw]{xcolor}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage[title]{appendix}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{arydshln}
+%\usepackage{array}
+\usepackage{booktabs}
+\usepackage{flushend}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{natbib}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\setcitestyle{numbers,open={[},close={]},comma}
+\setcounter{secnumdepth}{3} 
+\newcommand{\paragraphHd}[1] {\vspace{3pt}\noindent\textbf{#1}}
+
+\newcommand{\method}[1]{HAM$_{\text{\,#1}}$}
+\newcommand{\charm}[1]{CHARM$_{\text{\,#1}}$}
+\newcommand{\wiki}[1]{Wiki-#1}
+\newcommand{\attribute}[1]{\textbf{\emph{#1}}}
+\newcommand{\paragraphHdTop}[1] {\noindent\textbf{#1}} % use for first in a series of paragraphHd's
+\newcommand{\paragraphHd}[1] {\vspace{3pt}\noindent\textbf{#1}}
+
+\newcommand{\squishlist}{
+ \begin{list}{$\bullet$}
+  { \setlength{\itemsep}{0pt}
+     \setlength{\parsep}{1pt}
+     \setlength{\topsep}{1pt}
+     \setlength{\partopsep}{0pt}
+     \setlength{\leftmargin}{1.5em}
+     \setlength{\labelwidth}{1em}
+     \setlength{\labelsep}{0.5em} } }
+
+\newcommand{\squishend}{
+  \end{list}  }
+  
+\newcommand{\sig}[1]{#1*}
+\newcommand{\nsig}[1]{#1\phantom{*}}
+\newcommand{\bsig}[1]{\textbf{#1}*}
+\newcommand{\bnsig}[1]{\textbf{#1}\phantom{*}}
+\newcommand{\best}[1]{\textbf{#1}}
+
+
+\usepackage{comment}
+
+\begin{document}
+
+\chapter[PRIDE]{Predicting Relationships in Dialogue Excerpts}
+
+\input{abstract}
+
+\input{intro}
+
+\input{related_work}
+
+\input{background}
+
+\input{method}
+
+\input{experiment}
+
+\input{analysis}
+
+\input{conclusion}
+
+\bibliographystyle{abbrvnat}
+\bibliography{bibliography}
+
+\end{document}

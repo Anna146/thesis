@@ -1,0 +1,35 @@
+\begin{table}[]
+\centering
+\small
+\begin{adjustbox}{width=0.75\textwidth}
+\begin{tabular}{@{}lcc|cc@{}}
+\toprule
+& \multicolumn{4}{c}{\textbf{age}} \\
+\cmidrule(lr){2-5}
+\multirow{3}{*}{\textbf{Models}} & \multicolumn{2}{c|}{\textbf{MovieChAtt}} & \multicolumn{2}{c}{\textbf{RedDust}} \\ 
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} 
+ & \multicolumn{1}{c}{MRR} & \multirow{2}{*}{AUROC} & \multicolumn{1}{c}{MRR} & \multirow{2}{*}{AUROC} \\
+ & micro / macro &  & micro / macro &  \\
+\midrule
+%Pattern oracle    & \sig{0.41} / \sig{0.40} & - & ? / ? & - \\ 
+%\hdashline
+Embedding sim.    & \sig{0.45} / \sig{0.45} & \sig{0.61} & \sig{0.55} / \sig{0.44} & \sig{0.56} \\
+Logistic reg.     & \sig{0.65} / \sig{0.49} & \nsig{0.76} & \bnsig{0.80} / \nsig{0.61} & \nsig{0.87} \\ 
+MLP               & \sig{0.64} / \sig{0.48} & \nsig{0.83} & \nsig{0.78} / \nsig{0.48} & \nsig{0.88} \\
+\midrule
+N-GrAM \cite{basile:2017} & \nsig{0.69} / \nsig{0.47} & \nsig{0.85} & \sig{0.48} / \sig{0.53} & \sig{0.55} \\
+W2V-C \cite{pietro:ACL15} & \nsig{0.67} / \nsig{0.45} & \nsig{0.86} & \nsig{0.75} / \nsig{0.51} & \nsig{0.88} \\
+CNN \cite{bayot:MOD17} & \sig{0.66} / \sig{0.62} & \nsig{0.83} & \sig{0.68} / \sig{0.65} & \sig{0.79} \\
+\midrule
+\method{avg}      & \sig{0.62} / \nsig{0.59} & \sig{0.76} & \nsig{0.67} / \nsig{0.67} & \sig{0.77} \\
+\method{CNN}      & \sig{0.73} / \bnsig{0.63} & \nsig{0.84} & \sig{0.73} / \sig{0.61} & \sig{0.89} \\ 
+\hdashline
+\method{CNN-attn} & \nsig{0.73} / \nsig{0.60} & \bnsig{0.86} & \nsig{0.79} / \bnsig{0.68} & \bnsig{0.90} \\
+\method{2attn}    & \bnsig{0.74} / \nsig{0.6} & \nsig{0.85} & \nsig{0.72} / \nsig{0.6} & \nsig{0.82} \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Comparison of
+models on all datasets for \emph{age} attribute.}
+\label{tab:model-comparison-age}
+\end{table}

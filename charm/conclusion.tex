@@ -1,0 +1,30 @@
+\balance
+
+We presented the 
+Conversational 
+Hidden 
+Attribute 
+Retrieval 
+Model, a novel method 
+for inferring personal traits from conversations. CHARM differs from prior
+work by its zero-shot ability to
+predict attribute values 
+that are not present in the training samples
+at all.
+
+We demonstrated 
+the viability of CHARM
+for inferring users' unseen attribute values
+by comprehensive 
+experiments with Reddit conversations on \textit{profession} and \textit{hobby} attributes,
+leveraging document collections from Wikipedia and web search results
+for CHARM's retrieval component.
+In the zero-shot setting CHARM shows significantly better performance than existing unsupervised keyword selectors, especially given the challenging conversation domain. Moreover, CHARM also performs on par with state-of-the-art fully supervised models in the regular classification setting.
+
+CHARM is extensible to other long-tailed personal attributes, such as \textit{favorite food type} or \textit{preferred travel destination}, without changing the model's architecture or exhaustive manual effort to construct external document collections. Moreover, the components of CHARM, \textit{Term Scoring Model} and \textit{Retrieval Model} are easily modifiable, allowing to plug in any emerging state-of-the-art model. Finally, the strength of CHARM is its end-to-end training, without any intermediate supervision steps, regardless of the absence of ground truth about the attribute values' keywords.
+
+We have shown that CHARM's predictions are explainable by the keywords and documents it selects, which are sufficiently descriptive enabling CHARM to draw fine-grained distinction between similar attribute values. To showcase that, we created a web demonstration platform, enabling the users to interact with CHARM and explore its predictions. Such web service will be a helpful asset to provide the end users with transparent and explainable models. 
+
+As future work directions we see improving CHARM's performance in the seen setup and applying the model on further datasets, given the availability of the labeled samples. Moreover, as CHARM's ability to make predictions in the unseen setup heavily hinges on the external document collection, it is interesting to explore different sources and methods to collect the documents. As we have observed, both comprehensive and diverse collections ( automatically created web search collection) as well as highly precise collection with little noise (manually refined \wiki{category}) can strengthen the performance on different attributes.
+
+We envision a major extension of CHARM as the model, capable of predicting \textit{open-ended} personal attributes, such as \textit{favorite singer}. For such attributes it is impossible to create comprehensive lists of attribute values, especially given new constantly emerging values. This problem can be tackled with heavy reliance on external information sources, such as knowledge bases, by means of zero-shot learning techniques.

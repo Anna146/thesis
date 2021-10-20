@@ -1,0 +1,28 @@
+\begin{table*}[t]
+\small
+\begin{adjustbox}{width=1.0\textwidth}
+\begin{tabular}{lllllllllllll}
+\toprule
+\multirow{3}{*}{\textbf{Model}} & \multicolumn{6}{c}{\attribute{profession}} & \multicolumn{6}{c}{\attribute{hobby}} \\
+\cmidrule(lr){2-7} \cmidrule(lr){8-13}
+  &  \multicolumn{2}{c}{\wiki{page}}  &  \multicolumn{2}{c}{\wiki{category}}  &  \multicolumn{2}{c}{Web search}  &  \multicolumn{2}{c}{\wiki{page}}  &  \multicolumn{2}{c}{\wiki{category}}  &  \multicolumn{2}{c}{Web search}   \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9} \cmidrule(lr){10-11} \cmidrule(lr){12-13}
+  &  \textsc{mrr}  &  n\textsc{dcg}  &  \textsc{mrr}  &  n\textsc{dcg}  &  \textsc{mrr}  &  n\textsc{dcg}  &  \textsc{mrr}  &  n\textsc{dcg}  &  \textsc{mrr}  &  n\textsc{dcg}  &  \textsc{mrr}  &  n\textsc{dcg}  \\
+\midrule
+No-keyword + BM25  &  .15*  &  .32*  &  .17*  &  .37*  &  .11*  &  .28*  &  .16*  &  .42*  &  .13*  &  .35*  &  .06*  &  .22*  \\
+RAKE + BM25        &  .16*  &  .33*  &  .19*  &  .39*  &  .11*  &  .28*  &  .17*  &  .42*  &  .14*  &  .37*  &  .07*  &  .23*  \\
+RAKE + KNRM        &  .16*  &  .33*  &  .13*  &  .34*  &  .15*  &  .34*  &  .12*  &  .32*  &  .12*  &  .31*  &  .06*  &  .24*  \\
+TextRank + BM25    &  .21*  &  .39*  &  .26*  &  .45*  &  .15*  &  .32*  &  .21   &  .46   &  .20*  &  .42*  &  .10*  &  .28*  \\
+TextRank + KNRM    &  .21*  &  .38*  &  .18*  &  .36*  &  .20*  &  .40*  &  .15*   &  .36*   &  .16*  &  .36*  &  .11*  &  .31*  \\
+BERT IR    &  \best{.30}  &  .45  &  .28*  &  .44*  &  .26*  &  .38*  &  .22   &  .43*   &  .18*  & .42*    &  .15*  &  .33*  \\
+\midrule
+\charm{BM25}       &  .29   &  \best{.46}   &  .28*  &  .47*  &  .28*  &  .45*  &  \best{.24}   &  \best{.47}   &  .21*  &  .43*  &  .11*  &  .30*  \\
+\charm{KNRM}       &  .27   &  .44   &  \best{.35}   &  \best{.55}   &  \best{.41}   &  \best{.59}   &  .22   &  .44*  &  \best{.27}   &  \best{.49}   &  \best{.19}   &  \best{.38}   \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Results for \emph{unseen} values.
+Results marked with * significantly differ from the best method (in bold) measured by a paired t-test ($p<0.05$). As described in the experimental setup, BERT IR on Wiki-category and Web search must consider a subset of documents.
+}
+\label{tab3}
+\end{table*}

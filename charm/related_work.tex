@@ -1,0 +1,57 @@
+
+\section{Related work}
+
+\paragraphHd{Zero-shot learning.}
+CHARM 
+is designed for handling attribute values
+that were never seen at training time -- a \emph{zero-shot learning} problem, extensively studied in the field of computer vision but less explored in NLP. A technique employed in CHARM is similar to the approach proposed by \citet{zero-shot15} for visual classes, which
+builds image classifiers directly from
+encyclopedia articles  
+without
+training images.
+
+Most zero-shot studies for NLP \cite{wang2019survey} deal with machine translation, cross-lingual retrieval and entity/relation extraction. For example, in \textit{relation extraction} task \cite{levy2017zero} the relations serve as unseen classes and their instances are recovered by casting the relations to natural language questions and reducing the problem to reading comprehension; in \textit{entity extraction} \cite{pasupat2014zero} the extraction of entities from the web documents is done with a text query, removing the need for specifying a set of seed terms. Methods proposed in \cite{levy2017zero, pasupat2014zero} are not suitable for our task, because they identify values that are explicitly mentioned, rather than inferring them. Our task is similar to zero-shot text classification \cite{yazdani2015model, zhang2019integrating}, where the class labels are represented as single-word embeddings.
+
+Other zero-shot models solving natural language problems include the ones for text filtering and classification. \citet{li2018deep} solve the task of zero-shot \textit{document filtering} by learning relevance between categories and documents, which are represented with category-dependent embeddings. \citet{dauphin2013zero} investigates zero-shot \textit{semantic utterance classification}, by mapping the utterances and potentially unseen categories into same semantic space, where they can be matched with distance functions.
+
+\paragraphHd{Keyword extraction from conversational text.} 
+Keyword or keyphrase extraction concerns the task of automatic selection of important terms from a document that best represent its content. The extracted terms are beneficial for many applications including document indexing, summarization and classification. 
+
+Owing to its importance, several extraction methods have been extensively studied and evaluated on various corpora, mostly on news articles, web documents and scientific/technical reports. Less attention has been given to keyword extraction from conversational texts, such as meeting transcripts \cite{liu-etal-2009-unsupervised,7045531}, live chats \cite{kim-baldwin-2012-extracting} and social media posts \cite{Zhao:2011:TKE:2002472.2002521,wu-etal-2010-automatic-generation,zhang-etal-2016-keyphrase}.
+Notable applications of keyword extraction from conversations include 
+%with continuous monitoring of users' activities,
+generating personalized tags for Twitter users \cite{wu-etal-2010-automatic-generation}, searching for relevant email attachments \cite{van2017reply} and just-in-time information retrieval \cite{7045531}.
+
+Prior work 
+mostly
+pursued unsupervised keyword extraction approaches \cite{mihalcea2004textrank, rose2010automatic},
+due to limited availability of
+training data. Few studies use supervised learning, with feature-based classifiers \cite{kim-baldwin-2012-extracting} 
+or neural sequence tagging models \cite{zhang-etal-2016-keyphrase}. 
+Our neural approach for keyword detection 
+lies in between, as we 
+learn to identify 
+salient keywords for a specific attribute (e.g., \emph{profession}),
+without having training data of relevant keywords.
+
+Unsupervised techniques for keyword extraction can generally be split into several categories \cite{hasan-ng-2014-automatic}, notably: (i) \textit{statictical}, which are based on simple word features, such as term frequency or relational position in the document \cite{ramos2003using, campos2018yake}, word co-occurrence \cite{matsuo2004keyword} or keyphrase co-occurrence counts \cite{rose2010automatic}; and (ii) \textit{graph-based}, which utilize a word/phrase graph constructed from the document and extract keywords using graph ranking methods \cite{mihalcea2004textrank, bougouin:hal-00917969}. We consider two unsupervised keyword extraction architectures as baselines: statistical method \textit{RAKE} \cite{rose2010automatic} and graph-based model \textit{TextRank} \cite{mihalcea2004textrank}.
+
+
+\paragraphHd{Information Retrieval in NLP.} 
+Most existing work leveraging information retrieval components to solve NLP tasks focused on question answering  %\cite{kratzwald-feuerriegel-2018-adaptive,Cui:2005:QAP:1076034.1076103,Yang:2016:ARS:2983323.2983818,chen2017reading,wang2018r,yang2019end}
+\cite{kratzwald-feuerriegel-2018-adaptive,wang2018r, guu2020realm}
+% removed these to shorten list: Zhu:2019:HAR:3308558.3313699,surdeanu-etal-2008-learning,
+or dialogue systems 
+%\cite{feng-etal-2019-learning,Tao:2019:MFN:3289600.3290985,Luo2019Personalized,dial4}. 
+\cite{feng-etal-2019-learning,Luo2019Personalized},
+%\textcolor{red}{The study \cite{guu2020realm} uses retrieval-based pretraing for the QA-model.}
+where the retrieval part is responsible for ranking the most appropriate answers or responses, given a question or chat session. As far as we know, we are the first to leverage a retrieval-based 
+model for inferring 
+attribute values without training samples.
+
+\paragraphHd{Reinforcement Learning in NLP.}
+Reinforcement learning methods are often applied in conversational models for response generation \cite{kandasamy2017batch}, based on the feedback from human quality assessment scores for the output utterances. Other NLP tasks where reinforcement learning can be applied include question answering \cite{qu2019learning, liu2020knowledge}, text classification \cite{zhang2018learning} and entity linking \cite{fang2019joint}. 
+
+Several studies use reinforcement learning decision processes to pick up relevant words or phrases from the input texts, which is close to our work. For example, \citet{wang2019aspect} proposed to perform aspect-level sentiment classification using reinforcement learning to select segments of texts on which the sentiment should be predicted. \citet{chen2018joint} detects events and their corresponding keywords from Twitter texts using a reinforcement learning actor to select posts, which talk about events and extract keywords from them. \citet{zhang2018learning} proposed a reinforcement learning agent that selects the words which should be removed from the sentences, creating a concise sequence representation. %The created concise sentence representation is used in classification task, the performance in which acts as a reward signal for the agent.
+
+
