@@ -1,0 +1,171 @@
+\subsection{Background}
+
+%Reddit\footnote{{\scriptsize \url{https://www.reddit.com/}}} is a social news website and forum where registered members can submit content including links, text posts, and images, which are then voted up or down by other members.
+%Before elaborating on the creation of our dataset derived from Reddit posts, we describe several concepts on Reddit that are relevant for the data collection process.
+
+\paragraphHd{Posts and Comments.}
+Discussions on Reddit are organized in threads, which are initiated by an original \textit{post} and may contain \textit{comments} replying to the post and to the other comments. This creates a hierarchical structure that resembles a conversation between the users.
+Both posts and comments can be a textual content, a link with anchor text or images.
+
+\paragraphHd{Subreddits.}
+Reddit is organized into subreddits, which are fora that focus on specific topics.
+Those can be split by interest (sports, politics, etc), by country or community, type of content (text, gifs, videos), and so on. Subreddits have their own rules, but any registered user can create them. By convention, subreddits are prefixed with \texttt{\small /r}. For example, users discuss hockey in the \texttt{\small /r/hockey} subreddit.
+
+\paragraphHd{Flairs.}
+Flair is a user or post metadata that is a unique feature of Reddit. Flair is a small image with a short text description that is attached to a post or a username. Flairs can be defined differently for specific purposes by each subreddit. For example, in \texttt{\small /r/travel} subreddit they may indicate the \textit{country} of the user, \textit{gender} in \texttt{\small /r/AskMen} and \texttt{\small /r/AskWomen} or users' \textit{favorite teams} in \texttt{\small /r/hockey}.
+Flairs for posts can be useful to filter and search for a particular content.
+
+\subsection{RedDust Dataset}
+
+In this section we describe the creation of our proposed \emph{RedDust} dataset, containing a collection of Reddit users. Each user in the dataset is associated with posts and comments they produce (which we call \textit{submissions} in the following) and users' inferred personal attributes.
+We considered five personal attributes including \textit{gender}, \textit{age}, \textit{family status}, \textit{profession} and \textit{hobby}.
+The dataset is created from the openly published Reddit dump\footnote{{\scriptsize \url{https://files.pushshift.io/reddit/}}}, which spans between 2006 and 2018. 
+
+There are several criteria on which users and submissions are included in RedDust, i.e., users who posted between 10 and 100 submissions, and submissions containing between 20 and 100 terms after filtering. We filtered out hyperlinks and user mentions (i.e., \texttt{\small @nickname}) from the original content.
+
+Some subreddits are likely to contain many false positives, such as those concerned with video games or role playing. This leads to personal assertions talking about the users' projected persona in a particular context (e.g., \textit{I am a priest looking for a guild}). To mitigate this source of false positives, we blacklisted subreddits about gaming, fantasy and virtual reality from the top 500 subreddits sorted by the number of unique users. Posts made to blacklisted subreddits were discarded. 
+Similarly, we discarded posts that contain quotations in order to reduce the possibility of the user referring to a third person (\textit{... and he shouted ``Hands on the counter, I am a cop!''}).
+
+For attributes that usually have a unique value (i.e., \textit{gender}, \textit{age} and \textit{family status}) we also exclude users who state multiple different values to avoid introducing false positives. Meanwhile, we allow each user to have multiple attribute values for \textit{profession} and \textit{hobby}. The age of a given user is calculated relative to his or her age when writing the most recent comment. In the following we discuss particular techniques used to extract values for each personal attribute.
+
+\subsubsection{Gender}
+Gender has been the most popular user attribute to predict in existing user profiling work, particularly on Reddit \cite{fabian2015privacy,thelwall2018she,Vasilev2018}.
+In 
+RedDust
+we consider gender as a binary predicate (\emph{female} or \emph{male}) 
+as has been done in prior work. 
+
+Instead of considering usernames as a means for gender classification, as was done by \citet{thelwall2018she}, we look for self-reported gender assertions, which provide labels of higher precision.
+Specifically, we identified 
+users' gender
+using the following methods:
+\begin{itemize}
+    \item \textbf{Natural language patterns}.
+    Following \citet{fabian2015privacy}, we manually created a set of patterns that indicate a specific gender. They have the general form of \texttt{\small (I am|I'm) a? <gender indicator>}, meaning that matches should contain \textit{I am} or \textit{I'm}, optionally followed by an article \textit{a}, then a word that indicates gender like \textit{man} or \textit{mother}. A comprehensive list of patterns we used is given in Table \ref{pat_table}, and the indicative gender words are shown in Table \ref{word_table}. Although the gender of a given user can be expressed in a longer snippet like \textit{I am a great mother}, we do not allow extra words like \textit{great} to appear before gender-indicating words. This reduces false positives from statements like \textit{I'm a far cry from my mother}.
+    
+    \item \textbf{Bracket patterns}.
+    In certain situations, users often volunteer to indicate their demographic information in order to give their posts more context (\textit{I [30f] was dating this guy [35m]...}).
+    This is common in relationship-related subreddits, where the users' age and gender are often relevant to the discussions. These cues are generally written in round or square brackets. To reduce false positives, we do not consider such patterns when they appear without brackets. To capture gender and age expressed in this way, we look for patterns of the form \texttt{\small (I|I'm|me) [<number>(m|f)]}.
+    
+    \item \textbf{Flairs}.
+    Like \citet{Vasilev2018}, we also consider gender-indicating flairs attached to users.
+    This logic is subreddit-specific, so we restrict ourselves to common subreddits.
+    For example, in subreddits \texttt{\small /r/AskWomen} and \texttt{\small /r/AskMen} the flair is one of \textit{male, female, trans}, and so on, whereas in \texttt{\small /r/tall} and \texttt{\small /r/short} the flair is either \textit{pink, blue}, or \textit{other}.
+
+\end{itemize}
+
+\subsubsection{Age}
+We label users' posts with age predicate using similar techniques as for gender:
+
+\begin{itemize}
+    \item \textbf{Natural language patterns}.
+    To infer users' age, we utilized five patterns listed in Table \ref{pat_table}, with pattern (v) specifically designed to avoid false positives as in \textit{I am 6 feet tall}.
+    We then calculated the exact age for patterns (i)-(iii) by subtracting the birth year from the publishing year of the post containing such patterns.
+
+    \item \textbf{Bracket patterns}.
+    Numbers indicating age were jointly collected along with gender, as described in the above-mentioned bracket patterns for gender.
+\end{itemize}
+
+Finally, we made sure that the obtained ages for users in RedDust are within the range of 10-100 years old, since users under 13 are not allowed to register and there are unlikely to be many users above 100 years old.
+This is helpful for reducing false positives, such as those in conditional sentences (\textit{as if I were 5 years old}).
+
+\subsubsection{Family status}
+
+We consider family status as a binary predicate indicating whether a person is \emph{single} or has a \emph{partner}. As for gender, we relied on \emph{natural language patterns} containing \emph{indicative words}, which are detailed in Table \ref{pat_table} and \ref{word_table}, respectively. We distinguished two cases of indicative words: (i) \texttt{\small{self-status indicator}}, used when the speaker refers to her own status (\emph{I am `divorced'}); and (ii) \texttt{\small{partner indicator}}, when the speaker refers to the existence of a partner (\emph{My `boyfriend'}).
+
+We additionally collected matches of negated patterns of both (i) and (ii)
+%,i.e.,\texttt{\small I am not <self-status indicator>} and \texttt{\small I don't have a  <partner indicator>}
+in order to expand the labelled data. Furthermore, given that the indicator word \emph{single} is often used in a more general context (e.g., \emph{single player}, \emph{single bed}), we restricted the patterns containing this particular word, so that it should be immediately followed by punctuation, conjunctions or few allowed words like \emph{father}.
+
+\begin{table*}[t!]
+\centering
+\begin{adjustbox}{width=0.88\textwidth}
+\begin{tabularx}{\linewidth}{ll}
+\toprule
+\textbf{attribute} & \textbf{pattern(s)} \\
+\midrule
+gender & \texttt{\footnotesize (I am|I'm) a? <gender indicator>} {\footnotesize(e.g., \emph{man}, \emph{mother})} \\ [0.8ex] 
+age & (i)\quad \texttt{\footnotesize I (was|am) born in <four digit year>} \\ 
+ & (ii)\quad \texttt{\footnotesize I (was|am) born in <two digit year>} \\
+ & (iii)\quad \texttt{\footnotesize I was born on <day, month, year>} \\
+ & (iv)\quad \texttt{\footnotesize I am <number> years old} \\
+ & (v)\quad \texttt{\footnotesize I am <number>} {\footnotesize immediately followed  by punctuation or conjunction} \\ [0.8ex]
+family status & (i)\quad \texttt{\footnotesize I am <self-status indicator>} {\footnotesize (e.g., \textit{divorced}, \textit{single})} \\
+ & (ii)\quad \texttt{\footnotesize (my|I have a) <partner indicator>} ({\footnotesize e.g., \textit{wife}, \textit{boyfriend})} \\ [0.8ex]
+profession & \texttt{\footnotesize (I am|I'm) a <profession name>} \\ [0.8ex]
+hobby & \texttt{\footnotesize <phrase indicator>} {\footnotesize (e.g., \textit{I enjoy}, \textit{I like})} \texttt{\footnotesize <hobby name>} \\ [0.8ex]
+\bottomrule
+\end{tabularx}
+\end{adjustbox}
+\caption{Patterns for labeling Reddit users with personal attributes.}
+\label{pat_table}
+\end{table*}
+
+
+\begin{table*}
+\centering
+%\small
+\begin{adjustbox}{width=0.88\textwidth}
+\begin{tabularx}{\linewidth}{llX}
+\toprule
+\textbf{attribute} & \textbf{value} & \texttt{\footnotesize word/phrase indicators} \\
+\midrule
+gender & female & \textit{woman}, \textit{female}, \textit{girl}, \textit{lady}, \textit{wife}, \textit{mother}, \textit{sister} \\
+ & male & \textit{man}, \textit{male}, \textit{boy}, \textit{husband}, \textit{father}, \textit{brother}
+ \\ [1.0ex]
+family status & single & \texttt{\footnotesize self-status}: \textit{single}, \textit{divorced}, \textit{widow}, \textit{spouseless}, \textit{celibate}, \textit{unmarried},  \textit{unwed},  \textit{fancy-free} \\
+ & partner & \texttt{\footnotesize self-status}: \textit{married}, \textit{engaged}, \textit{dating} \\
+ & & \texttt{\footnotesize partner}: \textit{boyfriend}, \textit{spouse}, \textit{girlfriend}, \textit{fiancee}, \textit{lover}, \textit{partner}, \textit{wife}, \textit{husband}
+  \\ [1.0ex]
+hobby & - & \textit{my hobby is}, \textit{I am/I'm fond of}, \textit{I am/I'm keen on}, \textit{I like}, \textit{I enjoy}, \textit{I go in for}, \textit{I take joy in}, \textit{I adore,} \textit{I love}, \textit{I play, I fancy}, \textit{I am/I'm a fan of, I am/I'm fascinated by}, \textit{I am/I'm interested in}, \textit{I appreciate, I practise}, \textit{I am/I'm mad about} \\
+\bottomrule
+\end{tabularx}
+\end{adjustbox}
+\caption{Words and phrases considered as indicators used in patterns for labeling personal attributes.}
+\label{word_table}
+\end{table*}
+
+\subsubsection{Profession}
+To obtain profession labels we consulted a list of occupation names from Wikipedia\footnote{{\scriptsize \href{https://en.wikipedia.org/wiki/Category:Lists_of_occupations}{\texttt{en.wikipedia.org/wiki/Category:Lists\_of\_occupations}}}} and recursively added all titles under subcategories. The resulting list consists of about 1K professions and contains a lot of fine grained occupations, some of which are redundant or ambiguous. Our strategy is to capture as many profession assertions as possible, giving users of RedDust the opportunity to filter and group the professions depending on their specific use cases.
+
+Each profession in the list was considered as \texttt{\small profession name} in the pattern \texttt{\small (I am|I'm) a <profession name>} that we used to label Reddit users with the \emph{profession} attribute.
+After performing pattern matching against the whole Reddit dataset, we were left with 832 unique profession names in RedDust.
+
+\subsubsection{Hobby}
+Similar to the profession attribute, we obtained a list of hobbies from Wikipedia\footnote{{\scriptsize \href{https://en.wikipedia.org/wiki/List_of_hobbies}{\texttt{en.wikipedia.org/wiki/List\_of\_hobbies}}}} and 
+utilized them as \texttt{\small hobby name} in our natural language patterns for the \emph{hobby} attribute.
+We used a diverse set of patterns of the form \texttt{\small <phrase indicator> <hobby name>}, where \texttt{\small phrase indicator} is a phrase like \textit{my hobby is} or \textit{I enjoy}, as listed in Table \ref{word_table}. 
+Using the pattern matching approach, users in RedDust were labeled with 336 unique hobby names in total.
+
+\begin{table}[h!]
+\centering
+\small
+\begin{adjustbox}{width=0.60\textwidth}
+\begin{tabular}{lccc}
+\toprule
+\textbf{attribute} & \textbf{precision} & \textbf{\#false positives} & \textbf{\#disagreements} \\
+\midrule
+gender & 0.96 & 2 & 2 \\
+age & 1.0 & 0 & 2 \\
+family status & 0.86 & 7 & 8 \\
+profession & 0.96 & 2 & 2 \\
+hobby & 0.94 & 3 & 9 \\
+\midrule
+avg/total & 0.94 & 14 & 23 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Number of false positives and inter-rater agreement.}
+\label{agreement}
+\end{table}
+
+\subsubsection{Labeling evaluation}
+\label{kappa2}
+To validate the high-precision nature of our labeling approach, we asked three human annotators 
+to verify the correctness of labels for each predicate. We randomly sampled 50 labeled posts for each attribute and asked annotators to indicate whether the given label matched the user's actual assertion. The decision to accept or reject the label was based on a majority vote from the annotators.
+
+The results of this human evaluation are shown in Table \ref{agreement}. In total there were 23 instances without perfect annotator agreement (out of 250 total instances for five attributes), which indicated 14 false positives after taking a majority vote. Half of these false positives came from the family status attribute, due to ambiguous usage of words like 
+\emph{partner} in statements like \emph{I have a partner in this crime}.
+Despite such false positives, 
+the average labeling precision for all personal attributes in RedDust is 94\%.
+Furthermore, we also measured annotator agreement with Fleiss' kappa as 0.67 on average for all attributes, which indicates a substantial agreement; the worst agreement (0.59) was reached for the family status attribute.

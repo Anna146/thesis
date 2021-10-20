@@ -1,0 +1,68 @@
+
+\subsection{Labeling Reddit data with weak supervision}
+
+While using explicit statements in brackets (e.g. [35f] indicating a \textit{35-year-old female}) and flairs is a reliable way to get age and gender of the users, utilizing natural language patterns (e.g. \textit{I am a doctor}) is a much nosier method, producing many false positive errors. In addition to that, the explicit assertions, required for the pattern-based approach are rare, because the users usually hint to their personal traits with subtler cues (for example, a profession \textit{doctor} can be deduced from the frequent use of medical terms in the posts). 
+
+Keeping in mind these limitations of the natural language pattern-based approach we turn to the \textit{weak supervision} method to create a refined dataset for \textit{hobby} and \textit{profession} user traits. 
+
+\paragraphHd{Snorkel.} We used the Snorkel framework \cite{ratner2017snorkel}, which allows data labeling using weak supervision. 
+Snorkel does not require manual evaluation of each data sample, instead it relies on the outputs of multiple \textit{labeling functions}, such as patterns or heuristics, which are manually specified and can be potentially noisy. The accuracies and correlations of the labeling functions are then estimated by automatically deriving the \textit{generative model} over the labeling functions. The generative model weights and combines the outputs of labeling functions to produce final list of probabilistic labels.
+
+\vspace{10pt}
+
+We modified the criteria for including Reddit submissions, so that they are:
+\emph{(1)} authored by users having 10-50 posts, \emph{(2)} 10-40 words long, and \emph{(3)} containing a personal pronoun (except for 3rd person ones).
+Requirements \emph{(1)} and \emph{(2)} were derived from observing the word and post distributions on the full dataset.
+Requirement \emph{(3)} comes from the assumption that posts containing personal pronouns are most likely to contain personal assertions. These restrictions allow us to select posts that look more similar to the real conversation (i.e., relatively short and containing references to the speakers with personal pronouns).
+In addition, we did not consider the following subreddit types: \emph{(i)} \emph{dating}, which may provide plenty of personal information but no real conversation to infer from,
+and \emph{(ii)} \emph{fantasy/video games} (for the \emph{profession} attribute), because users may refer to gaming personalities.
+We selected only the users whose utterances contain at least one mention of the attribute values, from the Wikipedia lists of professions and hobbies,
+resulting in around 250K and 500K candidate users for profession and hobby, respectively.
+
+We then input the collected users into the Snorkel framework. Given a user's utterance set $U$, an attribute $a$ and a possible attribute value $v$, Snorkel will decide on a \emph{positive}/\emph{negative} label--denoting the user as having/not having personal trait~$a$~:~$v$; or if the decision can't be made -- an \emph{abstain} label.%, by combining multiple noisy outputs from the labeling functions with a probabilitsic model.
+
+We have separate labeling models for each attribute $a$, and defined two labeling functions which consider: \emph{(LF1)} the existence of the \emph{attribute-specific patterns}, and \emph{(LF2)} the weighted count of the words belonging to the \emph{value-specific lexicon}.
+
+\paragraphHd{LF1: Attribute-specific patterns.} We compiled a list of positive and negative patterns for each attribute (see Table \ref{tab:patterns}), e.g., \emph{``my hobby is $\langle$hobby-value$\rangle$''} vs \emph{``I hate $\langle$hobby-value$\rangle$''} as positive vs negative patterns for hobby.
+LF1 labels a user with a \emph{positive/negative} label for each attribute value $v$ if there exist at least one positive/negative pattern in the user's utterances $U$, and \emph{abstain} otherwise.
+
+\begin{table}[t!]
+\centering
+\small
+\begin{adjustbox}{width=0.95\textwidth}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\multicolumn{2}{c}{\textit{\textbf{profession}}} & \multicolumn{3}{c}{\textit{\textbf{hobby}}}                     \\ \midrule
+\textbf{positive}       & \textbf{negative}      & \multicolumn{2}{c}{\textbf{positive}} & \textbf{negative}       \\ \midrule
+ \begin{tabular}[t]{@{}l@{}} i am/i'm a(n)\\my profession is\\i work as\\my job is\\my occupation is\\i regret becoming a(n)  \end{tabular}                                                   & \begin{tabular}[t]{@{}l@{}} (no/not/don't \\within pos. patterns)  \end{tabular} 
+ & \begin{tabular}[t]{@{}l@{}} i am/i'm obsessed with\\i am/i'm fond of\\i am/i'm keen on\\i like\\i enjoy\\i love\\i play\\i take joy in\\i adore\\i appreciate\\i am/i'm fan of \end{tabular}  
+  & \begin{tabular}[t]{@{}l@{}} i am/i'm fascinated by\\i am/i'm interested in\\i fancy\\i am/i'm mad about\\i practise\\i am/i'm into\\i am/i'm sucker for \\ my interest is\\ my hobby is\\ my passion is\\ my obsession is \end{tabular}  
+ &  \begin{tabular}[t]{@{}l@{}} i hate\\i dislike\\i detest\\i can't stand \\ (never/not/don't \\within pos. patterns) \end{tabular}  \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\caption{Positive and negative patterns used in the labeling function LF1 of the Snorkel labeling model. Each pattern must be followed by possible attribute values within a context window of 2 terms.}
+\label{tab:patterns}
+\end{table}
+
+
+\paragraphHd{LF2: Value-specific lexicon.} For each attribute-value pair, we used \textit{Empath} \cite{fast2016empath} --pre-trained on the Reddit corpus-- to build a lexicon of \emph{typical words} (e.g., `cider' and `yeast' for \emph{hobby:brewing}). Given seed words, Empath builds lexical categories by means of an embedding model. As our value-specific lexicon, we took the union of Empath terms for a specific attribute value and all its synonyms; each typical word is weighted by embedding similarity to the seed words. 
+Given a user's utterance set $U$ and an attribute value $v$, LF2 yields a \emph{positive} label if the weighted count of typical words of $v$ is above an empirically-chosen threshold, and \emph{abstain} otherwise.
+
+\vspace{5pt}
+Given a pair of user's utterance set $U$ and a possible attribute value $v$, the Snorkel probabilistic labeling model utilizes our labeling functions to
+predict a confidence score for the \emph{positive} label, i.e., the user is labeled with attribute value $v$.
+As our labeled dataset, we took only the user-value pairs with confidence scores above a specific threshold. 
+
+To determine the threshold of confidence scores, we manually annotated a held-out validation set containing 100 users per attribute. 
+Given a post and a set of attribute values mentioned explicitly in the post, the annotators had to identify whether the candidate user traits truly hold. For instance, from \emph{``My dad bought me a \textbf{chess} board even though I enjoy \textbf{video games} more''}, \emph{hobby:video games} is correct while \emph{hobby:chess} is not applicable.
+The final annotation for each post consists of attribute values agreed by at least two out of three judges. The selected confidence threshold corresponds to the 0.9 precision of the model on the validation set. After thresholding, we obtained 13.5k users labeled with profession values and 11.7k users with hobby values.
+
+To demonstrate that Snorkel provides the same level of quality as crowdsourcing,
+we calculated the precision of human annotators
+on the same validation set by comparing
+the labels of each annotator against the agreement
+labels. The obtained precision scores were 0.91 for
+profession and 0.88 for hobby, demonstrating that
+Snorkel is a reasonable alternative to crowdsourcing.
+

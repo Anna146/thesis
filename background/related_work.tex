@@ -1,0 +1,60 @@
+\section{Related work}
+
+This section discusses prior work on methods to extract and represent personal knowledge in dialogues. Our research concerns the textual representation of conversations, i.e. transcribed dialogues. We distinguish two general types of attributes, which can be extracted from conversations to populate a personal knowledge base: \textit{personal attributes} and \textit{interpersonal relationships}.
+
+\subsection{Personal attributes}
+
+Textual sources of dialogue data range from conversations between people (e.g. transcribed phone dialogues \cite{katerenchuk2014your, garera-yarowsky:2009:ACLIJCNLP}) to user-chatbot interactions, which could be open-domain \cite{li2016persona, zhang2018personalizing} or task-oriented \cite{pers2, luo2019learning, qian2019domain}. Another distinguishable dialogue source is literary plays and film scripts \cite{AIIDElin11, nalisnick2013character, jia2020ddrel}. Other direction of related work utilizes conversational data from online sources, such as social media platforms \cite{sap:EMNLP14, pietro:ACL15, pennacchiotti2011machine}, emails \cite{garera-yarowsky:2009:ACLIJCNLP} and blogs \cite{sap:EMNLP14}.
+%Some authors utilize further types of data sources: interviews \cite{jing-kambhatla-roukos:2007:ACLMain}, emails \cite{garera-yarowsky:2009:ACLIJCNLP} and blogs \cite{sap:EMNLP14}, which resemble conversations by their colloquial style, yet structurally are significantly different from them. 
+
+\subsubsection{Demographic attributes from transcribed dialogues}
+
+Prior work uses conversations (such as messages or telephone interactions) to extract speaker's demographic facts, which vary from gender \cite{welch2019look, dial7, garera-yarowsky:2009:ACLIJCNLP}, age \cite{welch2019look, garera-yarowsky:2009:ACLIJCNLP} or ethnicity \cite{garera-yarowsky:2009:ACLIJCNLP, dial7}, biography facts \cite{jing-kambhatla-roukos:2007:ACLMain}.
+
+Most prior work constructs a speaker's latent representation using linguistic feature sets \cite{AIIDElin11, jing-kambhatla-roukos:2007:ACLMain, garera-yarowsky:2009:ACLIJCNLP}, language models \cite{song2019learning} or embeddings \cite{luo2019learning, li2016persona}. The disadvantage of creating such latent personality is its limited interpretability, preventing from checking its consistency with explicit attributes.
+
+A personal profile can also be viewed as a textual description \cite{zhang2018personalizing}, predicted from a pool of candidate sentences. This representation, however, provides no exact facts, which can be readily inserted into a personal knowledge base.
+
+Few research efforts are dedicated to distilling precise personal facts \cite{dial7, welch2019look, garera-yarowsky:2009:ACLIJCNLP}, often requiring the search for explicit pattern mentions ("I am a doctor") \cite{dial7}. However, such assertions are rare in real conversations, yielding a poor recall of the models. Instead, some authors resort to classification \cite{AIIDElin11, garera-yarowsky:2009:ACLIJCNLP} via linguistic features. Additionally, Garera and Yarowsky incorporate partner identity and n-grams to classify age or gender using Support Vector Machines (SVMs) \cite{garera-yarowsky:2009:ACLIJCNLP}. A major drawback of their work is that the inferred attributes take only binary values.
+
+\citet{wu2019getting} infer personal attributes in the form of $\langle$subject, predicate, objects$\rangle$ triplets, where subject and object are generated over all vocabulary terms. This makes the list of possible predicted values open-ended, as opposed to the approach of \citet{dial7}, requiring the values to be present in the text. However, \citet{wu2019getting} generate predictions on per-utterance basis, ignoring the repeated evidence from the full history of user's conversations, which prevents from efficiently building a personal knowledge base.
+
+To predict explicit or latent personality, standard machine learning tools are commonly used, such as Logistic Regression \cite{azab2019representing} or Conditional Random Fields \cite{li2016persona}, which often operate on hand-crafted linguistic features \cite{garera-yarowsky:2009:ACLIJCNLP}. Some works exploit conversational partner information, including their identity \cite{azab2019representing}, personal traits \cite{garera-yarowsky:2009:ACLIJCNLP} or their utterances \cite{welch2019look}. More recently, the speaker's representations are built using neural approaches \cite{zhang2018personalizing, pers2, luo2019learning, welch2019look}.
+
+\subsubsection{Social media profiling}
+
+The texts stemming from social media are often colloquial, noisy and short \cite{bontcheva2014making}, making them similar to spoken utterances. Moreover, the discussion threads in topical forums resemble the flow of a natural conversation. Most of existing work on user profiling focuses on Twitter \cite{li2016persona, kim:ACL17:short, sap:EMNLP14, pietro:ACL15, pennacchiotti2011machine, kapanipathi2014user, rao2010classifying, Yen:2019:PKB:3331184.3331209}. Other research explores Facebook \cite{Markovikj2013MiningFD, sap:EMNLP14}, Reddit \cite{gjurkovic2018reddit} and other platforms \cite{zheng2019personalized}.
+Nevertheless, social media content is still different from natural conversational text, due to the additional signals (user activity or hashtags), which are often used alongside the texts \cite{gjurkovic2018reddit, rao2010classifying}. 
+
+There has been significant effort on predicting age and gender of social media users \cite{kim:ACL17:short, sap:EMNLP14, rao2010classifying, zheng2019personalized, li2019improving} and their personality \cite{Markovikj2013MiningFD, gjurkovic2018reddit}. Less explored but more specific attributes like origin \cite{rao2010classifying}, political views \cite{pennacchiotti2011machine, rao2010classifying}, ethnicity \cite{pennacchiotti2011machine}, occupation \cite{pietro:ACL15, li2014weakly}, education \cite{li2014weakly} or mental health issues \cite{shen2017detecting} are also considered. 
+
+The representations utilized for social media profiling are built via linguistic features \cite{Markovikj2013MiningFD, gjurkovic2018reddit}, language models \cite{sap:EMNLP14}, n-grams \cite{rao2010classifying} or embeddings \cite{pietro:ACL15}. These features are used afterwards in SVMs \cite{gjurkovic2018reddit, rao2010classifying}, topical models \cite{pennacchiotti2011machine} and neural networks \cite{kim:ACL17:short, zheng2019personalized}.
+
+A common limitation of most prior work is the small number of attribute values to be predicted. In contrast, \citet{li2014weakly} predicts education, job and spouses of the users without exploiting predefined attribute value lists, as the prediction is based in the entities found in user's posts. This approach relies on detecting explicit mentions, yet it relaxes the restriction to know all attribute values in advance. Another example of such open-ended personal attribute is user's interests, which has also received significant research interest.
+
+%More interesting are the traits with large or even open-ended value lists, such as interests \cite{abel2011analyzing, kapanipathi2014user} or locations \cite{krishnamurthy2014location}.
+
+\subsubsection{User interests from social media}
+
+Extracting the users' topics of interest (e.g., music, politics or sports) has received significant attention, as they are highly helpful for recommendations of news or publications. As opposed to disclosing personal facts, speakers are more willingly talking about what they are interested in \cite{seghouani2019determining, raghuram2016efficient}, making extraction of interests from conversational utterances more feasible. However, the interests are often changeable \cite{piao2018inferring}, requiring revisions to the past predictions.
+
+Several studies discover speakers' interests using supervised learning techniques \cite{raghuram2016efficient}, training machine learning models to predict the interests from a predefined set. The drawback of these approaches is that they require rarely available labeled data and fixed lists of possible topics of interest.
+
+As an alternative, some studies utilize unsupervised topic modelling methods, such as LDA \cite{weng2010twitterrank}, which represent inferred interests as a bag of related words. Such methods don't produce specific values or categories for the interests, making them inapplicable for building a personal knowledge base.
+
+Several studies use external knowledge bases (e.g. Wikipedia) to link the users' content to the relevant concepts, which serve as the inferred interest value. Some approaches capture named entities in the social media submissions and link them to the corresponding Wikipedia pages \cite{kapanipathi2014user, michelson2010discovering}, which requires explicit mentions. Alternatively, the whole submissions texts can be mapped to the Wikipedia category \cite{seghouani2019determining}, determinig the interest of the user. The disadvantage of this approaches is their relying on an external knowledge base, which requires additional preprocessing, may not be available or may be lacking required concepts.
+
+\subsection{Interpersonal relationships}
+
+There is only limited research on relationship prediction in dialogues, as most studies focus on literary texts. The relationships in novels are often predicted on the coarse granularity (positive or negative sentiment) \cite{chaturvedi2016modeling}, modelled as emotion-related classes (anger, fear) \cite{kim2019frowning}, or described in a topic-modelling manner \cite{iyyer2016feuding, chaturvedi2017unsupervised}. While fictional texts often contain dialogues, they are interleaved with narratives, where the language is less colloquial and more descriptive, which aids explicit extraction of fictional characters' relationships.
+
+On the other hand, screenplays or scripts of theatre plays, movies or TV series are more similar to real-life conversations. 
+\citet{nalisnick2013character} explored Shakespeare plays to analyze the polarity and intensity of emotions of characters towards each other. The same data is used in \citet{azab2019representing}, where fine-grained relationship classes adopted from \citet{massey2015annotating} are predicted by applying a logistic regression classifier on a pair of learned \emph{character embeddings}.
+However, such approach predicts relationships solely based on characters' latent attributes without considering any conversational context.
+
+\citet{rashid2018characterizing} investigated the prediction of 9 \emph{interpersonal dimensions} \cite{wish1976perceived} of utterances in the Friends series, 
+where SVM classifiers on bag-of-words were trained per dimension to determine whether an utterance is, for instance, \emph{equal} or \emph{hierarchical}. 
+Similarly, \citet{qamar2021relationship} leveraged vector representations of emotion
+words, to classify a dialogue taken from a movie script corpus into four attachment styles (e.g., \emph{friend}, \emph{family}) and four association types (e.g., \emph{secure}, \emph{fearful}), which are then combined into 16 relationship classes. Both approaches do not provide explicit and detailed information about the speakers' relationships, such as who is the \emph{parent} of whom, and instead focus on relationship characteristics.
+
+Speakers' relationships are part of 36 predicates investigated by \citet{yu-etal-2020-dialogue}, which focused on the general relation extraction task between two arguments appearing in a dialogue (e.g., \emph{spouse}, \emph{place\_of\_residence}), taken from the Friends series; 14 of the predicates refer to the relationships between people.
