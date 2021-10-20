@@ -1,0 +1,175 @@
+\documentclass[a4paper, 12pt, twoside]{ThesisStyle}
+% \documentclass[draft]{article}
+
+% font to choose
+% \usepackage{mathptmx}	
+% \usepackage{mathpazo}
+% \usepackage{helvet}
+% \usepackage{mathpazo}
+% \usepackage{eulervm}
+\usepackage[hyphens]{url}
+\usepackage{etex}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage{floatrow}
+\usepackage[dvipsnames]{xcolor}
+% \usepackage{setspace}						% to use one and half or double spacing
+\include{formatAndDefs}					% predefined styles
+% \usepackage{graphicx}         % to use graphics
+\usepackage{morefloats} 				% to allocate more floats
+\usepackage{placeins}						% to flush floats within a section
+\usepackage{tikz}								% to draw a graph
+% \usepackage[utf8]{inputenc}			% UTF encoding
+\usepackage{xspace}             % xspace - 'hard space'
+% \usepackage{color}            % fonts coloring
+\usepackage{amsthm}             % some useful things (such as proof environment)
+\usepackage{amsfonts}           % some mathematical fonts
+\usepackage{natbib}	% for the purpose of citations
+% \usepackage[numbers]{natbib}
+% \usepackage{subfig}							% for organizing images
+\usepackage{lscape}							% to use landscape mode
+\usepackage{bm}					% for bold symbols 
+\usepackage{bbm}				% for dirac indicator
+\usepackage{epsfig}
+\usepackage{pgfplots}			
+\usepackage{stmaryrd}			% for llbracket
+\usepackage{eurosym} % defines \euro
+\usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+\usepackage{longtable} % longtable support required by pandoc >1.10
+\usepackage{fancyvrb} % verbatim replacement that allows latex
+\usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+\usepackage{booktabs}			% for better tables (like toprule)
+\usepackage{makecell}			% for tabular
+\usepackage[final]{pdfpages}
+\usepackage{lettrine}
+\usepackage{ulem} % ulem is needed to support strikethroughs (\sout)
+\usepackage{csquotes}
+
+\addto\extrasenglish{%
+	\renewcommand{\chapterautorefname}{Chapter}
+	\renewcommand{\sectionautorefname}{Section}
+	\renewcommand{\subsectionautorefname}{Section}
+	\renewcommand{\subsubsectionautorefname}{Section}
+}
+
+
+\input{Preambula}
+\input{notebook_latex}
+\input{macros}
+\input{defines}
+
+
+\newcommand\myshade{85}
+\colorlet{mylinkcolor}{YellowOrange}
+\colorlet{mycitecolor}{Aquamarine}
+\colorlet{myurlcolor}{violet}
+
+% Prevent overflowing lines due to hard-to-break entities
+%\sloppy 
+% Setup hyperref package
+% \hypersetup{
+%       breaklinks=true,  % so long urls are correctly broken across lines
+%       colorlinks=true,
+% %       urlcolor=myurlcolor,
+% %       linkcolor=mylinkcolor,
+% %       citecolor=mycitecolor,
+% }
+
+\newfloatcommand{capbtabbox}{table}[][\FBwidth]
+\newcommand*\rot{\rotatebox{90}}
+\include{main.tex}
+%% Bibliography Setting
+%\bibliographystyle{abbrvnat}
+% \bibliographystyle{MinThesisStyle}
+\bibliographystyle{plainnat}
+\setcitestyle{square,aysep={}}
+
+% don't put more spacing at the end of the line
+\frenchspacing
+
+% set spacing between lines
+\linespread{1.21}
+\selectfont
+% \onehalfspacing
+% \doublespacing
+% \setstretch{1.08}
+
+
+% if this thesis is a draft it should be written '(Draft)'; otherwise null
+\newcommand{\isDraft}{(Draft)}
+%\newcommand{\isDraft}{}
+
+\setlength{\headheight}{24pt}
+
+% #-------------------------------------------------------------------------# 
+\begin{document}
+
+%% Proper document
+\pagenumbering{roman}
+
+\include{cover}
+
+\dominitoc
+
+% \cleardoublepage
+
+\include{frontmatter}
+
+
+\tableofcontents
+
+\cleardoublepage
+
+\mainmatter
+
+\include{chapter-introduction}
+
+\include{chapter-background}
+
+\include{chapter-equity}
+
+\include{chapter-search-exposure}
+
+\include{chapter-rsusceptibility}
+
+\include{chapter-solidarity}
+
+\include{chapter-future}
+
+
+%% Appendices
+\cleardoublepage
+\appendix
+\include{chapter-appendix-topical-sensitivity-study}
+\include{chapter-appendix-search-exposure-study}
+% \include{chapter-appendix-sensitive-topics-examples}
+% \include{chapter-appendix-querylog-examples}
+%\include{chapter-appendix-sensitive-states-study}
+% 
+%\include{chapter-visual_turing_dataset_method}
+% \appendix
+%\include{chapter-appendix-tutorial}
+
+\backmatter
+
+%% Bibliography
+\cleardoublepage
+\bibliography{bib-thesis-long,bib-equity,bib-rsusceptibility,bib-search-exposure,bib-solidarity,bib-various}
+
+\cleardoublepage
+\listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
+\cleardoublepage
+\listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
+
+% \cleardoublepage
+% \includepdf[pages=-, scale=1.0, addtotoc={1,chapter,1,Curriculum Vitae,mateusz_cv}]{mateusz_modern_cv/mateusz_CV}
+% \addcontentsline{toc}{chapter}{Curriculum Vitae}
+
+% \cleardoublepage
+%\include{chapter-publications}
+% \addcontentsline{toc}{chapter}{Selected Publications}
+
+\end{document}

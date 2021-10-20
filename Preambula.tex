@@ -1,0 +1,70 @@
+% 
+% \newtheorem{definition}{Definition}[chapter]
+% \newtheorem{fact}{Fact}
+% \newtheorem{axiom}{Axiom}
+% \newtheorem{theorem}{Theorem}[chapter]
+% \newtheorem{lemma}{Lemma}[chapter]
+% \newtheorem{corollary}{Corollary}[chapter]
+% \newtheorem{example}{Example}
+% \newcommand{\makeline}{\vspace{1mm}\hrule\vspace{1mm}}  % create a line
+% \newcommand{\NOTE}[1]{\textcolor{red}{\\\textbf{Note: #1!}\\}}
+% % \newenvironment{proof}{{\bf Proof\\}}{\\\hfill\rule[0.025cm]{0.21cm}{0.21cm}}
+% 
+% \newenvironment{notice}{\flushleft{\textbf{Notice:}}\\}
+%   {\\\hfill\rule[0.025cm]{0.21cm}{0.21cm}}
+% \newenvironment{examples}{\flushleft{\textbf{Examples:}}\begin{itemize}}
+%   {\end{itemize}\hfill\rule[0.025cm]{0.21cm}{0.21cm}}%
+% \newenvironment{solution}{\flushleft{\textbf{Solution:}}}
+%   {\hfill\rule[0.025cm]{0.21cm}{0.21cm}}
+
+
+% Some mathematical notations to simplify my life
+
+% just to curiosity, not simplify my life too much
+% \newcommand{\lonesurrogate}[1]{\ensuremath{|| #1 ||_{\epsilon}}}
+% \newcommand{\lonesurrogateDefinition}[1]
+% 	{\ensuremath{\lonesurrogate{#1} := \sum_j \sqrt{|#1_j|^2 + \epsilon} }}
+\newcommand{\pnorm}[2]{\ensuremath{|| #1 ||_{#2}}}
+\newcommand{\oneNorm}[1]{\pnorm{#1}{l_1}}
+\newcommand{\twoNorm}[1]{\pnorm{#1}{l_2}}
+\newcommand{\inftyNorm}[1]{\pnorm{#1}{l_{\infty}}}
+\newcommand{\tvNorm}[1]{\pnorm{#1}{TV}}
+\newcommand{\epsNorm}[1]{\ensuremath{|| #1 ||_{\epsilon}}}
+\newcommand{\emptyNorm}[1]{\ensuremath{|| #1 ||}}
+\newcommand{\orthoProjection}[1]{\ensuremath{{#1}{#1}^t}} 
+\newcommand{\datafit}[1]{\ensuremath{||#1||^2_{l_2}}}   % data fit term
+\newcommand{\pdatafit}[1]{\ensuremath{\frac{1}{2}||#1||^2_{l_2}}}
+\newcommand{\sparsefit}[1]{\ensuremath{||#1||_{l_1}}}   % sparsity fit term
+\newcommand{\relaxedfit}[1]{\ensuremath{(\epsilon + |#1|^2)^{1/2}}}
+\newcommand{\drelaxedfit}[2]{#2^T (W^{-1} \otimes I_2) #2 #1}
+\newcommand{\mtype}[3]{\mathbb{#1}^{#2 \times #3}}  % to write matrix type
+\newcommand{\vtype}[2]{\mathbb{#1}^{#2}}
+\newcommand{\set}[1]{\mathbb{#1}}
+\newcommand{\setcal}[1]{\ensuremath{\mathcal{#1}}}
+\newcommand{\bs}[1]{\ensuremath{\boldsymbol{#1}}}
+\newcommand{\sgn}{\text{sgn}}
+\newcommand{\diagonal}[1]{\ensuremath{\text{diag}\;#1}}
+\newcommand{\half}{\ensuremath{\frac{1}{2}}}
+\newcommand{\positiveProjection}[1]{\ensuremath{\left( #1 \right)_+}}
+\newcommand{\setFormula}[2]{\ensuremath{
+\left\{
+#1 \; | \; #2
+\right\} 
+}}
+\newcommand{\xstar}{\ensuremath{\bs{x}^{\star}}}
+\newcommand{\ustar}{\ensuremath{\bs{u}^{\star}}}
+\newcommand{\cSetSymbol}{\ensuremath{\setcal{C}}}
+\newcommand{\cSetDefinition}{\ensuremath{\cSetSymbol := \vtype{R}{2}}}
+\newcommand{\cSetSymbolHigherDimension}[1]{\ensuremath{\cSetSymbol{}^#1}}
+\newcommand{\domain}[1]{\mbox{dom}(#1)}
+\newcommand{\functionType}[2]{\ensuremath{  :  #1 \rightarrow #2}}
+\newcommand{\extendedReals}{\ensuremath{{\set{\overline{R}}}}}
+\newcommand{\best}[1]{\ensuremath{#1^{*}}}
+\newcommand{\bestTwo}[2]{\ensuremath{#1^{*,#2}}}
+
+% \DeclareMathOperator* {\argmin}{arg\, min}
+% \DeclareMathOperator* {\argmax}{arg\, max}
+\DeclareMathOperator* {\minimize}{minimize}
+\DeclareMathOperator* {\maximize}{maximize}
+\DeclareMathOperator* {\maximizeshort}{max.}
+\DeclareMathOperator* {\equivunderscore}{\equiv}
