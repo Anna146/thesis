@@ -1,9 +1,9 @@
 \section{Conclusion}
-In this chapter we proposed Hidden Attribute Models (HAMs) for inferring personal attributes from conversations, such as a person's profession. 
+In this chapter we proposed Hidden Attribute Models (HAMs) for inferring personal attributes from conversations, such as a person's \textit{profession}. 
 We demonstrated the viability of our approach in extensive experiments considering several attributes on three datasets with diverse characteristics: Reddit discussions, movie script dialogues and crowdsourced conversations. 
 Furthermore, we used an oracle approach to demonstrate that pattern matching is insufficient for extracting personal attributes from conversations, because such attributes are rarely explicitly mentioned.
 We compared HAMs against a variety of state-of-the-art baselines, showing that HAMs achieve
-substantial improvements over all of them.%, most notably by the \method{CNN-attn}
+substantial improvements over all of them. %, most notably by the \method{CNN-attn}
 %and \method{2attn} variants. 
 We also demonstrated that the attention weights assigned by our methods provide
 informative explanations of the computed output labels.
@@ -25,7 +25,7 @@ In this section we enumerate possible directions for future work, some of which 
     
     \item \textbf{Improved transfer learning.} Our experiments with HAMs were based on the assumption that the input data resembles actual conversations. However, this is far from being true: the dialogues in MovieChAtt are based on fictional events and sound metaphorical, PersonaChat conversations are artificial and very short, discussion threads in RedDust are distinct from face-to-face offline dialogues. Therefore, there is a genuine need to devise new models having strong transfer learning abilities, so that the method trained on the richly annotated artificial datasets would be able to make proper inference on real-life conversations. %Although our experiments have shown that HAMs can to some extend perform transfer learning, it could still be further enhanced. 
     
-    \item \textbf{Combined prediction of several attribute values.} Most personal attributes are interdependent (e.g. a 6 year old person can't be a manager or be married). Thus the method for predicting personal attributes should ultimately leverage the relationships between multiple attributes by extracting them with a single model. This facilitates the extension of the architecture to any new personal attribute of interest and saves computational resources for training separate models for each attribute.
+    \item \textbf{Combined prediction of several attribute values.} Most personal attributes are interdependent (e.g., a 6-year-old person can't be a manager or be married). Thus, the method for predicting personal attributes should ultimately leverage the relationships between multiple attributes by extracting them with a single model. This facilitates the extension of the architecture to any new personal attribute of interest and saves computational resources for training separate models for each attribute.
     
 \end{itemize}
 

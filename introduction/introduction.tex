@@ -1,27 +1,29 @@
 \section{Motivation and Problem Statement}
 \label{mot}
 
-\droppedcapital{T}HE recent rise of social media enabled the access to vast amounts of user-generated content. This data has many potential applications; \textit{personalization} being a major use case.
+\droppedcapital{T}{he} recent rise of social media enabled the access to vast amounts of user-generated content. This data has many potential applications; \textit{personalization} being a major use case.
 
 Having background information about the user is practical for many downstream applications, such as recommender systems and search engines \cite{balog2019personal}. 
-For instance, the ranking results for the query ``best weekend activities in Vancouver'' can be rearranged based on the user's known hobbies to deliver more topical content for a particular individual. Another application greatly benefiting from the availability of the user's background is personalized intelligent assistants.
+For instance, the ranking results for the query ``\textit{best weekend activities in Vancouver}'' can be rearranged based on the user's known hobbies to deliver more topical content for a particular individual. Another application greatly benefiting from the availability of the user's background is personalized intelligent assistants.
 
 Chat-bots have become an essential part of everyday life, being able to deal with a wide range of routine tasks, provide factual information and entertain the user. Still, there is a growing demand for creating user-oriented intelligent agents, which are able to hold personalized conversations, while at the same time building and expanding their knowledge repository about the user's traits and preferences. 
 
 Having access to the user's interests and background, personalized chat-bots will be able to build relevant responses and start new topics, interesting for the user. The ability to produce meaningful or even funny and surprising utterances is a desired feature, making a chat-bot appealing to the user. Therefore, there has been significant research interest in personalizing intelligent assistants, which still remains challenging. 
 
 Consider, for example, the following conversation between a human (H) and an intelligent assistant (A), illustrating the need of the intelligent assistant to have background information about its interlocutor:
-\vspace{0.3cm} \\
-\hspace*{0.3cm}{H:} {\em Can you text my wife I will be late from the hospital? Need to do an urgent operation.}\\
-\hspace*{0.3cm}{A:} {\em Sure.}\\
-\hspace*{0.3cm}{H:} {\em Any idea where I can get dinner that late?}\\
-\hspace*{0.3cm}{A:} {\em I'd suggest Ocean Thai Cafe, they are open till midnight.}\\
+\begin{samepage}
+\vspace{0.3cm} \\ \nopagebreak
+\hspace*{0.3cm}{H:} {\em Can you text my wife I will be late from the hospital? Need to do an urgent operation.}\\\nopagebreak
+\hspace*{0.3cm}{A:} {\em Sure.}\\\nopagebreak
+\hspace*{0.3cm}{H:} {\em Any idea where I can get dinner that late?}\\\nopagebreak
+\hspace*{0.3cm}{A:} {\em I'd suggest Ocean Thai Cafe, they are open till midnight.}\\\nopagebreak
 \hspace*{0.3cm}{H:} {\em Sounds good! Talking about oceans, can you remind me to pack my goggles? Last time I went to the pool I forgot them.}
 \vspace{0.3cm}
+\end{samepage}
 
 To effectively address the user's requests from the conversation above, the chat-bot has to know the following facts about the user: (i) \textit{interpersonal relationships} (knowing who the user's \textit{wife} is, to be able to contact her) and (ii) \textit{food preferences} (suggest an appropriate restaurant, knowing that the user loves \textit{thai} food).
 
-To alleviate users from extensive manual effort to provide their information, the intelligent assistant should be capable of learning it directly from conversational utterances and digital traces of the user. For example, from the dialogue above the chat-bot can infer the user's profession \textit{surgeon} using the cues ``hospital'' and ``operation'' and the user's hobby \textit{swimming} from the words ``goggles'' and ``pool''. Such automatic extraction is an extremely challenging but interesting and useful task.
+To alleviate users from extensive manual effort to provide their information, the intelligent assistant should be capable of learning it directly from conversational utterances and digital traces of the user. For example, from the dialogue above the chat-bot can infer the user's profession \textit{surgeon} using the cues ``\textit{hospital}'' and ``\textit{operation}'' and the user's hobby \textit{swimming} from the words ``goggles'' and ``pool''. Such automatic extraction is an extremely challenging but interesting and useful task.
 
 The work in this dissertation concerns predicting personal facts from textual representation of conversations. The sources of such data include transcribed everyday dialogues, social media submissions or chats in messenger apps. Information extraction from conversational data is a challenging task \cite{wu2020getting, yen2019personal}, which still is underexplored in related studies. 
 
@@ -34,7 +36,7 @@ Design and construction of PKBs has recently gained significant research interes
 We outline several properties of a PKB, which make it desirable to use in various applications:
 \begin{itemize}
     \item \textit{Transferable:} PKB acts as a unique endpoint for storing and querying user information for a wide range of applications, regardless of their internal data representation.
-    \item \textit{Well-structured:} the information in PKB should be stored in a consolidated and uniform format, for example, in the form of triplets $\langle$user, attribute, value$\rangle$ (e.g., $\langle$user1, hobby, diving$\rangle$), which makes searching for specific personal information easier.
+    \item \textit{Well-structured:} the information in PKB should be stored in a consolidated and uniform format, for example, in the form of triplets $\langle$\textit{user}, \textit{attribute}, \textit{value}$\rangle$ (e.g., $\langle$\textit{user1}, \textit{hobby}, \textit{diving}$\rangle$), which makes searching for specific personal information easier.
     \item \textit{Owned by the user:} the users are provided with full control over their own personal knowledge, including revising stored facts and managing access by various services for personalization purposes.
     \item \textit{Interpretable:} explicit format of the personal facts in a PKB allows the users to have the explanations about any personalized decisions made by the applications accessing their PKB.
 \end{itemize}
@@ -45,7 +47,7 @@ One example of such storage of users' personal facts is Google Ads Settings\foot
 
 \subsubsection{Personal Knowledge Base from Conversational Data}
 
-As mentioned in the previous section, a PKB can be populated by automatically extracting personal facts from users' conversational data. Mining personal knowledge from user-generated content to populate PKBs, or \emph{user profiling}, is a long-standing topic in NLP \cite{flekova:ACL16:long,basile:2017}.
+As mentioned in the previous section, a PKB can be populated by automatically extracting personal facts from users' conversational data. Mining personal knowledge from user-generated content to populate PKBs, or \emph{user profiling}, is a long-standing topic in Natural Language Processing~\cite{flekova:ACL16:long,basile:2017}.
 
 Creation of a PKB from conversational data requires addressing the following key issues:
 
@@ -57,10 +59,10 @@ Creation of a PKB from conversational data requires addressing the following key
 
 Concerning the first issue, we define personal facts to be user's demographic attributes (age, gender, origin, etc), hobbies and interests, interpersonal relationships (family status, names of friends, etc), skills, personality values or sentiments towards people and specific topics. Many of those attributes are subjective or mutable, making them specifically challenging to extract and process.
 
-The second issue is concerned with information extraction from text. Prior works have mostly focused on well comprehensible text genres
+The second issue is concerned with information extraction from text. Prior works have mostly focused on well-comprehensible text genres,
 such as Wikipedia articles or news stories, however, such methods do not work as well given conversations as input.
 Compared to formal documents, dialogues are noisy, utterances are short \cite{bontcheva2014making}, the language used is
-colloquial, topics are diverse (including smalltalk). The dialogue utterances often give merely implicit cues about the speakers, making well established pattern-based extraction methods inapplicable.
+colloquial and the topics are diverse (including smalltalk). The dialogue utterances often give merely implicit cues about the speakers, making well established pattern-based extraction methods inapplicable.
 
 Given that the personal information in conversational utterances is rarely stated explicitly, many prior studies opt for creating \textit{latent} user representations. We argue, however, that creating an explicit PKB containing distilled personal facts provides the following advantages:
 
@@ -81,7 +83,7 @@ The related studies generally utilize pattern-based approaches, searching for ex
 speakers' utterances, such as extracting \textit{profession}: \textit{software engineer} and \textit{ employment\_history}: \textit{Microsoft} from \textit{``I work for Microsoft as a software engineer''} \cite{dial7}. Such methods are limited 
 by their inability to consider implicit contexts (e.g., \textit{``I write product code in Redmond.''}), and routinely perform worse than methods based on inference.
 
-Most inference-based methods predict personal attributes with a small set of values, often arranged in coarse-grained categories (e.g. predicting \textit{occupational class} instead of fine-grained profession) or even modeled as a binary task (\textit{age}: \textit{young/old} \cite{liesenfeld2020predicting}, \textit{political orientation}: \textit{democrat/republican} \cite{preoctiuc2017beyond}). The inference of long-tailed personal attributes with a large number of values (like \textit{hobby} or \textit{favorite food type}), has mostly been overlooked in previous work.
+Most inference-based methods predict personal attributes with a small set of values, often arranged in coarse-grained categories (e.g. predicting \textit{occupational class} instead of a fine-grained profession) or even modeled as a binary task (\textit{age}: \textit{young/old} \cite{liesenfeld2020predicting}, \textit{political orientation}: \textit{democrat/republican} \cite{preoctiuc2017beyond}). The inference of long-tailed personal attributes with a large number of values (like \textit{hobby} or \textit{favorite food type}), has mostly been overlooked in previous work.
 
 On the other hand, there has been significant research effort on creating latent representations of speakers \cite{li2016persona, AIIDElin11}. Such representations can be directly used for response generation in a dialogue system \cite{zheng2019personalized}. Yet, such information is not scrutable, providing no possibility for the speaker to view and change it. Additionally, latent representations are difficult to transfer between models and applications.
 
@@ -89,7 +91,7 @@ On the other hand, there has been significant research effort on creating latent
 
 Within this dissertation we develop novel approaches for inferring personal knowledge from conversations, which address the limitations of the prior work. The contributions of this thesis can be summarized as follows. We introduce neural learning models tailored specifically for prediction of personal attributes:
 \begin{itemize}
-    \item \textbf{HAM}, a light-weight model for inferring demographic facts, \textit{gender}, \textit{age}, \textit{occupation} and \textit{family status}. HAM is based on attention mechanisms, allowing to inspect and interpret its predictions.
+    \item \textbf{HAM}, a light-weight model for inferring demographic facts: \textit{gender}, \textit{age}, \textit{occupation} and \textit{family status}. HAM is based on attention mechanisms, allowing to inspect and interpret its predictions.
     \item \textbf{CHARM}, a zero-shot learning model for predicting long-tailed personal attributes, \textit{profession} and \textit{hobby}. CHARM can predict rare attribute values (such as \textit{hobby:curling}) without having training data for them.
     \item \textbf{PRIDE}, a transformer-based model for predicting directed fine-grained \textit{interpersonal relationships} of the speakers in dyadic conversations.
 \end{itemize}
@@ -113,6 +115,8 @@ In summary, we provide a list of publications, from which this dissertation incl
     Tigunova, A., Mirza, P., Yates, A., & Weikum, G. (2021, November). \textbf{PRIDE: Predicting Relationships from Conversations.} \textit{In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing} (to appear).
 \end{itemize}
 
+Additionally the contents of Chapters \ref{chap_ham} and \ref{chap_charm} of this dissertation were presented at Doctoral Consortium in Web Conference 2020\footnote{Anna Tigunova. 2020. \textbf{Extracting Personal Information from Conversations.} In Companion Proceedings of the Web Conference 2020 (pp. 284–288).}.
+
 \section{Organisation}
 
-The rest of this thesis is organized as follows. In Chapter 2 we discuss relevant prior studies and give the necessary methodological background. Chapter 3 presents the conversational datasets we created to support the experiments in our work. In Chapters 4, 5 and 6 we describe our novel models for inferring personal attributes: HAM, CHARM and PRIDE, respectively. Finally, we conclude the dissertation in Chapter 7 and outline possible directions for future research.
+The rest of this thesis is organized as follows. In Chapter \ref{chap_backgr} we discuss relevant prior studies and give the necessary methodological background. Chapter \ref{chap_datasets} presents the conversational datasets we created to support the experiments in our work. In Chapters \ref{chap_ham}, \ref{chap_charm} and \ref{chap_pride} we describe our novel models for inferring personal attributes: HAM, CHARM and PRIDE, respectively. Finally, we conclude the dissertation in Chapter \ref{chap_conclusion} and outline possible directions for future research.

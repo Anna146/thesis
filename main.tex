@@ -1,60 +1,27 @@
 \documentclass[a4paper, 12pt, twoside]{ThesisStyle}
+%\usepackage[utf8]{inputenc}
+%%%%%%% anna defines
+
 \usepackage{graphicx}
 \usepackage{hyperref}
-
 \usepackage{times}
 \usepackage{textcomp}
 \usepackage{latexsym}
 \renewcommand{\UrlFont}{\ttfamily\small}
-\usepackage{graphicx}
 \usepackage{adjustbox}
-
-\usepackage{graphicx}
-\usepackage{hyperref}
-
-\usepackage{times}
 \usepackage{latexsym}
-\renewcommand{\UrlFont}{\ttfamily\small}
-\usepackage{graphicx}
-\usepackage{adjustbox}
-
-\usepackage{balance}
-%% Useful packages
-\usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{subcaption}
-%\usepackage[table,xcdraw]{xcolor}
-\usepackage{hyperref}
-\usepackage{array}
-\usepackage[title]{appendix}
-\usepackage{adjustbox}
-\usepackage{multirow}
-\usepackage{arydshln}
-%\usepackage{array}
-\usepackage{booktabs}
-\usepackage{flushend}
-\usepackage{enumitem}
-\usepackage{tabularx}
-\usepackage{xcolor}
-\usepackage{amssymb}
 \usepackage{verbatim}
-\setcitestyle{numbers,open={[},close={]},comma}
-\setcounter{secnumdepth}{3} 
-\newcommand{\paragraphHd}[1] {\vspace{3pt}\noindent\textbf{#1}}
-
 \usepackage{balance}
-%% Useful packages
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{subcaption}
-%\usepackage[table,xcdraw]{xcolor}
-\usepackage{hyperref}
 \usepackage{array}
 \usepackage[title]{appendix}
 \usepackage{adjustbox}
 \usepackage{multirow}
 \usepackage{arydshln}
-%\usepackage{array}
 \usepackage{booktabs}
 \usepackage{flushend}
 \usepackage{enumitem}
@@ -64,56 +31,19 @@
 \setcitestyle{numbers,open={[},close={]},comma}
 \setcounter{secnumdepth}{3} 
 \newcommand{\paragraphHd}[1] {\vspace{3pt}\noindent\textbf{#1}}
+\usepackage{mathtools}
+\usepackage{etoolbox}
+\appto\normalsize{\belowdisplayshortskip=\belowdisplayskip}
 
-\newcommand{\method}[1]{HAM$_{\text{\,#1}}$}
-\newcommand{\charm}[1]{CHARM$_{\text{\,#1}}$}
-\newcommand{\wiki}[1]{Wiki-#1}
-\newcommand{\attribute}[1]{\textbf{\emph{#1}}}
-\newcommand{\paragraphHdTop}[1] {\noindent\textbf{#1}} % use for first in a series of paragraphHd's
-\newcommand{\paragraphHd}[1] {\vspace{3pt}\noindent\textbf{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\squishlist}{
- \begin{list}{$\bullet$}
-  { \setlength{\itemsep}{0pt}
-     \setlength{\parsep}{1pt}
-     \setlength{\topsep}{1pt}
-     \setlength{\partopsep}{0pt}
-     \setlength{\leftmargin}{1.5em}
-     \setlength{\labelwidth}{1em}
-     \setlength{\labelsep}{0.5em} } }
-
-\newcommand{\squishend}{
-  \end{list}  }
-  
-\newcommand{\sig}[1]{#1*}
-\newcommand{\nsig}[1]{#1\phantom{*}}
-\newcommand{\bsig}[1]{\textbf{#1}*}
-\newcommand{\bnsig}[1]{\textbf{#1}\phantom{*}}
-\newcommand{\best}[1]{\textbf{#1}}
-
-
-
-
-
-
-
-
-
-
-
-% font to choose
-% \usepackage{mathptmx}	
-% \usepackage{mathpazo}
-% \usepackage{helvet}
-% \usepackage{mathpazo}
-% \usepackage{eulervm}
+%%%%%%% template defines
 \usepackage[hyphens]{url}
 \usepackage{etex}
 \usepackage{lmodern}
 \usepackage[english]{babel}
 \usepackage{floatrow}
 \usepackage[dvipsnames]{xcolor}
-% \usepackage{setspace}						% to use one and half or double spacing
 \include{formatAndDefs}					% predefined styles
 % \usepackage{graphicx}         % to use graphics
 \usepackage{morefloats} 				% to allocate more floats
@@ -143,8 +73,8 @@
 \usepackage{makecell}			% for tabular
 \usepackage[final]{pdfpages}
 \usepackage{lettrine}
-\usepackage{ulem} % ulem is needed to support strikethroughs (\sout)
 \usepackage{csquotes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \addto\extrasenglish{%
 	\renewcommand{\chapterautorefname}{Chapter}
@@ -154,35 +84,43 @@
 }
 
 
-\input{Preambula}
-\input{notebook_latex}
-\input{macros}
-\input{defines}
+%\input{Preambula}
+%\input{notebook_latex}
+%\input{macros}
+%\input{defines}
+\input{macros_anna}
 
 
 \newcommand\myshade{85}
 \colorlet{mylinkcolor}{YellowOrange}
 \colorlet{mycitecolor}{Aquamarine}
-\colorlet{myurlcolor}{violet}
+\colorlet{myurlcolor}{Blue}
 
 % Prevent overflowing lines due to hard-to-break entities
 %\sloppy 
 % Setup hyperref package
-% \hypersetup{
-%       breaklinks=true,  % so long urls are correctly broken across lines
-%       colorlinks=true,
-% %       urlcolor=myurlcolor,
-% %       linkcolor=mylinkcolor,
-% %       citecolor=mycitecolor,
-% }
+\let\oldciteauthor=\citeauthor
+\def\citeauthor#1{\hypersetup{citecolor=black}\oldciteauthor{#1}}
+\let\oldcite=\cite
+\def\cite#1{\hypersetup{citecolor=mycitecolor}\oldcite{#1}}
+\let\oldcitet=\citet
+\def\citet#1{\hypersetup{citecolor=mycitecolor}\oldcitet{#1}}
+ \hypersetup{
+       breaklinks=true,  % so long urls are correctly broken across lines
+       colorlinks=true,
+       urlcolor=myurlcolor,
+       linkcolor=mylinkcolor,
+       citecolor=mycitecolor,
+       }
+
 
 \newfloatcommand{capbtabbox}{table}[][\FBwidth]
 \newcommand*\rot{\rotatebox{90}}
 %% Bibliography Setting
 %\bibliographystyle{abbrvnat}
-%\bibliographystyle{MinThesisStyle}
-%\bibliographystyle{plainnat}
-%\setcitestyle{square,aysep={}}
+% \bibliographystyle{MinThesisStyle}
+\bibliographystyle{plainnat}
+\setcitestyle{square,aysep={}}
 
 % don't put more spacing at the end of the line
 \frenchspacing
@@ -222,18 +160,27 @@
 
 \mainmatter
 
-
 \chapter{Introduction}
 \minitoc
 \input{introduction/introduction.tex}
 
 \chapter{Background}
+\label{chap_backgr}
 \minitoc
+\input{background/abstract}
 \input{background/related_work.tex}
 \input{background/methodology.tex}
 
-\begin{comment}
+\chapter{Conversational Datasets}
+\label{chap_datasets}
+\minitoc
+\input{data/abstract}
+\input{data/background}
+\input{data/fire}
+\input{data/reddust}
+
 \chapter{Hidden Attribute Models}
+\label{chap_ham}
 \minitoc
 \input{ham/abstract}
 \input{ham/introduction}
@@ -245,12 +192,11 @@
 \input{ham/conclusion}
 
 \chapter{Conversational Hidden Attribute Retrieval Model}
-%\minitoc
+\label{chap_charm}
+\minitoc
 \input{charm/abstract}
 \input{charm/introduction}
-\newpage
 \input{charm/related_work}
-
 \input{charm/background}
 \section{Methodology}
 \input{charm/method}
@@ -259,18 +205,16 @@
 \section{Experimental Setup}
 \input{charm/experimental_setup}
 \section{Results}
-%\input{charm/results}
-%\input{charm/demo}
-\section{Conclusion and Discussion}
+\input{charm/results}
+\input{charm/demo}
+\section{Conclusion}
 \input{charm/conclusion}
 
-
 \chapter{Predicting Relationships in Dialogue Excerpts}
-%\minitoc
+\label{chap_pride}
+\minitoc
 \input{pride/abstract}
 \input{pride/intro}
-\newpage
-
 \input{pride/related_work}
 \input{pride/background}
 \input{pride/method}
@@ -278,22 +222,16 @@
 \input{pride/analysis}
 \input{pride/conclusion}
 
-\end{comment}
-
-
-
-
+\input{conclusion/main}
 
 %% Appendices
 \cleardoublepage
-%\appendix
-
+\appendix
 
 \backmatter
 
 %% Bibliography
 \cleardoublepage
-\bibliographystyle{abbrvnat}
 \bibliography{bibliography}
 
 \cleardoublepage

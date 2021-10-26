@@ -1,26 +1,26 @@
 
 \section{Social media submissions}
-
+\label{data_reddust}
 %\subsection{Introduction}
 
 Reddit is a popular social media platform for discussing a wide range of topics. It has become an prominent source of information for data analysis on social media as it provides an abundance of data with rich structure and covers a broad range of topics. Such data has many applications, including personalizing healthcare \cite{gyrard2018personalized}, recommendations, search, and conversational agents. 
 Reddit is used by approximately 330 million users\footnote{{\scriptsize \url{https://redditblog.com/2018/11/13/holiday-on-reddit/}}}
 with 2.8 million comments written each day\footnote{{\scriptsize \url{https://www.digitaltrends.com/social-media/reddit-ads-promoted-posts/}}}. 
 
-Despite its popular and abundant data, few have considered Reddit as a source of data for inferring users' personal traits. However, many Reddit submissions contain a sufficient amount of personal information; an exemplary submission, indicating the user's hobby, is shown in Figure \ref{fig:input}. Prior work has focused on Reddit as a source of demographic information, whereas rich attributes, like profession and hobbies, are usually overlooked. 
+Despite its popular and abundant data, few have considered Reddit as a source of data for inferring users' personal traits. However, many Reddit submissions contain a sufficient amount of personal information; an exemplary submission, indicating the user's hobby, is shown in Figure \ref{fig:input}. Prior work has focused on Reddit merely as a source of demographic information, whereas rich attributes, like \textit{profession} and \textit{hobby}, are usually overlooked. 
 
 \begin{figure}[th!]
 \centering
-\includegraphics[width=0.58\textwidth]{pics/brew.png}
+\includegraphics[width=0.85\textwidth]{data/pics/gym_queen.png}
 \caption{
-Example of a Reddit post.
+Example of a Reddit comment.
 %Cues in bold suggest \emph{brewing} as the user's hobby.
 }
 \label{fig:input}
 \end{figure}
 
-We address this gap by creating a labeled dataset of Reddit users \footnote{Available at {\scriptsize \url{https://www.mpi-inf.mpg.de/departments/databases-and-information-systems/research/pkb}}.}
-(including their posts and comments) that covers five user attributes: \textit{profession, hobby, family status, age,} and \emph{gender}. The collected submissions can be used as a proxy for dialogue utterances in conversational data research.
+We address this gap by creating a labeled dataset of Reddit users %\footnote{Available at {\scriptsize \url{http://pkb.mpi-inf.mpg.de}}.}
+(including their posts and comments) that covers five user attributes: \textit{profession, hobby, family status, age,} and \emph{gender} \cite{tigunova2020reddust}. The collected submissions can be used as a proxy for dialogue utterances in conversational data research.
 %We leveraged three high-precision approaches to identify predicates and their object values in users' posts: \textit{(1)} natural language patterns matching assertions like \textit{I am a flight attendant}, \textit{(2)} bracket patterns matching structured assertions of users' ages and genders (\textit{I [35m] just broke up with my girlfriend}), and \textit{(3)} flair metadata specific to particular subfora. We used human judgments to validate the high-precision nature of these approaches before performing an analysis of the resulting dataset. 
 
 \subsection{Related work}
@@ -31,17 +31,17 @@ Such methods, particularly supervised learning approaches, require a collection 
 
 Data collection for such models is mostly done via: manual annotation after a focused search with specific keywords or hashtags \cite{pietro:ACL15,Rao:2010}, public profile linked to Twitter profile description \cite{burger:EMNLP11,flekova:ACL16:long}, self-reports as part of an online survey \cite{finlay2014age,flekova:ACL16:long,pietro:ACL17:long,pietro:COLING18,sap:EMNLP14,schwartz2013personality}, or pattern-based extraction approach 
 (e.g., \texttt{\small(I$|$i) (am$|$'m$|$was) born in + number (1920-2013)}) on user profile description or user posts \cite{fabian2015privacy,kim:ACL17:short,sloan2015tweets,tigunova2019listening}.
-Several works \cite{basile:2017,bayot:MOD17} made use of labelled datasets published within the shared task on \textit{author profiling} organized by the CLEF PAN lab \cite{stein:2017o,stein:2017l}. 
+Several works \cite{basile:2017,bayot:MOD17} made use of labelled datasets published within the shared task on author profiling organized by the CLEF PAN lab \cite{stein:2017o,stein:2017l}. 
 
 There has been less effort on identifying demographic attributes of Reddit users compared with the body of work that exists for Twitter users. However Reddit posts have been exploited for other purposes, such as determining \emph{users' personality} \cite{gjurkovic-EtAl:2018}, \emph{mental health condition} \cite{cohan2018smhd}, \emph{domestic abuse} \cite{schrading2015analysis} and \emph{irony detection} \cite{wallace2014humans}, among others.
-\citet{thelwall2018she} investigate how the topic of subreddit influences the gender ratio within it. The study was performed on 100 subreddits grouped by interest, gender information about the users were collected by guessing it from their usernames, which is arguably a low-precision strategy. Smaller scale Reddit datasets exist for \emph{gender}, \emph{age} and \emph{location} attributes \cite{fabian2015privacy,finlay2014age}, which are unfortunately not publicly available. As far as we know, we are the first to consider \textit{hobby} as a personal attribute of interest to be identified from online communication.
+\citet{thelwall2018she} investigate how the topic of subreddit influences the gender ratio within it. The study was performed on 100 subreddits grouped by interest; gender information about the users was collected by guessing it from their usernames, which is arguably a low-precision strategy. Smaller scale Reddit datasets exist for \emph{gender}, \emph{age} and \emph{location} attributes \cite{fabian2015privacy,finlay2014age}, which are unfortunately not publicly available. As far as we know, we are the first to consider \textit{hobby} as a personal attribute of interest to be identified from online communication.
 
-\input{reddust_dataset}
+\input{data/reddust_dataset}
 
-\input{reddust_analysis}
+\input{data/reddust_analysis}
 
-\input{reddust_snorkel}
+\input{data/reddust_snorkel}
 
 \subsection{Discussion}
 
-Automatically labeling social media posts is an efficient and low-cost way to collect labeled conversations at scale. However, this approach only works for specific attributes (e.g. it is infeasible to collect \textit{relationships} among Reddit users, because most of them are strangers to each other). Another drawback of using social media platforms is the biased user demographics distribution, such as prevalence of young people or several professions being underrepresented. Moreover, the labels obtained from pattern search are much noisier than the crowdsourced ones, requiring further manual revision steps. Finally, the automatically collected Wikipedia attribute value lists can be further refined, merging redundant values and adding the missing ones.
+Automatically labeling social media posts is an efficient and low-cost way to collect labeled conversations at scale. However, this approach only works for specific attributes (e.g. it is infeasible to collect \textit{relationships} among Reddit users, because most of them are strangers to each other). Another drawback of using social media platforms is the skewed user demographics distribution, such as prevalence of young people or several professions being underrepresented. Moreover, the labels obtained from pattern search are much noisier than the crowdsourced ones, requiring further manual revision steps. Finally, the attribute value lists automatically collected from Wikipedia can be further refined by merging redundant values and adding the missing ones.

@@ -11,45 +11,45 @@ In the tables the results marked with * significantly differ from
 the best performing method (highlighted with bold font)
 with $p < 0.05$ as measured by a paired t-test (MRR) or McNemar's test (Acc and AUROC).
 
-\input{profession_table}
-\input{gender_table}
+\input{ham/profession_table}
+\input{ham/gender_table}
 
 We do not report results for the \textit{pattern oracle} baseline as we evaluated this baseline solely on the MovieChAtt dataset, because the oracle essentially replicates the way we labeled persona descriptions and posts in the PersonaChat and RedDust datasets, respectively.
 The pattern oracle baseline yields 0.21/0.20 micro/macro MRR for \textit{profession}, 0.67 accuracy for \textit{gender}, and 0.41/0.40 micro/macro MRR for \textit{age}. HAMs significantly outperform this baseline, indicating that identifying explicit mentions of attribute values is insufficient in our dialogue setting.
 
 HAMs outperform the distantly supervised models (i.e., \textit{embedding similarity}, \textit{logistic regression} and \textit{Multilayer Perceptron (MLP)}) in the vast majority of cases.
-MLP and logistic regression perform best in several occasions for \textit{profession} and \textit{age} attributes when micro MRR is considered. However, their macro MRR scores fall behind HAMs, showing that HAMs are better at dealing with 
-multi-valued attributes having skewed distribution.
+MLP and logistic regression perform best in several occasions for \textit{profession} and \textit{age} attributes when micro MRR is considered. However, their macro MRR scores fall behind HAMs', showing that HAMs are better at dealing with multi-valued attributes having skewed distribution.
 The low performance of these distantly supervised methods may be related to their strong assumption that every sequence of four utterances contains information about the attribute being predicted.
 
-Comparing with baselines from prior work, HAMs significantly outperform N-GrAM \cite{basile:2017} in many cases,
+Comparing with baselines from prior work, HAMs significantly outperform N-GrAM in many cases,
 suggesting that representing utterances using word embeddings, instead of merely character and word n-grams, is important for this task. 
-Using neural clusters (W2V-C) as features for the classification task \cite{pietro:ACL15} works quite well for the \textit{age} attribute, where different `topics' may correlate with different age categories (e.g. `video game' for \textit{teenager} and `office' for \textit{adult}).
-However, W2V-C is often significantly worse for the \textit{profession}, \textit{gender}, and \textit{family status} attributes, which may be caused by similar discriminative words (e.g., `husband'/`wife' for \textit{gender}) being clustered together in the same topic.
+Using neural clusters (W2V-C) as features for the classification task \cite{pietro:ACL15} works quite well for the \textit{age} attribute, where different `topics' may correlate with different age categories (e.g. `\textit{video game}' for \textit{teenager} and `\textit{office}' for \textit{adult}).
+However, W2V-C is often significantly worse for the \textit{profession}, \textit{gender}, and \textit{family status} attributes, which may be caused by similar discriminative words (e.g., `\textit{husband}'/`\textit{wife}' for \textit{gender}) being clustered together in the same topic.
 The CNN baseline \cite{bayot:MOD17} is significantly worse than the best method in the majority of cases. Furthermore, it generally performs substantially worse than \method{CNN}, further illustrating the advantage of aggregating utterances within the model.
+
+\input{ham/family_table}
 
 In general, \method{avg} performs worse than the other HAMs%\footnote{
 %For the sake of brevity we neither instantiate nor report results for LSTM-based HAMs, such as $f_{utter}=\text{\textit{LSTM}}$ and $f_{subj}=attn{\text -}avg$ or $f_{subj}=\text{\textit{LSTM}}$. These models were unable to outperform \method{avg}, with the best variant obtaining a micro MRR of only 0.31 after grid search (profession attribute on MovieChAtt; Table \ref{tab:model-comparison-profession-gender}). This is in line with recent results suggesting that RNNs are not ideal for identifying semantic features \cite{tang2018self}.}
 , demonstrating that simple averaging is insufficient
 for representing utterances and speakers.
 In most cases \method{CNN} performs slightly worse than \method{CNN-attn}, demonstrating
-the value of exploiting an attention mechanism to combine speaker's utterances.
+the value of exploiting the attention mechanism to combine speaker's utterances.
 
 \method{CNN-attn} and \method{2attn}  
 achieve the strongest performance across attributes, with \method{CNN-attn} generally performing better.
-\method{CNN-attn} performs particularly well on the \textit{gender} and \textit{family status} attributes, where detecting bigrams may yield an advantage. For example, \method{2attn} places high attention weights on terms like `family' and `girlfriend' where the previous term may be a useful signal (e.g., `my family' vs. `that family').
+\method{CNN-attn} performs particularly well on the \textit{gender} and \textit{family status} attributes, where detecting bigrams may yield an advantage. For example, \method{2attn} places high attention weights on terms like `\textit{family}' and `\textit{girlfriend}' where the previous term may be a useful signal (e.g., `\textit{my family}' vs. `\textit{that family}').
 
-The gap between the baselines and HAMs is often smaller on PersonaChat compared with the other two datasets, illustrating the simplicity of crowdsourced dialogues as compared to movie scripts or Reddit discussions. This is also supported by the fact that the maximum metrics on PersonaChat are much higher. There are several factors that may be responsible for this: \textit{(1)} the dialogues in PersonaChat were created by the crowdworkers with the goal of using predefined personal facts, which often leads to those facts being stated in a straightforward manner (e.g., saying ``My job is a writer'' given the persona description sentence ``I am an writer''); \textit{(2)} PersonaChat utterances are much shorter 
+The gap between the baselines and HAMs is often smaller on PersonaChat compared with the other two datasets, illustrating the simplicity of crowdsourced dialogues as compared to movie scripts or Reddit discussions. This is also supported by the fact that the maximum metrics on PersonaChat are much higher. There are several factors that may be responsible for this: \textit{(1)} the dialogues in PersonaChat were created by the crowdworkers with the goal of using predefined personal facts, which often leads to those facts being stated in a straightforward manner (e.g., saying ``\textit{My job is a writer}'' given the persona description sentence ``\textit{I am an writer}''); \textit{(2)} PersonaChat utterances are much shorter 
 and there are far fewer utterances per character (i.e., a maximum of 4 in PersonaChat vs. a minimum of 20 in MovieChAtt), leading to a higher density of information related to attributes; and \textit{(3)} the same persona descriptions in PersonaChat are used across multiple separate dialogue sessions, giving models an opportunity to learn specific personas.
 
-For the sake of brevity we neither instantiate nor report results for LSTM-based HAMs, such as $f_{utter}=\text{\textit{LSTM}}$ and $f_{subj}=attn{\text -}avg$ or $f_{subj}=\text{\textit{LSTM}}$. These models were unable to outperform \method{avg}, with the best variant obtaining a micro MRR of only 0.31 after grid search (profession attribute on MovieChAtt; Table \ref{tab:model-comparison-profession}). This is in line with recent results suggesting that RNNs are not ideal for identifying semantic features \cite{tang2018self}.
+For the sake of brevity we neither instantiate nor report results for LSTM-based HAMs, such as $f_{utter}=\text{\textit{LSTM}}$ and $f_{subj}=attn{\text -}avg$ or $f_{subj}=\text{\textit{LSTM}}$. These models were unable to outperform \method{avg}, with the best variant obtaining a micro MRR of only 0.31 after grid search (profession attribute on MovieChAtt, Table \ref{tab:model-comparison-profession}). This is in line with recent results suggesting that RNNs are not ideal for identifying semantic features \cite{tang2018self}.
 
-\input{family_table}
-\input{age_table}
+\input{ham/age_table}
 
 \subsection{Study on word embeddings}
 In Section \ref{findings} we represented terms using embeddings from a word2vec skip-gram model trained on Google News \cite{embed1}.
-In this study we compare the Google News embeddings with word2vec embeddings trained on Reddit posts, GloVe \cite{pennington2014glove} embeddings trained on Common Crawl, and GloVe embeddings trained on Twitter. We also consider $ELMo$ \cite{Peters:2018}, a contextualized embedding model. To capture semantic variations, this model creates a contextualized character-based representation of words using a bidirectional language model. We use AllenNLP's small ELMo model\footnote{https://allennlp.org/elmo} trained on the 1 Billion Word Benchmark of news crawl data from WMT 2011 \cite{41880}. 
+In this study we compare the Google News embeddings with word2vec embeddings trained on Reddit posts, GloVe \cite{pennington2014glove} embeddings trained on Common Crawl, and GloVe embeddings trained on Twitter. We also consider $ELMo$ \cite{Peters:2018}, a contextualized embedding model. To capture semantic variations, this model creates a contextualized character-based representation of words using a bidirectional language model. We use AllenNLP's small ELMo model\footnote{\url{https://allennlp.org/elmo}} trained on the 1 Billion Word Benchmark of news crawl data from WMT 2011 \cite{41880}. 
 
 
 \begin{table}[h!]
@@ -100,6 +100,7 @@ Similarly, removing both types of attention corresponds to \method{avg}, which c
 \begin{table}[th!]
 \centering
 \small
+\begin{adjustbox}{width=0.45\textwidth,center}
 \begin{tabular}{@{}lcc@{}}
 \toprule
                          & \multicolumn{1}{c}{MRR} & \multirow{2}{*}{AUROC} \\
@@ -112,6 +113,7 @@ $-$ attention on terms       & 0.49 / 0.40 & 0.81 \\
 $-$ attention on $R^{utter}$ & 0.48 / 0.34 & 0.82 \\
 \bottomrule
 \end{tabular}
+\end{adjustbox}
 \caption{Ablation study for the \textit{profession} attribute.}
 \label{tab4}
 \end{table}
@@ -124,14 +126,14 @@ Intuitively, attention provides a useful signal because it allows the model to f
  \centering
  \begin{subfigure}{.9\textwidth}
    \centering
-   \includegraphics[scale=0.43]{pics/military.png}
+   \includegraphics[scale=0.5]{ham/pics/military.png}
    \caption{\textit{profession}: military personnel}
    \label{fig:att-profession}
  \end{subfigure}
  \\[8pt]
  \begin{subfigure}{.9\textwidth}
    \centering
-   \includegraphics[scale=0.43]{pics/child.png}
+   \includegraphics[scale=0.5]{ham/pics/child.png}
    \caption{\textit{age} (category): child}
    \label{fig:att-age}
  \end{subfigure}
@@ -144,19 +146,12 @@ Intuitively, attention provides a useful signal because it allows the model to f
  \centering
  \begin{subfigure}{.9\textwidth}
    \centering
-   \includegraphics[scale=0.17]{pics/gender_att.png}
-   \caption{\textit{gender}: female}
-   \label{fig:att-gender}
- \end{subfigure}
- \\[8pt]
- \begin{subfigure}{.9\textwidth}
-   \centering
-   \includegraphics[scale=0.17]{pics/family_att.png}
+   \includegraphics[scale=0.2]{ham/pics/family_att.png}
    \caption{\textit{family status}: married}
    \label{fig:att-family}
  \end{subfigure}
 \vspace*{-0.3cm}
-\caption{Attention visualization for \textit{gender} and \textit{family status} attributes on RedDust.}
+\caption{Attention visualization for \textit{family status} attributes on RedDust.}
 \label{fig:att-gender-family}
 \end{figure*}
 
@@ -164,7 +159,7 @@ Intuitively, attention provides a useful signal because it allows the model to f
 \subsection{Case study on attention weights}
 
 In order to illustrate the types of terms the models are looking for, we display \method{2attn}'s term and utterance weights for 
-\textit{profession} and \textit{age} attributes (on the MovieChAtt dataset) in Figure \ref{fig:att-profession-age}, as well as \textit{gender} and \textit{family status} attributes (on RedDust) in Figure \ref{fig:att-gender-family}.
+\textit{profession} and \textit{age} attributes (on the MovieChAtt dataset) in Figure \ref{fig:att-profession-age}, as well as \textit{family status} attribute (on RedDust) in Figure \ref{fig:att-gender-family}.
 While \method{2attn} is 
 %sometimes
 often outperformed by \method{CNN-attn}, this model is more interpretable because individual terms are considered in isolation.
@@ -174,19 +169,19 @@ often outperformed by \method{CNN-attn}, this model is more interpretable becaus
 %Some are skewed and biased, and not representative
 %for the envisioned downstream applications.
 
-When predicting \textit{military personnel} as the \textit{profession} (Figure \ref{fig:att-profession}), the model focuses on military terms such as \textit{mission}, \textit{guard}, \textit{barracks}, and \textit{colonel}.
-When predicting \textit{child} as the \textit{age category} (Figure \ref{fig:att-age}), on the other hand, the model focuses on terms a child is likely to use, such as \textit{pet}, \textit{mommy}, and \textit{daddy}.
-According to Reddit posts, \textit{female} gender is suggested by terms such as \textit{boyfriend}, \textit{pms} and \textit{jewelry} (Figure \ref{fig:att-gender}). Meanwhile, \textit{married} users were identified through terms such as \textit{dated}, \textit{fiance} and \textit{divorces}, along with obvious terms like \textit{marrying} and \textit{marriages} (Figure \ref{fig:att-family}). 
+When predicting \textit{military personnel} as the \textit{profession} (Figure \ref{fig:att-profession}), the model focuses on military terms such as `\textit{mission}', `\textit{guard}', `\textit{barracks}', and `\textit{colonel}'.
+When predicting \textit{child} as the \textit{age category} (Figure \ref{fig:att-age}), on the other hand, the model focuses on terms a child is likely to use, such as `\textit{pet}', `\textit{mommy}', and `\textit{daddy}'.
+According to Reddit posts,  \textit{married} users were identified through terms such as `\textit{dated}', \textit{fiance}' and `\textit{divorces}', along with obvious terms like `\textit{marrying}' and `\textit{marriages}' (Figure \ref{fig:att-family}). 
 These examples illustrate how the model is able to infer a speaker's attribute by aggregating signals across utterances.
 
 In addition to looking at specific utterances, we investigated which terms the model is strongly associating with a specific attribute. To do so, we computed attribute value probabilities for each term in the corpus, and kept the top terms for each attribute value. The results using \method{2attn} are shown in Table \ref{tab6}, which is divided into words that appear informative (top section) and words that do not (bottom section). In the case of informative words, there is a clear relationship between the words and the corresponding profession. 
-Many of the uninformative words appear to be movie-specific, such as names (e.g., xavier, leonard) and terms related to a \textit{waiter's} role in a specific movie (e.g., rape, stalkers). Reducing the impact of setting-specific signals like this is one direction for future work.
+Many of the uninformative words appear to be movie-specific, such as names (e.g., `\textit{xavier}', `\textit{leonard}') and terms related to a \textit{waiter's} role in a specific movie (e.g., `\textit{rape}', `\textit{stalkers}'). Reducing the impact of setting-specific signals like this is one direction for future work.
 
 \begin{table}[t]
 \centering
 \small
-%\begin{adjustbox}{width=0.475\textwidth,center}
-\begin{tabular}{@{}l@{\hskip 0.5\tabcolsep}l@{}}
+\begin{adjustbox}{width=0.7\textwidth,center}
+\begin{tabular}{@{}l@{\hskip 2.7\tabcolsep}l@{}}
 \toprule
 \textbf{profession} & \textbf{significant words} \\
 \midrule
@@ -200,7 +195,7 @@ Many of the uninformative words appear to be movie-specific, such as names (e.g.
 \textit{waiter} & rape, stalkers, murdered, overheard, bothering \\
 \bottomrule
 \end{tabular}
-%\end{adjustbox}
+\end{adjustbox}
 \caption{Top-5 words from \method{2attn} characterizing each profession.
 }
 \label{tab6}
@@ -226,7 +221,7 @@ Improving HAMs' transfer learning performance is a direction for future work.
 \begin{table}[t]
 \centering
 \small
-\begin{adjustbox}{width=0.9\textwidth,center}
+\begin{adjustbox}{width=0.8\textwidth,center}
 \begin{tabular}{@{}lc@{}cc@{\hskip 1\tabcolsep}cc@{}c@{}}
 \toprule
 \multirow{3}{*}{\textbf{Models}} & \multicolumn{2}{c}{\textbf{profession}\vspace{3pt}} & \multicolumn{2}{c}{\textbf{gender}} & \multicolumn{2}{c}{\textbf{age}} \\
@@ -248,7 +243,7 @@ Improving HAMs' transfer learning performance is a direction for future work.
 \begin{table}[t]
 \centering
 \small
-%\begin{adjustbox}{width=0.475\textwidth,center}
+\begin{adjustbox}{width=0.7\textwidth,center}
 \begin{tabular}{@{}lcccccc@{}}
 \toprule
 \multirow{3}{*}{\textbf{Models}} & \multicolumn{2}{c}{\textbf{profession}\vspace{3pt}} & \multicolumn{2}{c}{\textbf{gender}} & \multicolumn{2}{c}{\textbf{family status}} \\
@@ -260,7 +255,7 @@ Improving HAMs' transfer learning performance is a direction for future work.
 \method{2attn}                & \textbf{0.21} / \textbf{0.18} & \textbf{0.71} & 0.51 & \textbf{0.54} & 0.62 & 0.64 \\
 \bottomrule
 \end{tabular}
-%\end{adjustbox}
+\end{adjustbox}
 \caption{Transfer learning performance of pre-trained RedDust models on PersonaChat.}
 \label{tab:transfer-learning-reddit-personachat}
 \end{table}
@@ -269,14 +264,14 @@ Improving HAMs' transfer learning performance is a direction for future work.
 In this section we investigate common misclassifications on the MovieChAtt dataset for the \textit{profession} attribute, which is the most challenging attribute with the most possible values.
 A confusion matrix for \method{2attn} is shown in Figure \ref{matrix}.
 Dotted lines indicate several
-interesting misclassifications: \textit{policemen} are often confused with \textit{detectives} and \textit{special agents} (red line); \textit{scientists} are confused with \textit{astronauts} (yellow line), because sci-fi films often feature characters who arguably serve in both roles; and a \textit{child} is often labeled as a \textit{student} or a \textit{housewife} (green line) because they sometimes use similar terms (e.g., `school' is used by both children and students, and `mommy' is used by both children and housewives).
+interesting misclassifications: \textit{policemen} are often confused with \textit{detectives} and \textit{special agents} (red line); \textit{scientists} are confused with \textit{astronauts} (yellow line), because sci-fi films often feature characters who arguably serve in both roles; and a \textit{child} is often labeled as a \textit{student} or a \textit{housewife} (green line) because they sometimes use similar terms (e.g., `\textit{school}' is used by both children and students, and `\textit{mommy}' is used by both children and housewives).
 Finally, 
 many occupations are confused with \textit{criminal}, which is the most common profession in MovieChAtt.
 
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.7\textwidth]{pics/conf_new.png}
+\includegraphics[width=0.8\textwidth]{ham/pics/conf_new.png}
 \vspace*{-0.3cm}
 \caption{Confusion matrix computed with \method{2attn}. True positives are not shown. Darker squares indicate more misclassifications.}
 \label{matrix}

@@ -3,7 +3,7 @@
 
 In this section we describe \textit{Hidden Attribute Models} (HAMs) 
 for predicting the values of a given personal attribute using a sequence of utterances made by a speaker.
-Formally, given a speaker $S$ and an attribute $P$, our goal is to predict a probability distribution over attribute values $O$ for the attribute based on the speaker's utterances from a dialogue corpus (e.g., a movie script). Each speaker $S$ is associated with a sequence of $N$ utterances $[U_{1}, U_{2}, ..., U_{N}]$ containing $M$ terms each, $U_1 = [U_{1,1}, U_{1,2}, ..., U_{1,M}]$. Each term $U_{n,m}$ is represented as a $d$-dimensional word embedding.
+Formally, given a speaker $S$ and an attribute $P$, our goal is to predict a probability distribution over attribute values $O$ for the attribute, based on the speaker's utterances from a dialogue corpus (e.g., a movie script). Each speaker $S$ is associated with a sequence of $N$ utterances $[U_{1}, U_{2}, ..., U_{N}]$ containing $M$ terms each, $U_1 = [U_{1,1}, U_{1,2}, ..., U_{1,M}]$. Each term $U_{n,m}$ is represented as a $d$-dimensional word embedding.
 
 HAMs
 can be described in terms of three functions and their outputs:
@@ -39,15 +39,14 @@ FC(x) = \sigma(Wx+b)
 \end{equation}
 where $\sigma$ is an activation function and $W$ and $b$ are learned weights.
 The full \method{avg} model is then
-\begin{equation}
-R^{utter}_n = avg(U_n)
-\end{equation}
-\begin{equation}
-R^{subj} = avg(R^{utter})
-\end{equation}
-\begin{equation}
+\begin{spreadlines}{10pt}  
+\begin{gather}
+R^{utter}_n = avg(U_n) \\
+R^{subj} = avg(R^{utter}) \\
 O = FC_1(FC_2(R^{subj}))
-\end{equation}
+\end{gather}
+\end{spreadlines}
+
 where $FC_2$ uses a sigmoid activation and $FC_1$ uses a softmax activation function in order to predict a probability distribution over object values.
 
 \paragraphHd{\method{2attn}} extends \method{avg} with two self-attention mechanisms, allowing the model to learn which terms and utterances to focus on for the given predicate. In this model the utterance representations and speaker representations are computed using attention-weighted averages,
@@ -57,23 +56,22 @@ attn{\text -}avg(X, \alpha) = \sum_{i=1}^{|X|} X_i \alpha_i
 with the attention weights calculated over utterance terms and utterance representations, respectively.
 That is, $f_{utter}(X)=attn{\text -}avg(X, \alpha^{term})$ and $f_{so}(X)=attn{\text -}avg(X, \alpha^{utter})$, where
 the attention weights for each term in an utterance $U_i$ are calculated as
-\begin{equation} \label{eq:attn1}
-w^{term}_i = \sigma(W^{term} U_i + b^{term})
-\end{equation}
-\begin{equation} \label{eq:attn2}
+\begin{spreadlines}{15pt}  
+\begin{gather} \label{eq:attn1}
+w^{term}_i = \sigma(W^{term} U_i + b^{term}) \\ \label{eq:attn2} 
 \alpha^{term}_{i,j} = \frac{exp(w^{term}_{i,j})}{\sum_j exp(w^{term}_{i,j})}
-\end{equation}
+\end{gather}
+\end{spreadlines}
+
 and the utterance representation weights $\alpha^{utter}$ are calculated analogously over $R^{utter}$.
 Given these attention weights, the \method{2attn} model is
-\begin{equation}
-R^{utter}_n = attn{\text -}avg(U_n, \alpha^{term})
-\end{equation}
-\begin{equation}
-R^{sp} = attn{\text -}avg(R^{utter}, \alpha^{utter})
-\end{equation}
-\begin{equation}
+\begin{spreadlines}{10pt} 
+\begin{gather}
+R^{utter}_n = attn{\text -}avg(U_n, \alpha^{term}) \\
+R^{sp} = attn{\text -}avg(R^{utter}, \alpha^{utter}) \\
 O = FC(R^{sp})
-\end{equation}
+\end{gather}
+\end{spreadlines}
 where $f_{obj}$ function $FC$ uses a softmax activation function as in the previous model.
 
 \paragraphHd{\method{CNN}} considers n-grams when building utterance representations, unlike both previous models that treat each utterance as a bag of words. In this model $f_{utter}$ is implemented with a text classification CNN \cite{cnn} with a ReLU activation function and $k$-max pooling across utterance terms (i.e., each filter's top $k$ values are kept).
@@ -84,7 +82,8 @@ As in the previous model, a single fully connected layer with a softmax activati
 This mirrors the approach used by \method{2attn}, with $f_{sp}=attn{\text -}avg(X, \alpha^{utter})$ and $\alpha^{utter}$ computed using equations \ref{eq:attn1} and \ref{eq:attn2} as before.
 This model uses the same $f_{utter}$ and $f_{obj}$ as \method{CNN}. That is, utterance representations are produced using a CNN with $k$-max pooling, and a single fully connected layer produces the model's output.
 
-\subsection{Training}
+\vspace{0.5cm}
+\paragraphHd{Training}
 All 
 HAMs
 were trained with gradient descent to minimize a cross-entropy loss. 

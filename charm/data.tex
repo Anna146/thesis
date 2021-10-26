@@ -2,7 +2,7 @@
 \vspace{-5pt}
 \begin{figure}[th!]
 \centering
-\includegraphics[width=0.8\textwidth]{imgs/brew.png}
+\includegraphics[width=0.7\textwidth]{imgs/brew.png}
 \caption{
 Example of an input utterance with cues hinting that \emph{brewing} is the user's hobby.
 }
@@ -20,7 +20,7 @@ We define lists of their attribute values based on Wikipedia lists\footnote{Wiki
 \vspace{-5pt}
 \subsection{Users' utterances}
 
-As users' utterances we used the dataset of Reddit submissions labeled with weak supervision, described in Section 2.3.5.
+As users' utterances we used the dataset of Reddit submissions labeled with weak supervision, described in Section \ref{data_snorkel}.
 For our experiments,
 we removed all posts containing explicit personal assertions that we used for labeling each user, because we want to test the ability of CHARM to predict attribute values based on inference, as opposed to explicit pattern extraction. 
 
@@ -37,12 +37,12 @@ In this work, we consider three different Web document collections; summary stat
 Each document may be associated with multiple attribute values, which matches the same aspect of the users' labeling. 
 To provide more diversity and comprehensiveness we augmented our predefined lists of known attribute values with their synonyms and hyponyms.
 
-Note that the approaches used to construct the document collections are straightforward and easily applicable for further attributes, such as favorite travel destination or favorite book genre.
+Note that the approaches used to construct the document collections are straightforward and easily applicable for further attributes, such as \textit{favorite travel destination} or \textit{favorite book genre}.
 
 \begin{table}[h!]
 \centering
 \small
-\begin{adjustbox}{width=0.65\textwidth}
+\begin{adjustbox}{width=0.6\textwidth}
 \begin{tabular}{llrrrr}
 \toprule
                     &                                  & \textbf{min} & \textbf{max} & \textbf{avg} & \textbf{total} \\ 
@@ -71,10 +71,10 @@ This collection is an extension of \wiki{page} that additionally includes pages 
 This allows us to include pages about concepts related to the attribute values, such as tools used for a profession and the profession's specializations.
 To construct \wiki{category}, we identified at least one relevant category for each attribute value and included all leaf pages under the category (i.e., including no subcategories).
 
-\paragraphHd{Web search}. To create this collection we queried a Web search engine using attribute-specific patterns: \textit{``my profession as $\langle$profession value$\rangle$''} and \textit{``my favorite hobby is $\langle$hobby value$\rangle$''}.
+\paragraphHd{Web search}. To create this collection we queried a Web search engine using attribute-specific patterns: \texttt{my profession as <profession value>} and \texttt{my favorite hobby is <hobby value>}.
 The collection consists of the top 100 documents returned for each value.
 Such patterns can be created with low effort by evaluating a few sample queries.
-Alternatively, patterns could be mined from a corpus or simplified to the generic form \textit{``$\langle$attribute$\rangle$ $\langle$value$\rangle$''}.
+Alternatively, patterns could be mined from a corpus or simplified to the generic form \texttt{<attribute> <value>}.
 
 
 

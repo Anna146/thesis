@@ -1,10 +1,10 @@
 \section{Experimental setup}
 
 \subsection{Data splitting and preprocessing.} 
-For experiments with PRIDE we used Film Relationship (FiRe) dataset, described in Section 3.1.2.
+For experiments with PRIDE we used Film Relationship (FiRe) dataset, described in Section \ref{relatinoship_dataset}.
 From the input scripts we removed personal names\footnote{
 %Based on the list in 
-\href{https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-data}{\texttt{\justify https://catalog.data.gov/dataset/baby-names-from-social-\\security-card-applications-national-data}}} and movie-specific words (which we defined as words found in only one movie script), to reduce overfitting to movie domain or genre.
+\href{https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-data}{\texttt{\justify https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-\\national-data}}} and movie-specific words (which we defined as words found in only one movie script), to reduce overfitting to movie domain or genre.
 
 We performed five-fold cross-validation, training the models on three folds and choosing hyperparameter settings according to the performance on 1-fold validation set. We report the results on the remaining 1-fold test set. We arranged the folds so that the sets of movies, where the input character pairs come from, are disjoint. With that as a hard restriction, we tried to maximally balance the label distributions across the folds. For that we created multiple random assignments of movies to folds and chose the one that maximized the balance metrics, which we defined as follows:
 \begin{gather*}
@@ -16,13 +16,13 @@ where $S_l$ denotes the number of pairs for the label l in the whole dataset, an
 
 \subsection{Model setup and evaluation metrics}
 
-We fine-tuned a pretrained BERT model (bert-base-uncased) to create word embeddings. To produce interpersonal dimension embeddings, we train BERT on the labeled data from \citet{rashid2018characterizing} on each dimension separately, resulting in 768-dimensional representations.
+We fine-tuned a pretrained BERT model (\textit{bert-base-uncased}) to create word embeddings. To produce interpersonal dimension embeddings, we train BERT on the labeled data from \citet{rashid2018characterizing} on each dimension separately, resulting in 768-dimensional representations.
 
-We gathered the data about speakers' ages by crawling \url{imdb.com} for the ages of the corresponding actors in the year the film/series was made. To create age embeddings we calculate the age difference (\emph{diff}) between the speakers and assign it to one of the predefined \emph{diff} bins. We set \emph{diff} bins to be [(-inf; -13], [-12; -6], [-5; -1], [0; 4], [5; 11], [12; +inf]] (a negative age difference means that speaker B is younger than speaker A).
+We gathered the data about speakers' ages by crawling \url{imdb.com} for the ages of the corresponding actors in the year the film/series was made. To create age embeddings we calculate the age difference (\emph{diff}) between the speakers and assign it to one of the predefined \emph{diff} bins. We set \emph{diff} bins to be $[(-inf; -13], [-12; -6], [-5; -1], [0; 4], [5; 11], [12; +inf]]$ (a negative age difference means that speaker B is younger than speaker A).
 
-\paragraphHd{Training mechanism.} PRIDE is trained in two steps: first we train the model without external representations (age difference and interpersonal dimensions). The pretrained base model checkpoint is then used in full PRIDE to train external representations' embeddings and classification layer (the weights of the base model stay frozen).
+\paragraphHd{Training mechanism.} PRIDE is trained in two steps: first we train the model without external representations (age difference and interpersonal dimensions). Then the pretrained base model checkpoint is used in full PRIDE to train external representations' embeddings and classification layer (the weights of the base model stay frozen).
 
-We trained the model with Binary Cross Entropy loss. During training we oversampled the under-represented labels. We perform grid search to tune the following hyperparameters: training epoch, learning rate (we use different learning rates for BERT and the rest of the model), word and utterance aggregation (among \textit{max}, \textit{average} and \textit{attention}).
+We trained the model with \textit{binary cross-entropy} loss. During training we oversampled the under-represented labels. We perform grid search to tune the following hyperparameters: training epoch, learning rate (we use different learning rates for BERT and the rest of the model), word and utterance aggregation (among \textit{max}, \textit{average} and \textit{attention}).
 We perform multi-label classification by predicting all labels with a score over a threshold, which we treat as a hyperparameter.
 
 \paragraphHd{Evaluation metrics.} We compute macro-averaged multilabel precision, recall and F1 score as evaluation metrics. During grid search we optimized F1 score of the performance on the development set.
@@ -31,7 +31,7 @@ We perform multi-label classification by predicting all labels with a score over
  We compare the performance of PRIDE with the following baselines:
  \squishlist
      \item \textbf{RNN} is a BiLSTM \cite{graves2005framewise} architecture adapted by \citet{welch2019look}, which was trained on short context windows. Before each utterance a special token ('\textlangle ME\textrangle' or '\textlangle OTHER\textrangle') is prepended to represent the speaker.
-     \item \textbf{HAM}, described in Chapter 3. To allow multiple relationship predictions we trained \method{2attn} for multi-label classification using Binary Cross-Entropy loss. HAMs are designed to process the utterances from a single speaker; for the experiments in this chapter we did not change the architecture of \method{2attn}, which was trained on the input from both speakers without incorporating any speaker information.
+     \item \textbf{HAM}, described in Chapter \ref{chap_ham}. To allow multiple relationship predictions we trained \method{2attn} for multi-label classification using binary cross-entropy loss. HAMs are designed to process the utterances from a single speaker; for the experiments in this chapter we did not change the architecture of \method{2attn}, which was trained on the input from both speakers without incorporating any speaker information.
      \item \textbf{BERT$_{conv}$} for sequence classification \cite{lu2020improving} runs on the concatenation of utterances divided by a $[\textrm{SEP}]$ symbol and segment embeddings corresponding to the speaker of each utterance. The sequences of utterances greater than the allowed input length are cropped.
      \item \textbf{BERT$_{ddrel}$} 
      \cite{jia2020ddrel} 

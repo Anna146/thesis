@@ -12,7 +12,7 @@ The score aggregator then ranks the attribute values based on the documents' sco
 
 \begin{figure}[t!]
 \centering
-\includegraphics[width=0.5\textwidth]{imgs/scheme.png}
+\includegraphics[width=0.45\textwidth]{imgs/scheme.png}
 \vspace*{-0.3cm}
 \caption{The pipeline of CHARM.
 The Term Scoring Model assigns scores $l_0 .. l_M$ to the terms in the input utterances $u_0..u_N$. The terms with the highest scores are passed to the Retrieval Model, which queries the document collection $D$. The document scores are aggregated to produce attribute value scores
@@ -47,7 +47,7 @@ The term scoring model
 should produce high scores for terms that are descriptive of the user and of the attribute in general, instead of a specific attribute value. This means that it should be able to exploit background knowledge and a term's context to 
 judge its relevance to the attribute.
 For instance, having seen the phrase \emph{``stayed late at the hospital''} for the 
-\emph{physician} at training time, at prediction time an ideal model would correctly estimate the importance of the word `library' in the phrase \emph{``stayed late at the library''}, even if there were no instances of \emph{student} in the training set. Considering this, we give preference to the models that operate on sequences, as opposed to the bag-of-word models. We select BERT \cite{devlin2018bert} as our term scoring model, because it is a sequential model incorporating world knowledge that should effectively use word context, predicting whether terms are related to an attribute.
+\emph{physician} at training time, at prediction time an ideal model would correctly estimate the importance of the word `\textit{library}' in the phrase \emph{``stayed late at the library''}, even if there were no instances of \emph{student} in the training set. Considering this, we give preference to the models that operate on sequences, as opposed to the bag-of-word models. We select BERT \cite{devlin2018bert} as our term scoring model, because it is a sequential model incorporating world knowledge that should effectively use word context, predicting whether terms are related to an attribute.
 
 For further description, let us suppose the cue detector picks the words $Q = q_0 ... q_K$ as the query terms for CHARM's value ranking stage. A typical query would consist of the terms associated with the correct attribute value (for example, $Q=$``\textit{library studied exam grades classmates}'').
 
@@ -64,7 +64,7 @@ The document collection
 could be a set
 of Web pages, where each page indicates a specific attribute value, $v_0 ... v_L$. 
 For example, by 
-generating a search-engine query ``hobby $\langle$value$\rangle$'' we can gather 
+generating a search-engine query ``\textit{hobby $\langle$value$\rangle$}'' we can gather 
 web pages related to specific hobbies. 
 
 The ranker $\rho (Q, d_k)$ evaluates the query $Q$,
@@ -72,7 +72,7 @@ constructed by the cue detector,
 against each document $d_k$ in the document collection to produce document relevance scores $s_0 ... s_L$. For the example query ``\textit{library studied exam grades classmates}s'', the document \emph{Wiki:Dean's List} labeled with \emph{student} will get a higher score than \emph{Wiki:Junior doctor} (for \emph{physician}). 
 
 We consider two particular instantiations of the ranker:
-BM25 \cite{robertson1995okapi} and KNRM \cite{xiong2017end}, described in Chapter 2.7.
+BM25 \cite{robertson1995okapi} and KNRM \cite{xiong2017end}, described in Chapter \ref{back_ir}.
 BM25 is a strong unsupervised retrieval model, whereas KNRM is an efficient neural retrieval model that can consider semantic similarity via term embeddings in addition to considering exact matches of query terms. 
 %The ranker can also be instantiated by any existing IR model.
 

@@ -19,10 +19,10 @@ For the experiments with \emph{seen} values, we randomly split the users into tr
 \paragraphHd{Hyperparameters.}
 BERT, the term selection component, generates a contextualized embedding 
 for each input term, which we process with a fully connected layer to produce a term score for each word in its context. Specifically, we use the pre-trained BERT base-uncased model with 12 transformer layers. 
-To reduce BERT's computational requirements, we discard the last 6 transformer layers (i.e., we use embeddings produced by the earliest 6 layers) after observing in pilot experiments that this outperformed a distilled BERT model \cite{sanh2019distilbert}.
+To reduce BERT's computational requirements, we discard the last 6 transformer layers (i.e., we use embeddings produced by the earliest 6 layers) after observing in pilot experiments that this outperformed a distilled BERT model~\cite{sanh2019distilbert}.
 
 Following prior work \cite{copacrr}, KNRM was trained
-with frozen word2vec embeddings on data from the 2011-2014 \textsc{TREC} Web Track with the 2009-2010 years for validation. We initialize KNRM with these pre-trained weights.
+with frozen word2vec embeddings on data from the 2011-2014 \textsc{TREC} Web Track\footnote{\url{https://trec.nist.gov/data/webmain.html}} with the 2009-2010 years for validation. We initialize KNRM with these pre-trained weights.
 
 During training, we sample 5 negative labels (i.e., incorrect attribute values) to be ranked when calculating the nDCG reward.
 For each label, we sample a subset of 15 documents to represent the label (i.e., attribute value). If the document collection has fewer than 15 documents for a label (e.g., \wiki{page}), we consider all the label's available documents.
@@ -58,7 +58,7 @@ BERT IR    &       56.2       &  72.7
 \end{table}
 
 \paragraphHd{Baselines.} For the \emph{unseen} experiments, we evaluate CHARM's performance against an end-to-end BERT ranking method and against a BM25 \cite{Robertson:2009:PRF:1704809.1704810} ranker combined with two state-of-the-art unsupervised keyword extraction methods: 
-TextRank \cite{mihalcea2004textrank} and RAKE \cite{rose2010automatic}.
+TextRank~\cite{mihalcea2004textrank} and RAKE~\cite{rose2010automatic}.
 We additionally include a baseline giving the user's full utterances as input to BM25 (baseline: \emph{No-keyword}).
 
 Following related work \cite{nogueira2019passage, dai2019deeper}, we train the BERT IR baseline using the binary cross-entropy loss to predict the relevance of each document to the user's utterances (acting as queries).
@@ -67,21 +67,17 @@ To fit both utterances and documents into the input size of BERT, we split both 
 Given $N$ utterances and $M$ documents, this baseline processes $N \times M$ inputs with BERT, whereas CHARM processes $N$ inputs with BERT and $M$ inputs with an efficient ranking method.
 This makes the BERT IR baseline very computationally expensive on the Wiki-category and Web search document collections, which contain 4,000-12,000 documents.
 In order to run the baseline on these collections, we sample three documents per label; even with this change, BERT IR is 60x slower than CHARM. More details on the models' running time are in Table \ref{tab:time}.
-%We use the full document collection with Wiki-page.
 
-For the \emph{seen} experimental setup, we compare CHARM with both state-of-the-art supervised approaches for inferring attribute values
-:
+For the \emph{seen} experimental setup, we compare CHARM with state-of-the-art supervised approaches for inferring attribute values:
 \squishlist
     \item \emph{New Groningen Author-profiling Model (N-GrAM)} \cite{basile:2017} exploits a linear Support Vector Machine (SVM) classifier \cite{cortes1995support} that utilizes character n-grams ($n=3,4,5$) and term n-grams ($n=1,2$) with sublinear tf-idf weighting as features. 
-    \item \emph{Neural Clusters (W2V-C)} \cite{pietro:ACL15} were obtained by applying spectral clustering ($n=200$) on a word similarity matrix, computed via cosine similarity of pre-trained word embeddings. The ratio of words from each cluster is then used as feature vectors for a Gaussian Process (GP) classifier \cite{chu2005gaussian}, which is the best reported classification model for the task \cite{pietro:ACL15}. 
-    \item \emph{Convolutional Neural Network (CNN)} \cite{bayot:MOD17} was proposed by \citeauthor{bayot:MOD17} for the task of predicting the age and gender of Twitter users. CNN was applied to individual utterances, and the majority classification label is used as the prediction per user.
-    \item \emph{Hidden Attribute Models}, described in Chapter 4. For the experiments discussed in this chapter we used a \method{2attn} variant of HAMs, as it outperforms the other variants in the majority of cases.
+    \item \emph{Neural Clusters (W2V-C)} \cite{pietro:ACL15} were obtained by applying spectral clustering ($n=200$) on a word similarity matrix, computed via cosine similarity of pre-trained word embeddings. The ratio of words from each cluster is then used as feature vectors for a Gaussian Process (GP) classifier \cite{chu2005gaussian}, which is the best reported classification model for the task~\cite{pietro:ACL15}. 
+    \item \emph{Convolutional Neural Network (CNN)} \cite{bayot:MOD17} was proposed for the task of predicting the age and gender of Twitter users. CNN was applied to individual utterances, and the majority classification label is used as the prediction per user.
+    \item \emph{Hidden Attribute Models}, described in Chapter \ref{chap_ham}. For the experiments discussed in this chapter we used a \method{2attn} variant of HAMs, as it outperforms the other variants in the majority of cases.
 \squishend
 Additionally we consider a fine-tuned supervised BERT model that performs attribute value classification using its \texttt{[CLS]} representation.
 In the \textit{seen} experimental setup the baseline models are single-value, therefore, we split every multi-value user into several inputs through all their attribute values.
 
-\paragraphHd{Evaluation metrics.}
-
-Following prior work on personal attribute inference \cite{tigunova:ham:2019,pietro:ACL15}, we consider ranking metrics MRR (Mean Reciprocal Rank) and nDCG (normalized Discounted Cumulative Gain), as they are the most informative for predicting the labels of the attributes with many possible values.
+\paragraphHd{Evaluation metrics.} Following prior work on personal attribute inference \cite{tigunova:ham:2019,pietro:ACL15}, we consider ranking metrics MRR (Mean Reciprocal Rank) and nDCG (normalized Discounted Cumulative Gain), as they are the most informative for predicting the labels of the attributes with many possible values.
 Given that MRR assumes there is only one correct attribute value for each user, we calculate MRR independently for each attribute value before averaging; nDCG is averaged over users.
 

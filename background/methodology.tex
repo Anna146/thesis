@@ -1,18 +1,18 @@
 \section{Methodology}
-
-This section describes technical details of the methods employed in this dissertation.
+\label{back_meth}
+This section describes technical details of the methods employed in this dissertation. We provide details on convolutional and attention-based neural models, describe zero-shot learning paradigm and document ranking task, define the metrics for model evaluation.
 
 \subsection{Neural networks}
-A neural network, or multilayer perceptron, performs a series of transformations of the input data to get the desired output. The work unit in the neural network, a perceptron, computes a weighted sum of the input vector $x$:
+A neural network performs a series of transformations of the input data to get the desired output. The work unit in the neural network, a perceptron, computes a weighted sum of the input vector $x$:
 \begin{equation}
     z = f(Wx + b)
 \end{equation}
 where $W$ and $b$ are the network parameters, which are updated during training. $f$ is the \textit{activation function}, adding non-linearity to the outputs. Popular choices for the activation function are \textit{sigmoid} and \textit{Rectified Linear Unit} (ReLU) functions:
-
-\begin{align}
+\vspace{-0.1pt}
+\begin{gather}
     sigmoid(z) = \frac{1}{1+e^{-z}} \\
     ReLU(z) = max(0, z) 
-\end{align}
+\end{gather}
 
 The neural network is comprised of multiple perceptrons, arranged in layers, performing sequential operations on the input. The outputs from the last layer of the network serve as the predictions of the model. For example, in multi-class classification the network's outputs can represent the scores for each predicted class. To transform the scores into probabilities of each class the \textit{softmax} function is used:
 
@@ -20,11 +20,11 @@ The neural network is comprised of multiple perceptrons, arranged in layers, per
    softmax(y_i) = \frac{e^{y_i}}{\sum_j e^{y_j}}
 \end{equation}
 
-During training the network learns how to reproduce the true values $\hat{y}$ by adjusting the trainable parameters $W$ of each perceptron. To achieve that, the network's output $y$ is compared with the desired $\hat{y}$ using a \textit{loss function}, which evaluates how different are $y$ and $\hat{y}$. In classification problems the most commonly used loss function is \textit{Cross Entropy Loss}:
+During training the network learns how to reproduce the true values $\hat{y}$ by adjusting the trainable parameters $W$ of each perceptron. To achieve that, the network's output $y$ is compared with the desired $\hat{y}$ using a \textit{loss function}, which evaluates how different are $y$ and $\hat{y}$. In classification problems the most commonly used loss function is the \textit{cross entropy} loss:
 \begin{equation}
     L = - \frac{1}{m}\sum_{i=1}^m \hat{y}_i \log(y_i)
 \end{equation}
-where $m$ is the number of classes in the classification problem. The objective of neural network training is to minimize the loss.
+where $m$ is the number of classes in the classification problem. The objective of neural network training is to minimize the loss function.
 
 The process of adjusting the parameters of the network layer by layer is called \textit{backpropagation}. The parameters are updated in the direction of loss minimisation by taking partial derivatives:
 \begin{equation}
@@ -40,47 +40,50 @@ Word embeddings can be learned jointly with neural network training. In this cas
 
 One popular choice of pretrained word embeddings is \textit{Word2Vec} \cite{mikolov2013efficient} method, which preserves contextual information of the terms. Word2Vec embeddings are trained on one of the tasks: (i) continuous bag of words (predicting the current term from its context) or (ii) skip-gram model (predicting surrounding terms given the current word). 
 
-The limitation of using pretrained Word2Vec embeddings is that the final embedding for a term is the same for all contexts it can occur in, which can cause problems with the polysemous words (like `bank' or `lie'). Thus recently the \textit{contextualized} embedding models, such as BERT, described in section \ref{bert}, have recently gained considerable popularity. These models are pretrained on a large linguistic corpus, which enables them to statistically learn the structure of language. They produce the embeddings for the whole sequence simultaneously, effectively capturing terms' context. 
+The limitation of using pretrained Word2Vec embeddings is that the final embedding for a term is the same for all contexts it can occur in, which can cause problems with the polysemous words (like `\textit{bank}' or `\textit{lie}'). Thus, recently the \textit{contextualized} embedding models, such as BERT, described in Section \ref{bert}, have recently gained considerable popularity. These models are pretrained on a large linguistic corpus, which enables them to statistically learn the structure of language. They produce the embeddings for the whole sequence simultaneously, effectively capturing terms' context. 
 
 \subsection{Convolutional Neural Networks}
 
-A Convolutional Neural Network (CNN) \cite{lecun1989backpropagation} is a neural architecture, which is tailored for the tasks, where absolute positions in the input do not matter, i.e. the subparts of the inputs to a CNN should have transitional properties. An example of such application is spam detection, where the task is to check if there are any suspicious phrases in the input, but it does not matter where these phrases are exactly. 
+A Convolutional Neural Network (CNN) \cite{lecun1989backpropagation} is a neural architecture, which is tailored for the tasks, where absolute positions in the input do not matter, i.e. the properties of subparts of the inputs to a CNN should be invariant to shifts. An example of such application is spam detection, where the task is to check if there are any suspicious phrases in the input, but the exact absolute position of such a phrase does not matter. 
 
-The input to a CNN is a word sequence $x_{1:n}$ of length $n$, where each word is represented by a $k$-dimensional embedding, $x_i \in \mathbb{R}^k$. The CNN multiplies a weight matrix $w \in \mathbb{R}^{hk}$, called a \textit{convolutional filter}, with the slices of the input of length $h$. After applying the filter to each possible slice in the input, we get a \textit{convolutional feature map}:
+The input to a CNN is a word sequence $x_{1:n}$ of length $n$, where each word is represented by a $k$-dimensional embedding, $x_i \in \mathbb{R}^k$. The CNN multiplies a weight matrix $w \in \mathbb{R}^{hk}$, called a \textit{convolutional filter}, to the slices of the input of length $h$. After applying the filter to each possible slice in the input, we get a \textit{convolutional feature map}:
 \begin{gather*}
     \textbf{c} = [c_1, ..., c_{n-h+1}], \\
     c_i = f(w \times x_{i:i+h-1} + b)
 \end{gather*}
 
-where $x_{i:i+h-1}$ denotes a slice between $i$-th and and $i+h-1$-th words, $f$ is the activation function, $c_i$ is a feature produced by a single filter application. Effectively the filter $w$ detects if a $h$-sized slice has a particular feature (for instance, it can detect if a bigram $x_{i:i+1}$ is a pair ``verb + noun''). The features in the feature map \textbf{c} are collected with some aggregation operation, for example max-pooling $\hat{\textbf{c}} = max{(\textbf{c})}$, which acts as a representative for the used filter (e.g. $\hat{\textbf{c}}$ can show the maximum probability score of having spam in some input slice). On each network layer multiple filters are applied to detect various features, capturing different aspects of the input.
+where $x_{i:i+h-1}$ denotes a slice between $i$-th and and $i+h-1$-th words, $f$ is the activation function, $c_i$ is a feature produced by a single filter application. Effectively the filter $w$ detects if a $h$-sized slice has a particular feature (for instance, it can detect if a bigram $x_{i:i+1}$ is a pair ``\textit{verb + noun}''). The features in the feature map \textbf{c} are collected with some aggregation operation, for example max-pooling $\hat{\textbf{c}} = max{(\textbf{c})}$, which acts as a representative for the used filter (e.g. $\hat{\textbf{c}}$ can show the maximum probability score of having spam in some input slice). On each network layer multiple filters are applied to detect various features, capturing different aspects of the input.
 
-Having gained popularity in Computer Vision, CNNs have also shown strong results in natural language tasks, such as sentence classification or sentiment prediction \cite{kim-2014-convolutional, kalchbrenner2014convolutional, collobert2011natural}. Their advantages are a small number of parameters (the same small weight matrix is applied to each input slice), fast computation and good interpretability. However, the contexts considered by CNNs are limited by the selected convolutional filter size, therefore CNNs can not properly model long-term word dependencies.
+Having gained popularity in computer vision, CNNs have also shown strong results in natural language tasks, such as sentence classification or sentiment prediction \cite{kim-2014-convolutional, kalchbrenner2014convolutional, collobert2011natural}. Their advantages are a small number of parameters (the same small weight matrix is applied to each input slice), fast computation and good interpretability. However, the contexts considered by CNNs are limited by the selected convolutional filter size, therefore CNNs can not properly model long-term word dependencies.
 
 \subsection{Attention models}
 
-Attention mechanisms have been introduced to represent the long range contextual information more adequately, as compared to convolutional or recurrent architectures \cite{bahdanau2014neural}. Attention assigns weights to the input elements, indicating which inputs to focus on to make a correct prediction. In natural language processing attention mechanisms are used on sequence pairs (for example, in machine translation or question answering) or on a single sentences (e.g. for sentence classification tasks); the latter case is called \textit{self-attention}.
+Attention mechanisms have been introduced to represent the long range contextual information more adequately, as compared to convolutional or recurrent architectures \cite{bahdanau2014neural}. Attention assigns weights to the input elements, indicating which inputs to focus on to make a correct prediction. In natural language processing, attention mechanism is used to produce representations for sequence pairs (for example, in language generation) or single sentences (e.g., for sentence classification tasks).
 
-The attention model creates a refined representation for each sequence element taking into account the information from the other elements based on their relevance. For each input term $x_i$ self-attention computes a new contextual embedding $c_i$, utilizing the representations of the other input terms $x_j$, weighted by their relevance scores $\alpha_i_j$:
+Given as input a vector $s$ and a context $h_1, ... h_n$, the attention model creates a refined representation of $s$ by incorporating the information from the context, based on the relevance of each context element $h_i$ to the given $s$. For each $h_i$ self-attention computes an \textit{attention weight} $\alpha_i_j$ as follows:
+\begin{spreadlines}{10pt} 
 \begin{gather*}
-    c_i = \sum_{j=1}^n \alpha_i_j x_j \\
-    \alpha_i_j = \frac{exp(f(x_i, x_j)}{\sum_{j'=1}^n f(x_i, x_{j'})}
+    \alpha_i = \frac{exp(e_i)}{\sum_{k=1}^n exp(e_k)} \\ 
+    e_i = f(s, h_i)
 \end{gather*}
+\end{spreadlines}
 
-where $n$ is the length of input sequence and $f$ is a trainable function, computing dependency within a pair of terms. $f$ is unusually implemented with a perceptron:
+where $n$ is the length of context sequence and $f$ is an attention function. $f$ can be implemented with a dot-product, sum or be computed with a neural network.
+
+Then the attention context vector for $s$ will be a sum of the context elements $h_i$ weighted by their attention scores:
 \begin{equation}
-    f(x_i, x_j) = \sigma (W[x_i \oplus  w_j] + b)
+    c = \sum_{i=1}^n \alpha_i h_i 
 \end{equation}
 
-where $W$ and $b$ are learned weights, $\sigma$ is an activation function and $\oplus$ denotes the concatenation of $x_i$ and $x_j$'s representations.
-
-Attention models were shown to work well for many natural language tasks, where distant contextual information is important \cite{bahdanau2014neural, yin2016abcnn}. Moreover, attention computation can be effectively parallelized, as opposed to sequential models. Attention weights are also very interpretable, allowing to investigate which terms were influential for creating contextual representations.
+The context vector $c$ can be used to augment the representation of $s$, for example, by concatenating them. 
+Attention models were shown to work well for many natural language tasks, where distant contextual information is important \cite{bahdanau2014neural, yin2016abcnn}. Moreover, attention computation can be effectively parallelized, as opposed to computations in sequential models. Attention weights are also highly interpretable, allowing to investigate which sequence elements were influential for creating contextual representations.
 
 \subsubsection{Transformer encoder}
 \textit{Transformer} \cite{vaswani2017attention} is a state-of-the-art neural model based on attention mechanisms. Transformer is a sequence-to-sequence model, used to convert the input sequence to the output sequence (for example, it can be used for machine translation). The use of attention mechanisms allows Transformer to produce bidirectional input representations - capturing both left and right context of the tokens, as opposed to unidirectional representations generated by recurrent models.
 
-Transformer consists of \textit{encoder}, for creating the representation of the input sequence, and \textit{decoder}, for generating the output. The encoder in Transformer can also be used as a standalone model for creating refined input sequence embeddings. In the following we will provide a description of the architecture of Transformer encoder.  
+Transformer consists of an \textit{encoder}, for creating the representation of the input sequence, and a \textit{decoder}, for generating the output. The encoder in Transformer can also be used as a standalone model for creating refined input sequence embeddings. In the following we will provide a description of the architecture of Transformer encoder.  
 
-One Transformer encoder module consists of two blocks: a multi-head self-attention and a fully-connected feed forward neural network. Each block is surrounded by a residual connection \cite{he2016deep} (which adds the unchanged input to the output of the block), which is followed by layer normalization \cite{ba2016layer}. Transformer encoder is composed of several such modules stuck on each other.
+One Transformer encoder module consists of two blocks: a multi-head self-attention and a fully-connected feed forward neural network. Each block is surrounded by a residual connection \cite{he2016deep} (which adds the unchanged input to the output of the block), which is followed by layer normalization \cite{ba2016layer}. Transformer encoder is composed of several such modules stacked.
 
 The input elements to the encoder are summed with sinusoidal positional encoding, since attention mechanism does not preserve the information about the absolute positions. Self-attention function in Transformer, called \textit{Scaled Dot-Product Attention}, estimates the compatibility of each word in the sequence (denoted as query Q) to the rest of the words (keys K), which forms coefficients in the weighted sum of the values (V):
 
@@ -119,31 +122,36 @@ BERT \cite{devlin2018bert} is a model for creating deep contextualized represent
 
 BERT is comprised of an embedding layer, several stacked Transformer encoder layers and a task-specific output layer. BERT is pretrained on two tasks: (i) masked language modelling and (ii) next sentence prediction.
 
-In the masked language modelling task some tokens in the input are replaced with a special [MASK] token. Given the information from the context of the masked input, BERT predicts the original value of the word, by producing the probability distribution over vocabulary. In next sentence prediction task BERT is trained on pairs sentences, trying to classify whether the second sentence was subsequent to the first one in the original document. Both tasks don't need explicit labels in the corpus, making pretraining of BERT semi-supervised.
+In the masked language modelling task some tokens in the input are replaced with a special [MASK] token. Given the information from the context of the masked input, BERT predicts the original value of the word, by producing the probability distribution over vocabulary. In the next sentence prediction task BERT is trained on pairs sentences, trying to classify whether the second sentence was subsequent to the first one in the original document. Both tasks don't need explicit labels in the corpus, making pretraining of BERT semi-supervised.
 
-BERT was shown to achieve state-of-the-art results on many NLP tasks \cite{devlin2018bert}, still it has several limitations. The number of trainable parameters in BERT is very large (110 million parameters in the BERT$_{base}$ model and 345 million in BERT$_{large}$, which makes training it on a large corpus very time-consuming. Moreover BERT's input can't exceed 512 tokens, which is too few for many tasks dealing with long texts. Trying to overcome this limitation leads to splitting or cropping the input, which causes loss of information.
+BERT was shown to achieve state-of-the-art results on many NLP tasks \cite{devlin2018bert}, still it has several limitations. The number of trainable parameters in BERT is very large (110 million parameters in the BERT$_{base}$ model and 345 million in BERT$_{large}$), which makes training it on a large corpus very time-consuming. Moreover BERT's input can't exceed 512 tokens, which is too few for many tasks dealing with long texts. Trying to overcome this limitation leads to splitting or cropping the input, which causes loss of information.
 
 \subsection{Zero-shot Learning}
 
-The term zero-shot learning refers to learning to make predictions over the set of labels, which may not have been observed during training time. Zero-shot learning is applied to the problems with scarce training data, where the labeled training instances cover only few of the possible classes and test data can potentially contain unobserved classes. One example of such problem is classification in a dynamic environment, where new classes appear within time; another example is very fine-grained classification into a huge number of classes, capturing sufficient training samples for each of them is infeasible.
+The term zero-shot learning refers to the models making predictions over the set of labels, which may not have been observed during training time. Zero-shot learning is applied to the problems with scarce training data, where the labeled training instances cover only few of the possible classes and test data can potentially contain unobserved classes. One example of such problem is classification in a dynamic environment, where new classes appear within time; another example is very fine-grained classification into a huge number of classes, where capturing sufficient training samples for each of them is infeasible.
 
-Usually zero-shot problems are solved by mapping training and test instances to some latent representation space, where classification can be done easier. This mapping is learnt from the observed classes at training and is applied to the zero-shot classes at test time. %In early research the objects were mapped using hand-crafted features, such as human-generated textual attributes for the images. This is a tedious and expensive approach, therefore, more recent architectures learn the features used for mapping.
+Usually zero-shot problems are solved by mapping training and test instances to some common latent representation space, where classification can be done easier. This mapping is learnt from the observed classes at training and is applied to the zero-shot classes at test time. %In early research the objects were mapped using hand-crafted features, such as human-generated textual attributes for the images. This is a tedious and expensive approach, therefore, more recent architectures learn the features used for mapping.
 
 %The body of research on zero-shot learning for natural language tasks is scarce. \citet{li2018deep} solve the task of zero-shot \textit{document filtering} by learning relevance between categories and documents, which are represented with category-dependent embeddings. \citet{dauphin2013zero} investigates zero-shot \textit{semantic utterance classification}, by mapping the utterances and potentially unseen categories into same semantic space, where they can be matched with distance functions.
 
 %Other zero-shot models solving natural language problems include the ones for \textit{relation extraction} \cite{levy2017zero}, where the relations serve as unseen classes and their instances are recovered by casting the relations to natural language questions and reducing the problem to reading comprehension; and \textit{entity extraction} \cite{pasupat2014zero}, where the extraction of entities from the web documents is done with a text query, removing the need for specifying a set of seed terms.
 
 \subsection{Document ranking}
+\label{back_ir}
 
-Information Retrieval addresses the task of searching through the document collection and retrieving the documents, which are relevant to the given query. It involves creating representations of both the documents (known as \textit{indexing}) and the user's query, and defining a matching function between these representations, called a \textit{ranking model}. Indexing involves such operations as stemming, removing stop-words or creating inverted index (the mapping from each vocabulary word to the documents it occurs in and the frequency of occurrence). The ranking model outputs the optimal ranking of the documents with respect to the given query; ranking models range from boolean, vector or probabilistic methods to neural models. 
+Information Retrieval (IR) addresses the task of searching through the document collection and retrieving the documents, which are relevant to the given query. It involves creating representations of both the documents (known as \textit{indexing}) and the user's query, and defining a matching function between these representations, called a \textit{ranking model}. 
 
-\textit{BM25} \cite{robertson1995okapi} is a popular probabilistic ranking model, based on the frequencies of query terms appearing in each document. For a query $Q=q_1,... q_n$ and the document $D$ BM25 produces a score:
+Indexing involves such operations as stemming, removing stop-words or creating inverted index (the mapping from each vocabulary word to the documents it occurs in and the frequency of occurrence). 
+
+The ranking model outputs the optimal ranking of the documents with respect to the given query. Ranking models range from boolean, vector or probabilistic methods to neural models. In this section we give an overview of two ranking models we used in our research.
+
+\textit{BM25} \cite{robertson1995okapi} is a popular probabilistic ranking model, based on the frequencies of query terms appearing in each document. For a query $Q=q_1,... q_n$ and the document $D$, BM25 produces a score:
 
 \begin{equation}
     score(D, Q) = \sum_{i=1}^n IDF(q_i) \frac{f(q_i,D) \cdot (k_1 + 1)}{f(q_i, D) + k_1 (1 - b + b\frac{|D|}{avg\_doc\_len})}
 \end{equation}
 
-where $f(q_i, D)$ is the frequency of occurrence of the term $q_i$ in the document $D$, $|D|$ is the length of the document $D$ and $avg\_doc\_len$ is the average length of the document in collection. The parameters $k_1$ and $b$ can chosen freely. $k_1$ parameter regulates how much the document score can be affected by a single term; $b$ controls the impact of the relative document length. $IDF(q_i)$ is the inverse document frequency of the term $q_i$, which can be calculated as:
+where $f(q_i, D)$ is the frequency of occurrence of the term $q_i$ in the document $D$, $|D|$ is the length of the document $D$ and $avg\_doc\_len$ is the average length of the document in the collection. The parameters $k_1$ and $b$ can chosen freely. $k_1$ parameter regulates how much the document score can be affected by a single term; $b$ controls the impact of the relative document length. $IDF(q_i)$ is the inverse document frequency of the term $q_i$, which can be calculated as:
 
 \begin{equation}
     IDF(q_i) = ln \left ( \frac{n - n(q_i)+0.5}{n(q_i) + 0.5} + 1 \right )
@@ -161,21 +169,23 @@ In this section we discuss classification and ranking quality metrics used for m
 
 \paragraphHd{Accuracy, recall, precision, F1.} We first give the definitions for the classification metrics in the basic binary case (positive and negative classes):
 
+\begin{spreadlines}{15pt}  
 \begin{gather}
-    accuracy = \frac{\text{num correct predictions}}{\text{num test instances}} \\
+    accuracy = \frac{\text{num correct predictions}}{\text{num test instances}} \\ 
     precision = \frac{TP}{TP + FP} \quad \quad recall = \frac{TP}{TP + TN}
 \end{gather}
+\end{spreadlines}
 
 
-where TP, true positives, is the number of true labels that the model correctly predicted; TN, true negatives, is the number of true labels that the model failed to predict; FP, false positives is the number of incorrect models predictions. Precision shows how the accurate model's predictions are, recall shows how many true labels the model could identify. 
+where $TP$, \textit{true positives}, is the number of true labels that the model correctly predicted; $TN$, \textit{true negatives}, is the number of true labels that the model failed to predict; $FP$, \textit{false positives} is the number of incorrect models' predictions. Precision shows how accurate model's predictions are, recall shows how many true labels the model could identify. 
 
-The output of the binary classifier depends on the score of the positive class: if the score exceeds a particular \textit{decision threshold}, the positive class is predicted; otherwise the negative class. If the model score classes with probabilities, the default threshold is usually set at $0.5$; yet, depending on the model architecture and loss function used for training, it may be beneficial to tune the exact value of the threshold. Varying decision threshold results in changing TP and FN error counts (changing the number of instances to be classified as positive), which causes one of precision or recall metrics to increase and the other one to decrease. It is therefore useful to calculate their harmonic mean:
+The output of the binary classifier depends on the score of the positive class: if the score exceeds a particular \textit{decision threshold}, the positive class is predicted; otherwise the negative class. If the model score classes with probabilities, the default threshold is usually set at $0.5$; yet, depending on the model architecture and loss function used for training, it may be beneficial to tune the exact value of the threshold. Varying decision threshold results in changing $TP$ and $FN$ error counts (changing the number of instances to be classified as positive), which causes one of precision or recall metrics to increase and the other one to decrease. It is therefore useful to calculate their harmonic mean:
 
 \begin{equation}
     F1 = \frac{2 \cdot precision \cdot recall}{(precision + recall)}
 \end{equation}
 
-\paragraphHd{AUROC.} A Receiver Operating Characteristic (ROC) curve is a plot depicting the performance of the binary classifier at varying decision threshold values. ROC curve is plotted in true positive rate (TPR) vs. false positive rate (FPR) coordinates. TPR is equal to recall; FPR is calculated as:
+\paragraphHd{AUROC.} A \textit{Receiver Operating Characteristic} (ROC) curve is a plot depicting the performance of the binary classifier at varying decision threshold values. ROC curve is plotted in true positive rate ($TPR$) vs. false positive rate ($FPR$) coordinates. $TPR$ is equal to recall; $FPR$ is calculated as:
 
 \begin{equation}
     FPR = \frac{FP}{FP + TN}
@@ -183,20 +193,20 @@ The output of the binary classifier depends on the score of the positive class: 
 
 AUROC metrics computes the area under ROC curve. It can be interpreted as an expectation that a randomly drawn positive example will be ranked higher than a randomly drawn negative example. AUROC is a binary classification metrics and its extension to the multi-class case requires binarizing the predictions.
 
-\paragraphHd{Multi-class metrics.} In the multi-class case there precision, recall and F1 metrics can be computed using \textit{micro} or \textit{macro} averaging. In case of micro averaging the metrics are calculated globally across all classes; macro averaging implies calculating metrics per class and averaging them. For example, the equations for micro and macro precision for classification with $N$ classes will look like:
+\paragraphHd{Multi-class metrics.} For multi-class predictions precision, recall and F1 metrics can be computed using \textit{micro} or \textit{macro} averaging. In case of micro averaging the metrics are calculated globally across all classes; macro averaging implies calculating metrics per class and averaging them. For example, the equations for micro and macro precision for classification with $N$ classes will look like:
 
 \begin{align}
     precision_{micro} = \frac{\sum_{c}^N TP_c}{\sum_{c}^N TP_c + \sum_{c}^N FP_c} \\
     precision_{macro} = \frac{1}{N}\sum_{c}^N \frac{TP_c}{TP_c + FP_c}
 \end{align}
 
-A \textit{confusion matrix} is a NxN matrix which shows for each pair of classes the number of misclassifications between them. The rows correspond to true labels and the columns to predicted labels; the number in the $ij$-th matrix cell denotes the number of times the model predicted class $j$, when the correct label was class $i$. Confusion matrix is useful for qualitative model analysis, allowing to see systematic misclassifications.
+A \textit{confusion matrix} is an $N\times N$ matrix which shows for each pair of classes the number of misclassifications between them. The rows correspond to the true labels and the columns to the predicted labels; the number in the $ij$-th matrix cell denotes the number of times the model predicted class $j$, when the correct label was class $i$. Confusion matrix is useful for qualitative model analysis, allowing to see systematic misclassifications.
 
 \subsubsection{Ranking metrics}
 
 Multi-class classification can also be viewed as a ranking problem, where the aim is to assign the highest rank to the correct label in the list of class scores outputted by the model. 
 
-\paragraphHd{nDCG.} A normalized Discounted Cumulative Gain (nDCG) measures the gain of placing each label on its position in the ranked list of model's predictions, based on labels' relevance. For classification problem we can set the relevance of all correct labels to 1 and 0 for incorrect ones. A Cumulative Gain at rank r (CG$_r$) is calculated as:
+\paragraphHd{nDCG.} A normalized Discounted Cumulative Gain (nDCG) measures the gain of placing each label on its position in the ranked list of model's predictions, based on labels' relevance. For classification problem we can set the relevance of all correct labels to 1 and 0 for incorrect ones. A Cumulative Gain at rank $r$ (CG$_r$) is calculated as:
 
 \begin{equation}
     CG_r = \sum_{i=1}^r rel_i

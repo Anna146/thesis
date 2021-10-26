@@ -10,14 +10,14 @@ In the context of recommendation and retrieval models, personal facts can be use
 A \textit{Personal Knowledge Base}, populated with personal facts, such as demographic information, interests and interpersonal relationships, is a unique endpoint for storing and querying personal knowledge. 
 Such knowledge bases are easily interpretable and can provide users with full control over their own personal knowledge, including revising stored facts and managing access by downstream services for personalization purposes.
 
-To alleviate users from extensive manual effort to build such personal knowledge base, we can leverage automated extraction methods applied to the textual content of the users, such as dialogue transcripts or social media posts. Conventional extraction methods specialize on well-structured data, such as biographical texts or encyclopedic articles, which are rare for most people.
+To alleviate users from extensive manual effort to build such personal knowledge base, we can leverage automated extraction methods applied to the textual content of the users, such as dialogue transcripts or social media posts. Mainstream extraction methods specialize on well-structured data, such as biographical texts or encyclopedic articles, which are rare for most people.
 In turn, conversational data is abundant but is challenging to process and requires specialized methods for extraction of personal facts.
 
 In our research we address the acquisition of personal knowledge from conversational data. We propose several novel deep learning models for inferring speakers' personal attributes:
 \begin{itemize}
-    \item Demographic attributes, \textit{age}, \textit{gender}, \textit{profession} and \textit{family status} are inferred by \textbf{HAMs} - hierarchical neural classifiers, based on attention mechanism. HAMs efficiently transfer learn between different types of conversational data and provide interpretable predictions.
+    \item Demographic attributes, \textit{age}, \textit{gender}, \textit{profession} and \textit{family status}, are inferred by \textbf{HAMs} - hierarchical neural classifiers with attention mechanism. Trained HAMs can be transferred between different types of conversational data and provide interpretable predictions.
     
-    \item Long-tailed personal attributes, \textit{hobby} and \textit{profession}, are predicted with \textbf{CHARM} - a zero-shot learning model, overcoming the lack of labeled training samples for rare attribute values. By linking conversational utterances to external sources PRIDE is able to predict attribute values, which it never saw during training.
+    \item Long-tailed personal attributes, \textit{hobby} and \textit{profession}, are predicted with \textbf{CHARM} - a zero-shot learning model, overcoming the lack of labeled training samples for rare attribute values. By linking conversational utterances to external sources, CHARM is able to predict attribute values which it never saw during training.
     
     \item \textit{Interpersonal relationships} are inferred with \textbf{PRIDE} - a hierarchical transformer-based model. To accurately predict fine-grained relationships, PRIDE leverages personal traits of the speakers and the style of conversational utterances.
 \end{itemize}

@@ -5,7 +5,7 @@ While interest in dialogue agents has grown rapidly in recent years, creating ag
 The knowledge of the user's demographic attributes, such as \textit{age} or \textit{family status}, is a crucial step towards a user-friendly dialogue system, capable of adjusting its speech style and offering relevant suggestions with respect to the user's traits.
 
 For meaningful and diverse dialogues with a real person, a system should be able to infer knowledge about the person's background from her utterances. 
-Consider the following example where $H$ stands for a human and $A$ for an agent:\vspace{0.1cm}\\
+Consider the following example, where $H$ stands for a human and $A$ for a dialogue agent:\vspace{0.1cm}\\
 %\textcolor{red}{example of conversation with an agent}
 \hspace*{0.3cm}{H:} {\em What's the best place for having brekky?}\\
 \hspace*{0.3cm}{A:} {\em The porridge at Bread and Cocoa is great.}\\
@@ -30,7 +30,7 @@ cue is missed that the user
 {is with pre-teen children (talking about kids and the zoo)},
 and the resulting suggestion is inappropriate for young children. 
 Instead, with awareness of this knowledge, a better reply could have been:\vspace{0.1cm}\\
-\hspace*{0.3cm}{A:} {\em I bet the kids loved the sea lions, so you should see the dolphins at Aquarium of the Bay}
+\hspace*{0.3cm}{A:} {\em I bet the kids loved the sea lions, so you should also see the dolphins at Aquarium of the Bay}
 \vspace{0.1cm}
 
 \noindent A possible remedy to improve this situation is to include user information
@@ -42,7 +42,7 @@ Web-based chatbots and agents in online forums.
 
 To populate the PKB without the user's manual supervision, we need to leverage the methods for automatic personal information extraction. There has been ample work on information extraction from structured external sources, such as Wikipedia entries or news stories. However, there is little hope of finding the personal information about each individual user in encyclopedic articles. 
 
-Instead, personal facts can be extracted from unstructured textual sources, such as user's conversational data. Such data, in form of dialogue transcriptions or social media posts, is abundant and rich in signals about the given user's persona. However, conventional methods for information extraction from well-comprehensible text genres fail to perform properly given conversations as input. Dialogue utterances are short, noisy and colloquial, which calls for creating novel extraction methods, tailored specifically for conversational data.
+Instead, personal facts can be extracted from unstructured textual sources, such as user's conversational data. Such data, in form of dialogue transcriptions or social media posts, is abundant and rich in signals about the given user's persona. However, conventional methods for information extraction from well-comprehensible text genres fail to perform properly given conversations as input. Dialogue utterances are short, noisy and colloquial, which necessitates creating novel extraction methods, tailored specifically to conversational data.
 
 This work addresses these issues by proposing methods to \textit{infer} personal facts from dialogues based on implicit cues. The proposed approach takes advantage of the hierarchical dialogue structure to outperform previous information extraction models.
 
@@ -51,7 +51,7 @@ Currently the most successful dialogue agents are task-oriented,
 for instance, supporting users with car navigation or delivery orders
 (e.g., \cite{dial6,AAAI1816104}).
 This makes the task considerably easier, because the system has to focus on specific words, related to the topic. We, in contrast, strive to be able to extract information for domain-independent dialogue, from everyday conversation, where the relevant facts are only latent.
-General-purpose chatbot-like agents show decent performance in
+General-purpose chatbot agents show decent performance in
 benchmarks (e.g., \cite{bot1,pers1,dial8}), 
 but critically rely on sufficient training data and
 tend to lack robustness when users behave in highly varying ways.
@@ -62,44 +62,42 @@ are explicitly mentioned in the text \cite{dial7,zhang2018personalizing,jing-kam
 To illustrate that identifying explicit mentions of attributes is insufficient,
 we developed an oracle to obtain an upper bound on the performance of pattern-based approaches, such as \cite{dial7}. This oracle, which is described in Section \ref{sec:baselines}, assumes that we have perfect pattern matching that correctly extracts an attribute value every time it is mentioned.
 (When multiple attribute values are mentioned, we assume the oracle picks the correct one.)
-This oracle routinely performs substantially worse than our proposed methods, demonstrating that extracting information from utterances requires \textit{listening between the lines}
-(i.e., inferring the presence of attribute values that are never explicitly stated).
+This oracle routinely performs substantially worse than our proposed methods, demonstrating that extracting information from utterances requires inferring the presence of attribute values that are never explicitly stated.
 
 \www{
-On the other hand, many efforts have considered the problem of profiling social media users in order to predict latent attributes such as age, gender, or regional origin (e.g., \cite{Rao:2010,burger:EMNLP11,Schwartz2013PersonalityGA,sap:EMNLP14,flekova:ACL16:long,kim:ACL17:short,vijayaraghavan:ACL17:short,bayot:MOD17,fabian2015privacy}). While social media posts and utterances are similar in that both are informal, the former can be associated with many non-textual features that are unavailable outside of the social media domain 
+On the other hand, many efforts have considered the problem of profiling social media users in order to predict latent attributes such as \textit{age}, \textit{gender}, or \textit{regional origin} (e.g., \cite{Rao:2010,burger:EMNLP11,Schwartz2013PersonalityGA,sap:EMNLP14,flekova:ACL16:long,kim:ACL17:short,vijayaraghavan:ACL17:short,bayot:MOD17,fabian2015privacy}). While social media posts and utterances are similar in that both are informal, the former can be associated with many non-textual features that are unavailable outside of the social media domain 
 (e.g., social-network friends, likes, etc. and explicit self-portraits of users).
 We consider several user profiling baselines that rely on only textual features and find that they do not perform well on our task of inferring attributes from 
 conversational utterances.
 }
 
 \paragraphHd{Approach and Contributions\textnormal{:}}
-We devise a neural architecture, called {\em Hidden Attribute Model (HAM)} \cite{tigunova:ham:2019}, 
+We devise a neural architecture, called \textbf{H}idden \textbf{A}ttribute \textbf{M}odels (HAMs) \cite{tigunova:ham:2019}, 
 trained with
 subject-predicate-object triples to predict objects on a per-predicate basis,
-e.g., for a subject's profession or family status.
+e.g., for a subject's \textit{profession} or \textit{family status}.
 The underlying neural network learns to predict a scoring
 of different objects (e.g., different professions) for
 a given subject-predicate pair
 by using attention within and across utterances to infer object values.
 For example, as illustrated later in Table \ref{tab6}, our approach infers that a subject
-who often uses terms like \textit{theory}, \textit{mathematical}, and \textit{species} is likely to be a \textit{scientist}, while a subject who uses terms like \textit{senate}, \textit{reporters}, and \textit{president} may be a \textit{politician}.
+who often uses terms like `\textit{theory}', `\textit{mathematical}', and `\textit{species}' is likely to be a \textit{scientist}, while a subject who uses terms like `\textit{senate}', `\textit{reporters}', and `\textit{president}' may be a \textit{politician}.
 
 
 The salient contributions of this work are the following: 
-\squishlist
+\begin{itemize}
 \item a viable method for learning personal attributes from
 conversations, based on neural networks with novel ways of
 leveraging attention mechanisms and embeddings,
 \item an extensive experimental evaluation of various methods on
-\www{Reddit, }
-movie script dialogues, and crowdsourced personalized conversations (PersonaChat),
+Reddit, movie script dialogues, and crowdsourced personalized conversations (PersonaChat),
 \item \www{
-an experimental evaluation on the transfer learning approach: 
+an experimental evaluation of the transfer learning approach: 
 %the applicability of 
 leveraging
 %the vast amount of
 ample data from
-user-generated social media text (Reddit) for inferring users' latent attributes from data-scarce speech-based dialogues (movie scripts and PersonaChat).
+user-generated social media texts (Reddit) for inferring users' latent attributes from data-scarce speech-based dialogues (movie scripts and PersonaChat).
 }
-\squishend
+\end{itemize}
 

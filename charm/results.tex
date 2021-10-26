@@ -2,14 +2,14 @@
 \setlength\dashlinegap{1.5pt}
 \setlength\arrayrulewidth{0.3pt}
 
-\input{unseen_table}
-\input{seen_table}
+\input{charm/unseen_table}
+\input{charm/seen_table}
 
 \subsection{Quantitative Results}
+\label{charm_results}
 
 \paragraphHdTop{\emph{Unseen} values (zero-shot mode).}
-The models' performance evaluated only on the attribute values that were not observed during training is shown in Table \ref{tab3}.
-Both CHARM variants significantly outperform all unsupervised keyword-extraction baselines for both attributes on all document collections. This suggests the importance of training the cue detector to identify terms related to the attribute, instead of the more general keywords usually given by unsupervised keyword extractors.
+The models' performance evaluated only on the attribute values that were not observed during training is shown in Table \ref{tab3}. Both CHARM variants significantly outperform all unsupervised keyword-extraction baselines for both attributes on all document collections. This suggests the importance of training the cue detector to identify terms related to the attribute, instead of the more general keywords usually given by unsupervised keyword extractors.
 BERT IR performs similarly to CHARM for the \wiki{page} dataset, but shows significantly worse results for the remaining datasets, taking approximately 60x longer than \charm{KNRM} to perform inference.
 
 Interestingly, the \emph{No-keyword} method performs on par with the other baselines. It shows that the words produced by the state-of-the-art keyword extraction models are not more helpful than the ones automatically selected by TF-IDF scores in BM25 model, highlighting the difficulty of keyword extraction from conversational data.
@@ -24,7 +24,7 @@ This indicates that the noise in the document collection does not severely damag
 
 \paragraphHd{\emph{Seen} values (supervised mode).}
 In this experiment we evaluate CHARM's performance in the fully supervised setting (i.e., all labels are seen during training).
-From the Table \ref{tab4} we observe that CHARM's performance is competitive compared to \method{2attn} (i.e., the best-performing attribute value prediction method from prior work) and the state-of-the-art BERT model.
+From the Table~\ref{tab4} we observe that CHARM's performance is competitive compared to \method{2attn} (i.e., the best-performing attribute value prediction method from prior work) and the state-of-the-art BERT model.
 The fully supervised BERT model consistently performs best for both attributes, though these increases are not statistically significant over all CHARM configurations. Furthermore, BERT and \method{2attn} are trained with full supervision in this experimental setting, whereas CHARM still uses a policy gradient.
 
 Another observation is that in this experiment the Web search collection consistently performs best, suggesting that the collection's shortcomings are mitigated when all labels are observed.
@@ -45,7 +45,7 @@ The comparison of selected terms by CHARM vs TextRank is reported in Table \ref{
 \vspace{10pt}
     \centering
     \footnotesize
-    \begin{adjustbox}{width=0.8\textwidth}
+    \begin{adjustbox}{width=0.75\textwidth}
     \begin{tabular}{ll@{}rl@{}rl@{}r}
 \toprule
                           & \multicolumn{6}{c}{\attribute{profession}}   \\
@@ -70,10 +70,10 @@ The comparison of selected terms by CHARM vs TextRank is reported in Table \ref{
     \label{tab:top_terms}
 \end{table}
 
-We can observe that regardless of the small sample size for some values like \textit{airplane pilot}, CHARM can still detect meaningful words. For \textit{barista}, CHARM did not even consider the term `barista', but rather focused on the words such as `coffee' and `starbucks'. 
-Choosing terms like `screenplay', `scripts' and `screenwriting' helps the model to distinguish \textit{screenwriter} from the other film-related professions like \emph{director}.
+We can observe that regardless of the small sample size for some values like \textit{airplane pilot}, CHARM can still detect meaningful words. For \textit{barista}, CHARM did not even consider the term `\textit{barista}', but rather focused on the words such as `\textit{coffee}' and `\textit{starbucks}'. 
+Choosing terms like `\textit{screenplay}', `\textit{scripts}' and `\textit{screenwriting}' helps the model to distinguish \textit{screenwriter} from the other film-related professions like \emph{director}.
 
-Picking the terms like `cake', `baking' and `bread', helps the model to distinguish between \textit{baking} and \textit{cooking} hobbies more effectively.
+Picking the terms like `\textit{cake}', `\textit{baking}' and `\textit{bread}', helps the model to distinguish between \textit{baking} and \textit{cooking} hobbies more effectively.
 Note, that even for rare unusual hobbies like \textit{quilting}, CHARM manages to select indicative terms. This essentially shows that the model can easily be used for large long-tailed lists of attribute values.
 
 For the attribute values where CHARM's MRR scores are considerably high (e.g., \emph{profession:screenwriter}, \emph{hobby:baking}), the detected cues are meaningful, diverse and quite distinctive. 
@@ -86,7 +86,7 @@ Finally, as opposed to CHARM, TextRank keywords rarely make sense. This suggests
 \vspace{10pt}
     \centering
     \footnotesize
-    \begin{adjustbox}{width=0.8\textwidth}
+    \begin{adjustbox}{width=0.75\textwidth}
     \begin{tabular}{llrlrlr}
 \toprule
                           & \multicolumn{6}{c}{\attribute{hobby}}                                                                                 \\
@@ -112,7 +112,7 @@ Finally, as opposed to CHARM, TextRank keywords rarely make sense. This suggests
 \end{table}
 
 \paragraphHd{Misclassification Study}
-To conduct error analysis, we plotted a confusion matrix of \charm{KNRM} in the \emph{unseen} experiment for \emph{profession} attribute, which is shown in Figure \ref{conf_prof}.
+To conduct error analysis, we plotted a confusion matrix of \charm{KNRM} in the \emph{unseen} experiment for \emph{profession} attribute, which is shown in Figure~\ref{conf_prof}.
 
 We observe that medical professions such as \textit{dentist, nurse, pharmacist} and \emph{surgeon} are often confused to \textit{doctor} in general. Professions associated with studying (\textit{academic, teacher} and \emph{student}), beauty (\textit{hairdresser} and \emph{tattoo artist}) and art (\textit{musician} and \textit{poet}) are often confused with each other. \textit{Salesman} and \emph{accountant} are confused to \textit{broker}, because of the common financial terms used. 
 
@@ -156,13 +156,13 @@ For each attribute value, we collected all documents that were returned for a us
 shown in Table \ref{tab:top_pages} for several \emph{profession} and \emph{hobby} attribute values.
 
 It is interesting to observe that in spite of the common lexicon for some similar values, the model manages to retrieve documents which are relevant to a particular value, e.g., documents for \textit{investor}  are distinct from other financial-related professions, like \textit{broker} or \textit{salesman}.
-It is also worth mentioning that the retrieved pages for \textit{investor} and \textit{ice hockey} are rather the pages for related lexicon (e.g., \textit{venture capital} and \textit{playoff beard} respectively), which shows the ability of CHARM to detect indirect cues.
+It is also worth mentioning that the retrieved pages for \textit{investor} and \textit{ice hockey} are rather the pages for related lexicon (e.g., `\textit{venture capital}' and `\textit{playoff beard}' respectively), which shows the ability of CHARM to detect indirect cues.
 
 
-\begin{table*}[t!]
+\begin{table*}[t!] \sffamily
     \centering
     \footnotesize
-    \begin{adjustbox}{width=0.95\textwidth}
+    \begin{adjustbox}{width=0.98\textwidth}
     \begin{tabular}{llll}
 \toprule
                             \multicolumn{2}{c}{\attribute{profession}} & \multicolumn{2}{c}{\attribute{hobby}}                                                                                                                 \\

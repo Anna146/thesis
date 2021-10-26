@@ -27,7 +27,7 @@ We also analyze PRIDE's transfer learning performance on the Series dataset as o
 From the results shown in Table \ref{tab:main_exp}, we observe the same behaviour of the models, with PRIDE outperforming the baselines. 
 F1 scores are generally lower than the evaluation on the FiRe dataset, 
 due to the different nature of data (longer input sequences). 
-PRIDE's precision is similar on both datasets, but the larger amount of input utterances with Series seems to reduce recall.
+PRIDE's precision is similar on both datasets, but the larger amount of input utterances with Series seem to reduce recall.
 
 \subsection{Comparison with human performance}
 
@@ -43,8 +43,8 @@ While PRIDE substantially outperforms the baselines, it achieves about half of h
 
 \begin{table}[]
 \centering
-\begin{adjustbox}{width=0.43\textwidth}
-\begin{tabular}{@{}llll@{}}
+\begin{adjustbox}{width=0.45\textwidth}
+\begin{tabular}{@{}l@{\hskip 0.5in}lll@{}}
 \textbf{model}           & \textbf{F1}   & \textbf{precision} & \textbf{recall} \\ \toprule
 RNN        & 0.04     & 0.02            & 0.10          \\
 BERT$_{ddrel}$ & 0.15     & 0.15            & 0.20          \\
@@ -143,7 +143,7 @@ We observe that using speaker embeddings benefit predictions on asymmetric class
 \label{confusion}
 \end{figure}
 
-The confusion matrix for PRIDE's predictions is shown in Figure \ref{confusion}. To create the confusion matrix for the multi-label case, we consider only incorrect predictions (either the labels which the model omitted or which it falsely predicted). For a single test instance we remove true positives from its sets of correct and predicted labels and use the Cartesian product of these sets to build the matrix.
+The confusion matrix for PRIDE's predictions is shown in Figure \ref{confusion}. To create the confusion matrix for the multi-label case, we consider only incorrect predictions (either the labels which the model omitted or which it falsely predicted). For a single test instance we remove true positives from its sets of correct and predicted labels and use the Cartesian product of the resulting sets to build the matrix.
 
 We observe that there are many misclassifications into the \emph{friend} and \emph{lover} labels, which are the most common (see columns).
 This can be attributed to the model's tendency to predict majority classes because of a considerable class imbalance. 

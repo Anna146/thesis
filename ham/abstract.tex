@@ -9,13 +9,13 @@
 % However, there have been only few attempts and no compelling ones
 % to perform IE on personal conversations.
 %
-\droppedcapital{O}pen-domain dialogue agents must be able to converse about many topics while incorporating knowledge about the user into the conversation.
-The background information about user's demographics, such as age or gender, can help the chat-bots adjust their conversational style, make relevant recommendations and initiate engaging discussions. Instead of asking the users to manually provide their personal information or seek it in the external sources, we propose to directly extract such facts from the user's dialogues. This problem is more challenging than the established task of 
+\droppedcapital{O}{pen}-domain dialogue agents must be able to converse about many topics while incorporating knowledge about the user into the conversation.
+The background information about user's demographics, such as \textit{age} or \textit{gender}, can help the chat-bots adjust their conversational style, make relevant recommendations and initiate engaging discussions. Instead of asking the users to manually provide their personal information or seek it in the external sources, we propose to directly extract such facts from the user's dialogues. This problem is more challenging than the established task of 
 information extraction from scientific publications or Wikipedia articles, because dialogues
 often give merely implicit cues about the speaker.
 
 We propose methods for inferring personal attributes, such as
-profession, age or family status, from conversations using deep learning.
+\textit{profession}, \textit{age}, \textit{gender} and \textit{family status}, from conversations using deep learning.
 Specifically, we propose several
 \textit{Hidden Attribute Models}, which are 
 neural networks 
@@ -23,7 +23,7 @@ leveraging
 attention mechanisms and embeddings. 
 Our methods are trained on a per-predicate basis to output
 rankings of object values for a given subject-predicate combination
-(e.g., ranking the doctor and nurse professions high when speakers talk
+(e.g., ranking \textit{doctor} and \textit{nurse} professions high when speakers talk
 about patients, emergency rooms, etc).
 Experiments with various conversational texts including Reddit discussions, movie scripts and a collection of crowdsourced personal dialogues
 demonstrate the viability of our methods and their superior performance compared

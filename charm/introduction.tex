@@ -1,30 +1,30 @@
 \section{Introduction}
 
 \paragraphHdTop{Motivation.} Personal Knowledge Bases 
-capture individual user traits
+capture user traits
 for %personalizing 
 customizing
 downstream applications like chatbots
 or recommender systems \cite{Balog:2019:TSE:3331184.3331211}.
-To provide recommendations that are tailored to the fine-grained characteristics and interests of the user, a PKB should contain personal attributes with a wide range of potential values, such as hobbies, professions, cities visited, medical conditions 
+To provide recommendations that are tailored to the fine-grained characteristics and interests of the user, a PKB should contain personal attributes with a wide range of possible values, such as hobbies, professions, cities visited, medical conditions 
 (experienced by the user) and many more.
 
 A potentially automatic way to populate a PKB with such attributes is to 
-draw them from the user's conversations in social media and dialogues on other platforms. However, a large number of potential attributes 
+draw them from the user's conversations in social media and dialogues on other platforms. However, a large number of personal attributes 
 and their respective values makes this a challenging task. In particular, there is little hope to have training data for each of these key-value pairs.
 Moreover, the textual cues in user conversations are often implicit
 and thus difficult to learn.
 
-\paragraphHdTop{Example.}
+\paragraphHd{Example.}
 Consider the user's utterance:
 \textit{``I just visited London, which was a disaster. My hotel was a headache and I spent half the time in bed with a fever... So glad to be back home finishing the masts on my galleon.''}
 
 As humans, we can infer the following attribute-value pairs: 
 (a) \textit{cities visited:London}, (b) \textit{symptom:fever},
 (c) \textit{hobby:model ships}. 
-Capturing such user traits is a daunting task, however, with both implicit and explicit signals present.
+However, with both implicit and explicit signals present capturing such user traits is a daunting task.
 We need to consider the context \textit{``spent in bed with''}, to infer that \textit{fever} relates to a disease (as opposed to \textit{headache}). 
-To predict the user's hobby \textit{model ships}, we have to pay attention to the cues `galleon' and `mast'.
+To predict the user's hobby \textit{model ships}, we have to pay attention to the cues `\textit{galleon}' and `\textit{mast}'.
 Proper inference requires both deep language understanding and background knowledge
 (e.g., about ships, cities,
 etc.).
@@ -32,7 +32,7 @@ etc.).
 \vspace{0.1cm}
 \paragraphHd{State of the Art and its Limitations.}
 Explicit mentions of attribute-value pairs can be captured by pattern-based methods (e.g., \cite{dial7,Yen:2019:PKB:3331184.3331209}).
-Such methods are able to extract \textit{London} 
+Such methods are able to extract `\textit{London}' 
 from the the previous example by using the pattern \textit{``I \dots visited $\langle$city\_name$\rangle$}''.  
 Pattern-based approaches are limited, though, by
 their inability to consider implicit contexts, such as %{\em `in bed with \dots}'.
@@ -61,7 +61,7 @@ setting) and generalizes to the full set of labels including values {\em unseen}
 at training time.
 
 \paragraphHd{Problem Statement.}
-For a given attribute we consider the set of \emph{known} values $V$, which can be drawn from lists in dictionary-like sources like Wikipedia. 
+For a given attribute we consider the set of \emph{known} values $V$, which can be drawn from lists in dictionary-like sources, such as Wikipedia. 
 At training time, our method requires samples for a small 
 subset of values $S \subset V$.
 Typically, the complement $V \setminus S$
@@ -77,20 +77,19 @@ all of $V$, although most of the values are \textit{unseen} during training.
 
 \vspace{0.1cm}
 \paragraphHd{Approach and Contributions.}
-We present CHARM, a 
-$\underline{\rm C}$onversational 
-$\underline{\rm H}$idden 
-$\underline{\rm A}$ttribute 
-$\underline{\rm R}$etrieval 
-$\underline{\rm M}$odel, 
-for inferring attribute values in a zero-shot setting \cite{tigunova2020charm}.
+We present a 
+\textbf{C}onversational 
+\textbf{H}idden 
+\textbf{A}ttribute 
+\textbf{R}etrieval 
+\textbf{M}odel (CHARM) for inferring attribute values in a zero-shot setting \cite{tigunova2020charm}.
 CHARM identifies cues in related to a target attribute, which it then uses to retrieve relevant texts from external document collections, indicative of different attribute values.
 These external documents could be gathered by simple web search.
 They help CHARM to link the cues in the user's utterances 
 to the actual attribute values to predict.
 
-CHARM consists of two components: \emph{(i)} a cue detector, which identifies attribute-relevant keywords in a user's utterances 
-(e.g., \textit{galleon}), and \emph{(ii)} a value ranker, which matches these keywords against documents that indicate possible values of the attribute (e.g., \textit{model ships}). 
+CHARM consists of two components: \emph{(i)} a \textit{cue detector}, which identifies attribute-relevant keywords in a user's utterances 
+(e.g., `\textit{galleon}'), and \emph{(ii)} a \textit{value ranker}, which matches these keywords against documents that indicate possible values of the attribute (e.g., \textit{model ships}). 
 Attribute values predicted by CHARM must be \textit{known} but CHARM does not require all values to be \textit{seen} during training. 
 
 To evaluate our approach, we conduct experiments predicting Reddit users' professions and hobbies based on their conversational utterances. We demonstrate that CHARM performs well when inferring unseen values and performs competitively with the best-performing baselines when 
@@ -101,9 +100,11 @@ CHARM can easily be extended to other attributes with long-tail values, such as
 \vspace{0.1cm}
 The salient contributions of this work are:
 %\vspace{0.2cm}
+%\begin{itemize}
 \squishlist
     \item a method for inferring both seen and previously unseen (zero-shot) attribute values from a user's conversational utterances;
     \item a comprehensive evaluation 
     for the \textit{profession} and \textit{hobby} attributes over a large dataset of Reddit discussions;
 and \item a demonstration platform\footnote{\url{https://d5demos.mpi-inf.mpg.de/charm}} showcasing the ability of CHARM to make predictions from dialogue with the user or the user's social media submissions \cite{tigunova2021exploring}.
 \squishend
+%\end{itemize}

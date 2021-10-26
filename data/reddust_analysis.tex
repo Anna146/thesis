@@ -3,7 +3,7 @@
 In this section we present the quantitative and qualitative analysis of the RedDust resource. In Table \ref{stats_table} we present the overall
 statistics of the dataset. Figure \ref{num_posts} shows the chart of the user count per each post count. From this plot we conclude that the users in our dataset tend to have a small number of posts.
 
-\begin{table}[h!]
+\begin{table}[h!]%\sffamily
 \centering
 \small
 \begin{adjustbox}{width=0.55\textwidth}
@@ -27,7 +27,7 @@ total & 352.78K & 16.9M & 165.88K \\
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=0.48\textwidth]{pics/num_posts.png}
+\includegraphics[width=0.55\textwidth]{data/pics/num_posts.png}
 %\vspace*{-0.3cm}
 \caption{Counts of users having $x$ number of posts.}
 \label{num_posts}
@@ -39,7 +39,7 @@ For
 such users
 it is interesting to look at the interplay between different personal traits, for instance, the correlation between users' occupations and general interests.
 In Figure \ref{prof-hob} we plot a heat map which represents the co-occurring values for these two predicates. 
-For this experiment as well as the subsequent ones, we limit the number of professions and hobbies to the top $k$ ones ($k=20$ and $k=30$ for profession and hobby, respectively), sorted by the number of labeled users per value.
+For this experiment as well as the subsequent ones, we limit the number of professions and hobbies to the top $k$ ones ($k=20$ and $k=30$ for \textit{profession} and \textit{hobby}, respectively), sorted by the number of labeled users per value.
 
 We observed intuitive correlations such as:
 \emph{musicians} often play \emph{guitar};
@@ -49,18 +49,18 @@ and curiously, \emph{shooting} is popular among \emph{photographers}, most proba
 
 \begin{figure*}[]
   \centering
-  \includegraphics[width=0.77\linewidth]{pics/hob_prof.png}
+  \includegraphics[width=0.77\linewidth]{data/pics/hob_prof.png}
   \caption{Co-occurrence of the most common professions and hobbies.}
   \label{prof-hob}
 \end{figure*}
 
-We also considered other pairs of attributes, namely profession and gender, for which we show the gender distribution of each profession in Figure \ref{prof_gender}. 
+We also considered other pairs of attributes, namely \textit{profession} and \textit{gender}, for which we show the gender distribution of each profession in Figure \ref{prof_gender}. 
 The analysis revealed common prejudices like \emph{female nannies} or \emph{male programmers},  
 as well as several surprising insights (prevalence of \textit{female runners} and \textit{bartenders}) possibly specific to Reddit communities.
 
 \begin{figure*}[]
 \centering
-\includegraphics[width=0.67\linewidth]{pics/prof_gend.png}
+\includegraphics[width=0.67\linewidth]{data/pics/prof_gend.png}
 \caption{Gender distribution among professions.}
 \label{prof_gender}
 \end{figure*}

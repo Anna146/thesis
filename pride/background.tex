@@ -6,20 +6,20 @@ Interactions between people can have multiple fine-grained features, describing 
 
 Most of the relationships that we defined for our experiments also have particular interpersonal characteristics. For example, the \textit{enemy} relationship can be described as \textit{competitive} as opposed to \textit{cooperative}; the relationship between \textit{parent} and \textit{child} is in most cases \textit{intimate}. Thus, we find it beneficial to enhance the relationship prediction model with the known features of the speakers' interactions. 
 
-We use the definition of \textit{interpersonal dimensions} \cite{wish1976perceived} of speakers' interactions and relationships, following classification of \citet{rashid2018characterizing}, which we used as an additional input to our model. We note that the discussed interpersonal dimensions are descriptive of the relationship between a particular pair of speakers, but not of the relationship type in general (for example, the interaction between \textit{colleagues} can be both \textit{cooperative} and \textit{competitive}). However, in general any interpersonal dimension can be more or less typical for a relationship type; we use this information to give the model hints about applicable predictions.
+We use the definition of \textit{interpersonal dimensions} \cite{wish1976perceived} of speakers' interactions and relationships, following classification by \citet{rashid2018characterizing}, which we used as an additional input to our model. We note that the discussed interpersonal dimensions are descriptive of the relationship between a particular pair of speakers, but not of the relationship type in general (for example, the interaction between \textit{colleagues} can be both \textit{cooperative} and \textit{competitive}). However, in general any interpersonal dimension can be more or less typical for a relationship type; we use this information to give the model hints about applicable predictions.
 
-\citet{rashid2018characterizing} consider 11 interpersonal dimensions, divided into dimensions of relationships and interactions, as shown in Table \ref{dimensions}. In our model we use all proposed dimensions to provide a comprehensive summary of the relationship's fine-grain characteristics. %For details on each dimension we refer the reader to the original paper \cite{rashid2018characterizing}.
-\citet{rashid2018characterizing} also provide a conversational dataset, where every utterance has annotations for each considered interpersonal dimension. We utilize this dataset to pretrain a model for utterance-level dimension classification and create separate representations for each dimension, which are later used in PRIDE.
+\citeauthor{rashid2018characterizing} consider 11 interpersonal dimensions, divided into dimensions of relationships and interactions, as shown in Table \ref{dimensions}. In our model we use all proposed dimensions to provide a comprehensive summary of the relationship's fine-grain characteristics. %For details on each dimension we refer the reader to the original paper \cite{rashid2018characterizing}.
+\citeauthor{rashid2018characterizing} also provide a conversational dataset, where every utterance has annotations for each considered interpersonal dimension. We utilize this dataset to pretrain a model for utterance-level dimension classification and create separate representations for each dimension, which are later used in PRIDE.
 
 \begin{table}[t!]
 \centering
 \begin{adjustbox}{width=0.7\textwidth}
-\begin{tabular}{@{}l|ll@{}}
-\multirow{4}{*}{relationships} & cooperative vs. noncooperative & equal vs. hierarchical\\ 
+\begin{tabular}{@{}l@{\hskip 0.2in}@{\vline}@{\hskip 0.2in}l@{\hskip 0.3in}l@{}}
+\multirow{4}{*}{\textbf{relationships}} & cooperative vs. noncooperative & equal vs. hierarchical\\ 
  & pleasure vs. work oriented & intense vs. superficial \\ 
  & intimate vs.unintimate & active vs. passive \\ 
- & temporary vs. long term \\ \hline
-\multirow{2}{*}{interactions}  & cooperative vs. noncooperative & active vs. passive \\ 
+ & temporary vs. long term \\ \hline & \\[-2.0ex]
+\multirow{2}{*}{\textbf{interactions}}  & cooperative vs. noncooperative & active vs. passive \\ 
  & concurrent vs. non concurrent & near vs. distant \\                                                          
 \end{tabular}
 \end{adjustbox}

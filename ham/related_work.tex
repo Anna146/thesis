@@ -1,10 +1,8 @@
 \section{Related work}
 
-In this section we discuss the related work concerning the methods that are used in HAMs. First, we give an overview of the application of neural models utilizing attention mechanism, which is the main building block in our best performing models. Second, we describe the methods for building hierarchical representations of the conversational data.
+In this section we discuss related work concerning the methods that are used in HAMs. First, we give an overview of the application of neural models utilizing attention mechanism, which is the main building block in our best performing models. Second, we describe the methods for building hierarchical representations of the conversational data. We also refer the reader to Section \ref{back_rel} for a comprehensive overview of the author profiling methods.
 
-\paragraphHd{Neural Models with Attention} 
-
-\textcolor{red}{mention transformer you should a few sentences and cite the attention-is-all-you-need paper}
+\subsection{Neural Models with Attention} 
 
 The role of attention weights has been studied for various neural models, including feed-forward networks \cite{vaswani2017attention}, CNNs, \cite{atten4} and RNNs \cite{bahdanau2014neural}. Recently, neural models enhanced with attention mechanisms have boosted
 the results on various NLP tasks \cite{atten1,atten9,atten2}, particularly 
@@ -13,15 +11,18 @@ or spoken language understanding \cite{Chen2016}.
 
 In response generation task, attention is used to align the context and target utterance representation \cite{atten7}. \citet{zhang2019recosa} extends it with additional self-attention layers for both context and response representations. \citet{Chen2016} uses attention to estimate the relevance of the previous knowledge stored in memory to the input utterances; the response is produced using the attention distribution, calculated by matching each input utterance to the memory vectors.
 
-\paragraphHd{Hierarchical conversational models} 
+Transformer \cite{vaswani2017attention} is a state-of-the-art sequence-to-sequence deep learning model based on self-attention mechanism. Transformer is used across various NLP tasks, both as a standalone model and as a part of other neural architectures. In particular, in conversation domain Transformer has been used to produce utterance representations \cite{li2020hierarchical, shan2020contextual}.
+
+\subsection{Hierarchical conversational models} 
+\label{ham_hier}
 
 Hierarchical models to represent conversations were introduced in \citet{serban2016building}, which applied RNNs to hierarchically build the representations of utterances and the dialogue context, solving response generation task. \citet{atten8} also decoded conversational responses, introducing attention mechanism into the hierarchical encoder architecture. In \citet{atten8} the utterance and word representations are formed as the attention-weighted averages of the hidden states in word and utterance level RNNs. 
 
 Hierarchical attention models are also utilized for other conversational NLP tasks, such as dialogue state tracking \cite{shan2020contextual} or emotion recognition in conversations \cite{li2020hierarchical, ma2021han}. A common approach is to create word representations with BERT and utterance representations with Transformer encoder \cite{shan2020contextual, li2020hierarchical} or RNN \cite{ma2021han}.
 
-There is also ample research on applying hierarchical attention to speaker attribute prediction. \citet{lynn2020hierarchical} use attention mechanism on the word and utterance representations created by an RNN to predict the personality traits of the Facebook users. The study \cite{li2019improving} exploits hierarchical model to predict age, gender and location information of Weibo users.
+There is also ample research on applying hierarchical attention to speaker attribute prediction. \citet{lynn2020hierarchical} use attention mechanism with the word and utterance representations created by an RNN to predict personality traits of the Facebook users. The study \cite{li2019improving} exploits hierarchical model to predict \textit{age}, \textit{gender} and \textit{location} information of Weibo users.
 
-Compared to most hierarchical models, the architecture of HAM is more light\hyp{}weight, because it creates speaker representations with an attention mechanism directly, without additionally running RNN or Transformer models on the attention-weighted words. Thus HAMs are less prone to overfitting and require less computational resources. Regardless of its simplicity, our proposed architecture can still make meaningful predictions in classification tasks with large number of classes, such as profession prediction, as opposed to few possible classes in related studies \cite{lynn2020hierarchical, li2019improving}. 
+Compared to most hierarchical models, the architecture of HAMs is more light\hyp{}weight, because it creates speaker representations with an attention mechanism directly, without additionally running an RNN or Transformer models on the attention-weighted words. Thus HAMs are less prone to overfitting and require less computational resources. Regardless of its simplicity, our proposed architecture can still make meaningful predictions in classification tasks with large number of classes, such as \textit{profession} prediction, as opposed to few possible classes in related studies \cite{lynn2020hierarchical, li2019improving}. 
 
 
 
