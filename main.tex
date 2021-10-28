@@ -34,6 +34,7 @@
 \usepackage{mathtools}
 \usepackage{etoolbox}
 \appto\normalsize{\belowdisplayshortskip=\belowdisplayskip}
+\usepackage{glossaries}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -139,6 +140,10 @@
 
 \setlength{\headheight}{24pt}
 
+\input{tools}
+\newcolumntype{A}{>{\centering}p{0.25\textwidth}}
+\newcolumntype{B}{>{\centering\arraybackslash}p{0.25\textwidth}}
+
 % #-------------------------------------------------------------------------# 
 \begin{document}
 
@@ -240,6 +245,8 @@
 \cleardoublepage
 \listoftables
 \addcontentsline{toc}{chapter}{List of Tables}
+
+\printglossary[title=External Tools and Datasets, toctitle=External Tools and Datasets]
 
 % \cleardoublepage
 % \includepdf[pages=-, scale=1.0, addtotoc={1,chapter,1,Curriculum Vitae,mateusz_cv}]{mateusz_modern_cv/mateusz_CV}

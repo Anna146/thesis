@@ -6,7 +6,7 @@ While using explicit statements in brackets (e.g. [35f] indicating a \textit{35-
 
 Keeping in mind these limitations of the pattern-based approach we turn to the \textit{weak supervision} method to create a refined dataset for \textit{hobby} and \textit{profession} user traits. 
 
-\paragraphHd{Snorkel.} We used the Snorkel framework \cite{ratner2017snorkel}, which allows data labeling using weak supervision. 
+\paragraphHd{Snorkel.} We used the \gls{Snorkel framework} \cite{ratner2017snorkel}, which allows data labeling using weak supervision. 
 Snorkel does not require manual evaluation of each data sample, instead it relies on the outputs of multiple \textit{labeling functions}, such as patterns or heuristics, which are manually specified and can be potentially noisy. The accuracies and correlations of the labeling functions are then estimated by automatically deriving the \textit{generative model} over the labeling functions. The generative model weights and combines the outputs of labeling functions to produce final list of probabilistic labels.
 
 \vspace{10pt}
@@ -42,7 +42,7 @@ LF1 labels a user with a \emph{positive/negative} label for each attribute value
 \bottomrule
 \end{tabular}
 \end{adjustbox}
-\caption{Positive and negative patterns used in the labeling function LF1 of the Snorkel labeling model. Each pattern must be followed by possible attribute values within a context window of 2 terms.}
+\caption[Positive and negative patterns used in Snorkel labeling model.]{Positive and negative patterns used in the labeling function LF1 of the Snorkel labeling model. Each pattern must be followed by possible attribute values within a context window of 2 terms.}
 \label{tab:patterns}
 \end{table}
 

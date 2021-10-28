@@ -7,22 +7,22 @@ This demonstrates that CHARM's performance in a normal classification setting do
 
 Experimental setup details
 differ for these two evaluation settings, which will be discussed in the following subsections.
-All our models were implemented in PyTorch; the code and data are available at \url{https://github.com/Anna146/CHARM}.
+All our models were implemented in \gls{PyTorch}; the code and data are available at \href{https://github.com/Anna146/CHARM}{https://github.com/Anna146/CHARM}.
 
 
 \paragraphHd{Training and test data.}
 For the \emph{unseen} experiments, we perform ten fold cross-validation with folds constructed such that each attribute value appears in only one test fold.
-Each of the folds contains roughly the same number of users and approximately 2-4 unique attribute values.\footnote{We used a greedy algorithm to approximate a solution to the NP-hard bin packing problem.} We assigned the users having multiple attribute values to a fold corresponding to one of their randomly chosen values.
+Each of the folds contains roughly the same number of users and approximately 2-4 unique attribute values\footnote{We used a greedy algorithm to approximate a solution to the NP-hard bin packing problem.}. We assigned the users having multiple attribute values to a fold corresponding to one of their randomly chosen values.
 For the experiments with \emph{seen} values, we randomly split the users into training and test sets in a 9:1 proportion, respectively, which yielded 5232/580 users for \emph{profession} and 5246/582 for \emph{hobby}.
 
 
 \paragraphHd{Hyperparameters.}
 BERT, the term selection component, generates a contextualized embedding 
-for each input term, which we process with a fully connected layer to produce a term score for each word in its context. Specifically, we use the pre-trained BERT base-uncased model with 12 transformer layers. 
+for each input term, which we process with a fully connected layer to produce a term score for each word in its context. Specifically, we use the pre-trained \gls{BERT} (bert-base-uncased) model with 12 transformer layers. 
 To reduce BERT's computational requirements, we discard the last 6 transformer layers (i.e., we use embeddings produced by the earliest 6 layers) after observing in pilot experiments that this outperformed a distilled BERT model~\cite{sanh2019distilbert}.
 
 Following prior work \cite{copacrr}, KNRM was trained
-with frozen word2vec embeddings on data from the 2011-2014 \textsc{TREC} Web Track\footnote{\url{https://trec.nist.gov/data/webmain.html}} with the 2009-2010 years for validation. We initialize KNRM with these pre-trained weights.
+with frozen word2vec embeddings on data from the 2011-2014 \gls{TREC Web Track} with the 2009-2010 years for validation. We initialize KNRM with these pre-trained weights.
 
 During training, we sample 5 negative labels (i.e., incorrect attribute values) to be ranked when calculating the nDCG reward.
 For each label, we sample a subset of 15 documents to represent the label (i.e., attribute value). If the document collection has fewer than 15 documents for a label (e.g., \wiki{page}), we consider all the label's available documents.
@@ -53,12 +53,12 @@ BERT IR    &       56.2       &  72.7
 \\ \bottomrule
 \end{tabular}
     \end{adjustbox}
-   \caption{Running time of the models given in minutes. The train time is a sum of the times across all training epochs, all times are averaged across folds in the unseen experiment.}
+   \caption[Running time of CHARM and BERT IR.]{Running time of the models given in minutes. The train time is a sum of the times across all training epochs, all times are averaged across folds in the unseen experiment.}
 \label{tab:time}
 \end{table}
 
 \paragraphHd{Baselines.} For the \emph{unseen} experiments, we evaluate CHARM's performance against an end-to-end BERT ranking method and against a BM25 \cite{Robertson:2009:PRF:1704809.1704810} ranker combined with two state-of-the-art unsupervised keyword extraction methods: 
-TextRank~\cite{mihalcea2004textrank} and RAKE~\cite{rose2010automatic}.
+\gls{TextRank}~\cite{mihalcea2004textrank} and \gls{RAKE}~\cite{rose2010automatic}.
 We additionally include a baseline giving the user's full utterances as input to BM25 (baseline: \emph{No-keyword}).
 
 Following related work \cite{nogueira2019passage, dai2019deeper}, we train the BERT IR baseline using the binary cross-entropy loss to predict the relevance of each document to the user's utterances (acting as queries).

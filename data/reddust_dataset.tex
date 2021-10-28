@@ -19,7 +19,7 @@ Flairs for posts can be useful to filter and search for a particular content.
 
 In this section we describe the creation of our proposed \emph{RedDust} dataset, containing a collection of Reddit users. Each user in the dataset is associated with posts and comments they produce (which we call \textit{submissions} in the following) and users' inferred personal attributes.
 We considered five personal attributes including \textit{gender}, \textit{age}, \textit{family status}, \textit{profession} and \textit{hobby}.
-The dataset is created from the openly published Reddit dump\footnote{{\scriptsize \url{https://files.pushshift.io/reddit/}}}, which spans between 2006 and 2018. 
+The dataset is created from the openly published \gls{Reddit dump}\footnote{ \href{https://files.pushshift.io/reddit}{https://files.pushshift.io/reddit}}, which spans between 2006 and 2018. 
 
 There are several criteria on which users and submissions are included in RedDust, i.e., users who posted between 10 and 100 submissions, and submissions containing between 20 and 100 terms after filtering. We filtered out hyperlinks and user mentions (i.e., \texttt{\small @nickname}) from the original content.
 
@@ -126,13 +126,13 @@ hobby & - & \textit{my hobby is}, \textit{I am/I'm fond of}, \textit{I am/I'm ke
 \end{table*}
 
 \subsubsection{Profession}
-To obtain profession labels we consulted a list of occupation names from Wikipedia\footnote{ \href{https://en.wikipedia.org/wiki/Category:Lists_of_occupations}{\texttt{en.wikipedia.org/wiki/Category:Lists\_of\_occupations}}} and recursively added all titles under subcategories. The resulting list consists of about 1K professions and contains a lot of fine grained occupations, some of which are redundant or ambiguous. Our strategy is to capture as many profession assertions as possible, giving users of RedDust the opportunity to filter and group the professions depending on their specific use cases.
+To obtain profession labels we consulted a list of occupation names from Wikipedia\footnote{ \href{https://en.wikipedia.org/wiki/Category:Lists\_of\_occupations}{https://en.wikipedia.org/wiki/Category:Lists\_of\_occupations}} and recursively added all titles under subcategories. The resulting list consists of about 1K professions and contains a lot of fine grained occupations, some of which are redundant or ambiguous. Our strategy is to capture as many profession assertions as possible, giving users of RedDust the opportunity to filter and group the professions depending on their specific use cases.
 
 Each profession in the list was considered as \texttt{\small profession name} in the pattern \texttt{\small (I am|I'm) a <profession name>} that we used to label Reddit users with the \emph{profession} attribute.
 After performing pattern matching against the whole Reddit dataset, we were left with 832 unique profession names in RedDust.
 
 \subsubsection{Hobby}
-Similar to collecting names of professions, we obtained a list of hobbies from Wikipedia\footnote{ \href{https://en.wikipedia.org/wiki/List_of_hobbies}{\texttt{en.wikipedia.org/wiki/List\_of\_hobbies}}} and 
+Similar to collecting names of professions, we obtained a list of hobbies from Wikipedia\footnote{ \href{https://en.wikipedia.org/wiki/List_of_hobbies}{https://en.wikipedia.org/wiki/List\_of\_hobbies}} and 
 utilized them as \texttt{\small hobby name} in our natural language patterns for the \emph{hobby} attribute.
 We used a diverse set of patterns of the form \texttt{\small <phrase indicator> <hobby name>}, where \texttt{\small phrase indicator} is a phrase like `\textit{my hobby is}' or `\textit{I enjoy}', as listed in Table \ref{word_table}. 
 Using the pattern matching approach, users in RedDust were labeled with 336 unique hobby names in total.
@@ -155,7 +155,7 @@ avg/total & 0.94 & 14 & 23 \\
 \bottomrule
 \end{tabular}
 \end{adjustbox}
-\caption{Number of false positives and inter-rater agreement.}
+\caption{Number of false positives and inter-rater agreement on RedDust.}
 \label{agreement}
 \end{table}
 

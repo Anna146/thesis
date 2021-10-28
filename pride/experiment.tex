@@ -4,7 +4,7 @@
 For experiments with PRIDE we used Film Relationship (FiRe) dataset, described in Section \ref{relatinoship_dataset}.
 From the input scripts we removed personal names\footnote{
 %Based on the list in 
-\href{https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-data}{\texttt{\justify https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-\\national-data}}} and movie-specific words (which we defined as words found in only one movie script), to reduce overfitting to movie domain or genre.
+\href{https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-data}{\justify https://catalog.data.gov/dataset/baby-names-from-social-security-card-applications-national-data}} and movie-specific words (which we defined as words found in only one movie script), to reduce overfitting to movie domain or genre.
 
 We performed five-fold cross-validation, training the models on three folds and choosing hyperparameter settings according to the performance on 1-fold validation set. We report the results on the remaining 1-fold test set. We arranged the folds so that the sets of movies, where the input character pairs come from, are disjoint. With that as a hard restriction, we tried to maximally balance the label distributions across the folds. For that we created multiple random assignments of movies to folds and chose the one that maximized the balance metrics, which we defined as follows:
 \begin{gather*}
@@ -16,9 +16,9 @@ where $S_l$ denotes the number of pairs for the label l in the whole dataset, an
 
 \subsection{Model setup and evaluation metrics}
 
-We fine-tuned a pretrained BERT model (\textit{bert-base-uncased}) to create word embeddings. To produce interpersonal dimension embeddings, we train BERT on the labeled data from \citet{rashid2018characterizing} on each dimension separately, resulting in 768-dimensional representations.
+We fine-tuned a pretrained \gls{BERT} model (\textit{bert-base-uncased}) to create word embeddings. To produce interpersonal dimension embeddings, we train BERT on the labeled data from \citet{rashid2018characterizing} on each dimension separately, resulting in 768-dimensional representations.
 
-We gathered the data about speakers' ages by crawling \url{imdb.com} for the ages of the corresponding actors in the year the film/series was made. To create age embeddings we calculate the age difference (\emph{diff}) between the speakers and assign it to one of the predefined \emph{diff} bins. We set \emph{diff} bins to be $[(-inf; -13], [-12; -6], [-5; -1], [0; 4], [5; 11], [12; +inf]]$ (a negative age difference means that speaker B is younger than speaker A).
+We gathered the data about speakers' ages by crawling \gls{IMDb} for the ages of the corresponding actors in the year the film/series was made. To create age embeddings we calculate the age difference (\emph{diff}) between the speakers and assign it to one of the predefined \emph{diff} bins. We set \emph{diff} bins to be $[(-inf; -13], [-12; -6], [-5; -1], [0; 4], [5; 11], [12; +inf]]$ (a negative age difference means that speaker B is younger than speaker A).
 
 \paragraphHd{Training mechanism.} PRIDE is trained in two steps: first we train the model without external representations (age difference and interpersonal dimensions). Then the pretrained base model checkpoint is used in full PRIDE to train external representations' embeddings and classification layer (the weights of the base model stay frozen).
 
@@ -37,3 +37,6 @@ We perform multi-label classification by predicting all labels with a score over
      \cite{jia2020ddrel} 
      produces the relationship label ranking for each dialogue snippet in a movie; the final scores for pair-level labels through the whole conversation history is the sum of MRRs of the labels from scenes' predictions.
  \squishend
+ 
+ \vspace{8pt}
+ PRIDE and all baselines are implemented using \gls{PyTorch}. The code for all experiments is accessible at \href{https://github.com/Anna146/PRIDE}{https://github.com/Anna146/PRIDE}.

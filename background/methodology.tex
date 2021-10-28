@@ -38,9 +38,9 @@ Textual data used in natural language processing tasks can not be directly proce
 
 Word embeddings can be learned jointly with neural network training. In this case each words is associated with a random real-valued vector, which is updated during the backpropagation in the network to capture task-specific work characteristics. Another popular option is to use pretrained word embeddings, learned by some external model.
 
-One popular choice of pretrained word embeddings is \textit{Word2Vec} \cite{mikolov2013efficient} method, which preserves contextual information of the terms. Word2Vec embeddings are trained on one of the tasks: (i) continuous bag of words (predicting the current term from its context) or (ii) skip-gram model (predicting surrounding terms given the current word). 
+One popular choice of pretrained word embeddings is \textit{word2vec} \cite{mikolov2013efficient} method, which preserves contextual information of the terms. Word2vec embeddings are trained on one of the tasks: (i) continuous bag of words (predicting the current term from its context) or (ii) skip-gram model (predicting surrounding terms given the current word). 
 
-The limitation of using pretrained Word2Vec embeddings is that the final embedding for a term is the same for all contexts it can occur in, which can cause problems with the polysemous words (like `\textit{bank}' or `\textit{lie}'). Thus, recently the \textit{contextualized} embedding models, such as BERT, described in Section \ref{bert}, have recently gained considerable popularity. These models are pretrained on a large linguistic corpus, which enables them to statistically learn the structure of language. They produce the embeddings for the whole sequence simultaneously, effectively capturing terms' context. 
+The limitation of using pretrained word2vec embeddings is that the final embedding for a term is the same for all contexts it can occur in, which can cause problems with the polysemous words (like `\textit{bank}' or `\textit{lie}'). Thus, recently the \textit{contextualized} embedding models, such as BERT, described in Section \ref{bert}, have recently gained considerable popularity. These models are pretrained on a large linguistic corpus, which enables them to statistically learn the structure of language. They produce the embeddings for the whole sequence simultaneously, effectively capturing terms' context. 
 
 \subsection{Convolutional Neural Networks}
 
@@ -194,11 +194,12 @@ The output of the binary classifier depends on the score of the positive class: 
 AUROC metrics computes the area under ROC curve. It can be interpreted as an expectation that a randomly drawn positive example will be ranked higher than a randomly drawn negative example. AUROC is a binary classification metrics and its extension to the multi-class case requires binarizing the predictions.
 
 \paragraphHd{Multi-class metrics.} For multi-class predictions precision, recall and F1 metrics can be computed using \textit{micro} or \textit{macro} averaging. In case of micro averaging the metrics are calculated globally across all classes; macro averaging implies calculating metrics per class and averaging them. For example, the equations for micro and macro precision for classification with $N$ classes will look like:
-
+\begin{spreadlines}{15pt}  
 \begin{align}
-    precision_{micro} = \frac{\sum_{c}^N TP_c}{\sum_{c}^N TP_c + \sum_{c}^N FP_c} \\
-    precision_{macro} = \frac{1}{N}\sum_{c}^N \frac{TP_c}{TP_c + FP_c}
+    precision_{micro} = \frac{\sum_{c=1}^N TP_c}{\sum_{c=1}^N TP_c + \sum_{c}^N FP_c} \\
+    precision_{macro} = \frac{1}{N}\sum_{c=1}^N \frac{TP_c}{TP_c + FP_c}
 \end{align}
+\end{spreadlines}
 
 A \textit{confusion matrix} is an $N\times N$ matrix which shows for each pair of classes the number of misclassifications between them. The rows correspond to the true labels and the columns to the predicted labels; the number in the $ij$-th matrix cell denotes the number of times the model predicted class $j$, when the correct label was class $i$. Confusion matrix is useful for qualitative model analysis, allowing to see systematic misclassifications.
 
@@ -232,4 +233,67 @@ where $IDCG_r$ is an ideal DCG, calculated on the ranked list of only relevant r
     MRR = \frac{1}{N} \sum_{i=1}^N \frac{1}{rank_i}
 \end{equation}
 
-where $N$ is the number of test instances. MRR considers only the rank of the first correct label, thus it is not applicable to multi-label classification.
+where $N$ is the number of test instances. MRR considers only the rank of the first correct label; thus, it is not applicable to the multi-label classification.
+
+\subsection{Significance tests}
+
+The best performing model is usually selected based on comparing the evaluation metrics computed on the models' predictions on the same test set. However, the difference in performance between two models can be caused by statistical fluctuations; \textit{significance tests} are used to eliminate the possibility of this.
+
+The null hypothesis to test is that the mean difference between paired statistics of the two given models is zero. Here we compare the arrays of predictions from the considered two models, which are aligned so that each pair of predictions is calculated on the same test sample. 
+
+\subsubsection{Paired t-test}
+
+\textit{Paired t-test} is the most widely used significance test in machine learning. To compute sample-based t-test for a specific metrics $x$, we first need to compute this metrics on each individual sample $i$. For example, in case of MRR metrics we get:
+\begin{equation}
+    x^{model}_i = \frac{1}{rank_i}
+\end{equation}
+
+Let $x_i = (x_i^A - x_i^B)$ be the difference of statistics from models A and B on instance $i$. We compute the average and standard deviation of the differences between all pairs:
+\begin{align}
+    \bar{x} = \frac{1}{n}\sum_{i=1}^n x_i && \sigma = \sqrt{\frac{\sum_{i=1}^n (x_i - \bar{x})}{n-1}}
+    \label{sig_1}
+\end{align}
+where $n$ is the number of test samples.
+
+Then t-statistics for the Student's t-test can be computed as follows:
+\begin{equation}
+    t = \frac{\bar{x}}{\sigma \sqrt{n}}
+    \label{sig_2}
+\end{equation}
+
+After that, we find the \textit{p-value} - the probability of obtaining test statistic at least as extreme as the observed statistic under the null hypothesis: $p = Pr(T \ge t| H_0)$. Under the null hypothesis, the obtained statistic follows a \textit{t-distribution} with $(n-1)$ degrees of freedom; the probability $Pr(T \ge t| H_0)$ can be looked up in statistical tables for t-distribution.
+
+Finally, the obtained p-value is compared to a pre-selected cutoff value (usually set to be 0.05). If computed $p$ is less than the cutoff, the null hypothesis can be rejected and we can conclude that the results of models A and B are significantly different with respect to selected metrics $x$.
+
+Sample-based t-test can be computed for micro averaged evaluation metrics; in the case of macro averaging, the paired arrays of evaluation metrics for the two models represent the metrics computed on each class, as opposed to each test sample. For instance, for macro MRR the computation for each class $i$ will be: 
+\begin{equation}
+    x^{model}_i = \frac{1}{n_i}\sum_{j=1}^{n_i}\frac{1}{rank_j}
+\end{equation}
+
+where $n_i$ is the size of class $i$ and each instance $j$ in the summation has class $i$ as the true label. After that all calculations of t-statistic (Equations \ref{sig_1}-\ref{sig_2}) and p-value are the same as in sample-based case.
+
+\subsubsection{McNemar's test}
+
+When the number of samples (classes) serving as input to t-test is small (which is topical for macro-averaged metrics on a small number of classes), t-test might yield imprecise results (as $\sqrt{n}$ directly influences the computation of t-statistic). Instead, for such cases one can use \textit{McNemar's test} \cite{everitt2019analysis} to evaluate the significance of the difference in two models' predictions.
+
+McNemar's test is based on $2 \times 2$ \textit{contingency table} of the counts of misclassifications for models A and B, computed on matched pairs of samples.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{A@{\vline}A@{\vline}B}
+    & model A correct & model A incorrect \\ \hline 
+    model B correct    &  $n_0_0$ & $n_0_1$\\[5pt] \hline 
+    model B incorrect & $n_1_0$   & $n_1_1$\\[5pt] 
+    \end{tabular}
+    \caption{Contingency table for McNemar's test.}
+    \label{cont_tab}
+\end{table}
+
+For example the value $n_1_1$ from Table \ref{cont_tab} denotes the number of samples both models A and B classified incorrectly. The null hypothesis in McNemar's test is that the number of misclassifications for both models is the same, i.e., $n_0_1 = n_1_0$. The test uses $\chi^2$ statistics:
+
+\begin{equation}
+    \chi^2 = \frac{(|n_0_1 - n_1_0| - 1)^2}{(n_0_1 + n_1_0)}
+\end{equation}
+
+Under null hypothesis the computed statistics follows $\chi^2$ distribution with 1 degree of freedom; the p-value can be found from corresponding tables for $\chi^2$. Similarly to the t-test case, the significance of experiment is proven by comparing the obtained p-value to the selected cutoff value.
+

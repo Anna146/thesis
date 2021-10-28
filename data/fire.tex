@@ -52,7 +52,7 @@ Unlike most prior works, we consider \emph{directed} relationships (e.g., \emph{
 \label{data_moviechatt}
 
 To overcome the limitations of the existing datasets of transcribed conversations we introduce \textit{Movie Character Attributes} dataset (MovieChAtt).
-MovieChAtt is based on a subset of characters in the Cornell Movie-Dialogs Corpus\footnote{\href{https://www.cs.cornell.edu/~cristian/Cornell_Movie-Dialogs_Corpus.html}{http://www.cs.cornell.edu/~cristian/Cornell\_Movie-Dialogs\_Corpus.html}} \cite{danescu2011chameleons} consisting of 617 movie scripts. From each movie, we derive a sequence of utterances for each character, excluding the characters who have less than 20 lines in the movie. We label the acquired characters with \textit{age}, \textit{gender}, and \textit{profession} attributes. The details on the attribute value lists and label distributions are given in Table \ref{moviechatt}; the overall dataset statistics are given in Table \ref{data_stats}. In the following we describe the labeling process for each personal attribute.
+MovieChAtt is based on a subset of characters in the \gls{Cornell Movie-Dialogs Corpus} \cite{danescu2011chameleons} consisting of 617 movie scripts. From each movie, we derive a sequence of utterances for each character, excluding the characters who have less than 20 lines in the movie. We label the acquired characters with \textit{age}, \textit{gender}, and \textit{profession} attributes. The details on the attribute value lists and label distributions are given in Table \ref{moviechatt}; the overall dataset statistics are given in Table \ref{data_stats}. In the following we describe the labeling process for each personal attribute.
 
 %\subsubsection{Preprocessing data} 
 
@@ -84,7 +84,7 @@ child (74)         &          & special agent (77)       & actor (32)      & jou
 
 \subsubsection{Labeling age and gender} 
 
-We extracted characters' \textit{gender} and \textit{age} attributes by associating the characters with their entries in the Internet Movie Database\footnote{\url{https://www.imdb.com}} (IMDb) and extracting the corresponding actor or actress' attributes at the time the movie was filmed, assuming that the gender of the actor and the character coincide in most cases.
+We extracted characters' \textit{gender} and \textit{age} attributes by associating the characters with their entries in the Internet Movie Database (\gls{IMDb}) and extracting the corresponding actor or actress' attributes at the time the movie was filmed, assuming that the gender of the actor and the character coincide in most cases.
 
 This yielded 1,963 characters labeled with their genders and 4,548 characters labeled with their ages.
 We discretized the age attribute into the following ranges:
@@ -144,14 +144,14 @@ engaged               & idol                     & teacher                \\
 distant family member & members of the same club & student                \\
 \end{tabular}
 \end{adjustbox}
-\caption{List of relationship labels split into categories. Labels marked with * are included in the final dataset and are supplied with number of acquired pairs.}
+\caption[List of relationship labels split into categories.]{List of relationship labels split into categories. Labels marked with * are included in the final dataset and are supplied with number of acquired pairs.}
 \label{relation-list}
 \end{table*}
 
 \subsubsection{Crowdsourcing annotation}
 
 Inspired by \citet{massey2015annotating}, we manually created a list of 21 fine-grained relationships, divided into 3 categories: \emph{Family}, \emph{Social} and \emph{Professional} (Table \ref{relation-list}). %Some of the relationships are directed (for example, "parent"), for undirected ones (like "lover") we included "one-way relationship" tag, which indicates that only one of the characters experiences this relationship. 
-We annotated character pairs in our dataset using MTurk, following the task design described in \citet{massey2015annotating}. For each character pair a worker was supposed to indicate all applicable relationships, given the links to the movie descriptions (Wikipedia and GradeSaver\footnote{\url{https://www.gradesaver.com/}}, if available). Based on several pilot runs we opted to assign the labels agreed by 4 out of 6 annotators.
+We annotated character pairs in our dataset using MTurk, following the task design described in \citet{massey2015annotating}. For each character pair a worker was supposed to indicate all applicable relationships, given the links to the movie descriptions (Wikipedia and \gls{GradeSaver}, if available). Based on several pilot runs we opted to assign the labels agreed by 4 out of 6 annotators.
 
 \subsubsection{Label aggregation}
 \label{label_aggregation}
@@ -159,7 +159,7 @@ We selected the best label aggregation method based on the evaluation of several
 To create the ground truth for comparison, 
 we manually annotated 15\% of the pairs, retaining the labels on which 2 out of 3 annotators agreed.
 
-We used an existing tool\footnote{\url{https://zhydhkcws.github.io/crowd_truth_inference/index.html}} implementing state-of-the-art aggregation approaches, which enabled us to try out at least 7 different aggregation methods. We report the results of the best performing ones: 
+We used an existing tool\gls{Crowdsourcing comparison tool by Zheng et al.} by \citet{zheng2017truth}\footnote{\href{https://zhydhkcws.github.io/crowd\_truth\_inference/index.html}{https://zhydhkcws.github.io/crowd\_truth\_inference/index.html}}, implementing state-of-the-art aggregation approaches, which enabled us to try out at least 7 different aggregation methods. We report the results of the best performing ones: 
 \begin{itemize}
     \item David Skene model (DS) \cite{dawid1979maximum} is based on Expectation Maximizaion algorithm (EM), which jointly estimates the expertise of workers and the task label. This method has shown consistently optimal performance in many studies.
     \item Generative model of Labels, Abilities, and Difficulties (GLAD) \cite{whitehill2009whose} is an extension to EM that additionally estimates the difficulty of each task.
@@ -195,7 +195,7 @@ We obtained a multi-label Fleiss kappa of 0.45, which corresponds to moderate ag
 
 \subsubsection{Series dataset}
 
-We created an additional dataset of labeled TV series scripts, which are different from film screenplays, because they contain a longer history of interactions. The scripts of the series were crawled from \url{imsdb.com}. As there is no information about scene boundaries in the gathered scripts, for each given character pair we kept only the uninterrupted sequences of at least 7 utterance turns. 
+We created an additional dataset of labeled TV series scripts, which are different from film screenplays, because they contain a longer history of interactions. The scripts of the series were crawled from \gls{IMSDb}. As there is no information about scene boundaries in the gathered scripts, for each given character pair we kept only the uninterrupted sequences of at least 7 utterance turns. 
 
 For the resulting dataset we selected the series which would be realistic and diverse in topics. Following the same crowdsourcing annotation procedure as for FiRe, we collected 365 labeled pairs with 0.33 Fleiss' kappa agreement; the dataset statistics are included in Table~\ref{data_stats}. Compared to FiRe, character pairs in this dataset have larger number of utterances, around four times as much on average.
 

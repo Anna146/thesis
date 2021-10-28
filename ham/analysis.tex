@@ -49,8 +49,7 @@ For the sake of brevity we neither instantiate nor report results for LSTM-based
 
 \subsection{Study on word embeddings}
 In Section \ref{findings} we represented terms using embeddings from a word2vec skip-gram model trained on Google News \cite{embed1}.
-In this study we compare the Google News embeddings with word2vec embeddings trained on Reddit posts, GloVe \cite{pennington2014glove} embeddings trained on Common Crawl, and GloVe embeddings trained on Twitter. We also consider $ELMo$ \cite{Peters:2018}, a contextualized embedding model. To capture semantic variations, this model creates a contextualized character-based representation of words using a bidirectional language model. We use AllenNLP's small ELMo model\footnote{\url{https://allennlp.org/elmo}} trained on the 1 Billion Word Benchmark of news crawl data from WMT 2011 \cite{41880}. 
-
+In this study we compare the Google News embeddings with word2vec embeddings trained on Reddit posts, \gls{GloVe} \cite{pennington2014glove} embeddings trained on Common Crawl, and GloVe embeddings trained on Twitter. We also consider $ELMo$ \cite{Peters:2018}, a contextualized embedding model. To capture semantic variations, this model creates a contextualized character-based representation of words using a bidirectional language model. We use AllenNLP's small \gls{ELMo model} trained on the 1 Billion Word Benchmark of news crawl data from WMT 2011 \cite{41880}. 
 
 \begin{table}[h!]
 \centering
@@ -76,7 +75,7 @@ word2vec & Google News & 0.42 / \textbf{0.44} & 0.77 & 0.39 / 0.37 & \textbf{0.8
 \bottomrule
 \end{tabular}
 \end{adjustbox}
-\caption{Comparison of embedding models trained on different datasets, for identifying \textit{profession} attribute.
+\caption{Comparison of embedding models trained on different datasets for identifying \textit{profession} attribute.
 % on MovieChAtt dataset.
 }
 \label{emb_tab}
@@ -273,7 +272,7 @@ many occupations are confused with \textit{criminal}, which is the most common p
 \centering
 \includegraphics[width=0.8\textwidth]{ham/pics/conf_new.png}
 \vspace*{-0.3cm}
-\caption{Confusion matrix computed with \method{2attn}. True positives are not shown. Darker squares indicate more misclassifications.}
+\caption[Confusion matrix computed with \method{2attn}]{Confusion matrix computed with \method{2attn}. True positives are not shown. Darker squares indicate more misclassifications.}
 \label{matrix}
 \end{figure}
 

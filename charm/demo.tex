@@ -1,6 +1,6 @@
 \section{CHARM Demo}
 
-In this section we present a web demonstration platform, accessible at \url{https://d5demos.mpi-inf.mpg.de/charm}, that showcases CHARM as a predictive model for extracting personal knowledge from conversational utterances \cite{tigunova2021exploring}. The contribution of such system is twofold. First, the demonstration can help users protect their privacy by identifying parts of their generated content that could give away personal information. Second, the system shows in detail how the model arrives at the prediction, which is rarely 
+In this section we present a web demonstration platform, accessible at \href{https://d5demos.mpi-inf.mpg.de/charm}{https://d5demos.mpi-inf.mpg.de/charm}, that showcases CHARM as a predictive model for extracting personal knowledge from conversational utterances \cite{tigunova2021exploring}. The contribution of such system is twofold. First, the demonstration can help users protect their privacy by identifying parts of their generated content that could give away personal information. Second, the system shows in detail how the model arrives at the prediction, which is rarely 
 reflected in most automated extraction systems for personal facts.
 
 \subsection{Motivation} 
@@ -38,7 +38,7 @@ The interaction is designed as a game, where the chatbot asks several attribute-
 \centering
 \includegraphics[width=0.85\textwidth]{imgs/conv-baker.png}
 \vspace*{-0.3cm}
-\caption{Chatbot conversation.}
+\caption[Chatbot conversation in CHARM demonstration platform.]{Chatbot conversation}
 \label{conv}
 \end{figure}
 
@@ -78,7 +78,7 @@ On the other hand, small number of keywords can be insufficient for accurate doc
 
 As the document aggregation strategy, the user can choose between \texttt{max} and \texttt{average} functions. \texttt{Max} operation is useful when the document collection is noisy and the prediction score should come from a single most relevant document per attribute value. The \texttt{average} function is good to provide a balanced prediction based on all available documents, protecting the result from being spoilt by an inappropriate top scoring document. For this reason we selected \texttt{average} as the default aggregation function.
 
-We selected to use \charm{KNRM} as the underlying model and \wiki{category} as document collection for our demonstration platform. As shown in the experiments described in Section \ref{charm_results}, this combination of ranker and document collection shows superior performance in most test cases. \wiki{category} is a sweet spot between simple \wiki{page}, which can only provide trivial explanations with pages matching attribute value name, and Web-search collection, which is difficult for the end-user to interpret because of noisy and ill-formatted pages. %On the other hand, \wiki{category} shows how CHARM's predictions can be determined by the topical pages from the same category.
+The demonstration platform is implemented using \gls{Flask} framework. We selected to use \charm{KNRM} as the underlying model and \wiki{category} as document collection for our demonstration platform. As shown in the experiments described in Section \ref{charm_results}, this combination of ranker and document collection shows superior performance in most test cases. \wiki{category} is a sweet spot between simple \wiki{page}, which can only provide trivial explanations with pages matching attribute value name, and Web-search collection, which is difficult for the end-user to interpret because of noisy and ill-formatted pages. %On the other hand, \wiki{category} shows how CHARM's predictions can be determined by the topical pages from the same category.
  
 \subsubsection{Unseen scenario} 
 We also showcase CHARM's ability to predict attribute values

@@ -19,7 +19,7 @@ BERT$_{conv}$  & 0.27 & 0.25      & 0.33   & & 0.25 & 0.35 & 0.21 \\ \midrule
 PRIDE           & \textbf{0.38} & \textbf{0.42}      & \textbf{0.37} & & \textbf{0.30} & \textbf{0.43}      & \textbf{0.29}\\
 \end{tabular}
 \end{adjustbox}
-\caption{Results on FiRe and Series datasets. The best scores (bold) significantly differ from the remaining ones measured by a McNemar’s test (p $<$ 0.05).}
+\caption[Results on FiRe and Series datasets for relationship prediction.]{Results on FiRe and Series datasets. The best scores (bold) significantly differ from the remaining ones measured by a McNemar’s test (p $<$ 0.05).}
 \label{tab:main_exp}
 \end{table}
 
@@ -79,7 +79,7 @@ PRIDE $-$ positional  & 0.37     & 0.36            & \textbf{0.41}         \\
 PRIDE $-$ Transformer* & 0.35     & \textbf{0.46}            & 0.33        
 \end{tabular}
 \end{adjustbox}
-\caption{Ablating elements of PRIDE. The models marked with * significantly differ with full PRIDE, measured by a McNemar’s test (p $<$ 0.05). 
+\caption[Ablating elements of PRIDE.]{Ablating elements of PRIDE. The models marked with * significantly differ with full PRIDE, measured by a McNemar’s test (p $<$ 0.05). 
 }
 \label{tab:ablation}
 \end{table}
@@ -92,7 +92,7 @@ PRIDE $-$ Transformer* & 0.35     & \textbf{0.46}            & 0.33
 \includegraphics[0.5\textwidth]{imgs/increasing.PNG}
 \vspace*{-0.3cm}
 \end{adjustbox}
-\caption{F1 when varying input length. The dotted red line shows the performance on the full input.}
+\caption[PRIDE F1 with varying input length.]{PRIDE F1 with varying input length. The dotted red line shows the performance on the full input.}
 \label{increasing}
 \end{figure}
 
@@ -139,7 +139,7 @@ We observe that using speaker embeddings benefit predictions on asymmetric class
 \includegraphics[0.3\textwidth]{imgs/confusion_marked.png}
 \vspace*{-0.3cm}
 \end{adjustbox}
-\caption{Confusion matrix}
+\caption{Confusion matrix for relationships.}
 \label{confusion}
 \end{figure}
 

@@ -4,18 +4,20 @@ In this section we elaborate on the methods for manual data labeling and evaluat
 
 \textit{Crowdsourcing} is a powerful tool for getting annotations for large volumes of data at a low cost. Crowdsourcing is the process of solving a task by collecting and aggregating opinions from a group of people, called \textit{annotators}. Each annotator does not have to be an expert in the given task; a reasonable quality of the results is achieved by aggregating the annotations of a large number of people, e.g. using majority voting. The details on various answer aggregation approaches will be given in Section \ref{label_aggregation}.
 
-\paragraphHd{Mturk crowdsourcing platform.} Amazon Mechanical Turk (MTurk) is a crowdsourcing online tool, which enables researchers to publish surveys for data collection. The published Human Intelligence Tasks (HITs) are usually simple, so that they can be completed within a short time by a human annotator, yet HITs are hard for automated methods (for example, psychological surveys). Each completed HIT comes with metadata, such as the annotator's id or completion time, allowing to maintain the annotation quality by filtering out regularly underperforming workers. MTurk has proven to be a reliable tool, providing cheap data annotations \cite{peer2017beyond} used by researchers in many scientific areas. Crowdsourcing on MTurk allows the access to a more diverse demographics of annotators, as opposed to hiring live participants.
+\paragraphHd{Mturk crowdsourcing platform.} Amazon Mechanical Turk (\gls{MTurk}) is a crowdsourcing online tool, which enables researchers to publish surveys for data collection. The published Human Intelligence Tasks (HITs) are usually simple, so that they can be completed within a short time by a human annotator, yet HITs are hard for automated methods (for example, psychological surveys). Each completed HIT comes with metadata, such as the annotator's id or completion time, allowing to maintain the annotation quality by filtering out regularly underperforming workers. MTurk has proven to be a reliable tool, providing cheap data annotations \cite{peer2017beyond} used by researchers in many scientific areas. Crowdsourcing on MTurk allows the access to a more diverse demographics of annotators, as opposed to hiring live participants.
 
 \paragraphHd{Inter-annotator agreement metrics.} Evaluating the reliability of crowdsourced annotations using inter-annotator agreement metrics
 is an important step to ensure high quality of the collected labels. Additionally, calculating the degree of agreement allows to get an insight into the difficulty of the annotation task, which is helpful for modelling and refining the crowdsourcing assignments.
 
 \textit{Fleiss' kappa} \cite{fleiss1971measuring} is a statistical inter-rater agreement measure applicable to the annotations for the multi-class classification problems. This metric allows any fixed number of annotators per item and evaluation of each item can be done by a different set of annotators. Fleiss' kappa computes the degree of the obtained inter-rater agreement over agreement expected by chance.
 
-Let $N$ be the number of annotated pairs, indexed by $i=1,..N$, $K$ be the number of classification labels, indexed by $j=1,..K$, and $n_i_j$ be the number of annotators, who assigned $j$-th label to the $i$-th item. We first calculate the agreement of annotators per item $P_i$ and the proportion of items per label $p_j$:
-\begin{gather}
+Let $N$ be the number of annotated pairs, indexed by $i=1,..N$, $K$ be the number of classification labels, indexed by $j=1,..K$, and $n_i_j$ be the number of annotators, who assigned $j$-th label to the $i$-th item. We first calculate the agreement of annotators per item $P_i$ and the proportion of items per label $p_j$: \vspace{-1cm}
+\begin{spreadlines}{20pt}
+\begin{gather*}
     P_i = \frac{1}{n (n-1)} \sum_{j=1}^K n_i_j(n_i_j - 1) \\  
     p_j = \frac{1}{\sum_{i=1}^K k_i} \sum_{i=1}^N n_i_j
-\end{gather}
+\end{gather*}
+\end{spreadlines}
 
 Then Fleiss' kappa $\kappa$ is calculated as follows:
 \begin{align}

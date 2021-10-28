@@ -33,7 +33,7 @@ each batch consisted of an equal amount (set to $3$) of training samples per cla
 We consider the following baselines to compare our approach against.
 
 \paragraphHd{Pattern matching oracle}.
-Assuming that we have a perfect sequence tagging model (e.g., \cite{dial7}) that extracts a correct attribute value every time one appears in an utterance, we can determine the upper-bound performance of such sequence tagging approaches. Note that this type of model assumes that attribute values explicitly appear in the text.
+Assuming that we have a perfect sequence tagging model (e.g.,~\cite{dial7}) that extracts a correct attribute value every time one appears in an utterance, we can determine the upper-bound performance of such sequence tagging approaches. Note that this type of model assumes that attribute values explicitly appear in the text.
 In order to avoid vocabulary mismatches between our attribute value lists and the attribute values explicitly mentioned in the data, we augment our attribute values with synonyms identified in the data
 (e.g., we add terms like `\textit{soldier}' and `\textit{sergeant}' as synonyms of the 
 the \textit{profession} attribute value \textit{military personnel}).
@@ -41,7 +41,7 @@ For MRR and accuracy metrics calculation, a speaker receives a score of 1 if the
 
 \paragraphHd{Embedding similarity}.
 Given an utterance representation created by averaging the embeddings of the words within the utterance,
-we compute the cosine similarity between this representation and the embeddings of each attribute value. In this and the following baselines we used 300-dimensional word2vec embeddings pre-trained on the \textit{Google News} corpus \cite{embed1} to represent the terms in the utterances. 
+we compute the cosine similarity between this representation and the embeddings of each attribute value. In this and the following baselines we used 300-dimensional \gls{word2vec} embeddings pre-trained on the \textit{Google News} corpus \cite{embed1} to represent the terms in the utterances. 
 
 \paragraphHd{Logistic regression}. 
 Given an averaged utterance representation (as used with embedding similarity),
@@ -75,6 +75,9 @@ We set the number of utterances per character $N=40$ and the number of terms per
 The model was trained for 150 epochs.
 \item \textbf{\method{CNN-attn}} uses 128 kernels of size 2. The model was trained for 50 epochs.
 \squishend
+
+\vspace{20pt}
+We implemented HAMs and neural baselines using \gls{PyTorch}; logistic regression, SVM and Gaussian Process classifiers were implemented using \gls{Scikit-learn}. The code for the models and data are available at \href{https://github.com/Anna146/HiddenAttributeModels}{https://github.com/Anna146/HiddenAttributeModels}.
 
  \subsection{Evaluation metrics}
 \label{metric}
